@@ -3,6 +3,9 @@
 ## Reminders:
 - Upload remote file from touchOSC app!!
 - Add pictures and videos
+- Add type of leds
+- add power info 
+- Add links to all software
 
 
 ## Description:
@@ -20,15 +23,43 @@ Remember how to do this in case of a pi faliure or you have to reproduce this in
 
 
 #### Create bootable SD for the Pi
+I used the minimal image as it doesn't have a Graphical User Interface (gui) or extras and I figured it should be faster. 
+
+This is on a mac: 
+
+Use `df -h` or `diskutil list` to see mounted paths. The disk may show up as something like "/disk2s1" you can ignore the "s1" You will need to unmount the drive, I can't remember the command off the top of my head, you can just use the disk utility.
+
+`sudo dd if=[/path/to/image] of=/dev/rdisk[n] bs=512k`
+ 
+Ctl + t to check the status
+
+"rdisk" is much faster than just "disk" - it doesn’t buffer
+
+#### Change Raspberry Pi configuration:
+`sudo raspi-config`
+- Enable autologin
+- Change password
+- Change hostname (piledwall)
+- Enable SSH
+
+#### Set up wifi via command line:
+`sudo nano /etc/wpa_supplicant/wpa_supplicant.conf`
+
+Add the following to the bottom of the file replacing "testing" and "password" with your SSID and WIFI password. (keep the quotes e.g. ssid="myNetwork"
 ```
-Use `df -h or diskutil list` to see mounted paths 
-sudo dd if=[/path/to/image] of=/dev/rdisk[n] bs=512k
-Example… sudo dd if=/Users/codymccomber/kali-2017.01-rpi2.img of=/dev/rdisk5 bs=512k
+network={
+    ssid="testing"
+    psk="Password"
+}
 ```
-	Ctl + t to check the status
-	"rdisk" is much faster than just "disk" - it doesn’t buffer
-	
-	sudo dd if=/Users/codymccomber/Downloads/2017-07-05-raspbian-jessie-lite.img of=/dev/rdisk2 bs=512k
+Then `sudo reboot'
+
+#### Instal tools:
+- `sudo apt-get install git`
+- `sudo apt-get install Pure-FTPd`
+
+
+
 
 
 
