@@ -6,7 +6,8 @@
 - Add type of leds
 - add power info 
 - Add links to all software
-
+- Upload fadecandy config
+- Spell check this document
 
 ## Description:
 #### Software:
@@ -40,7 +41,7 @@ Ctl + t to check the status
 - Enable autologin
 - Change password
 - Change hostname (piledwall)
-- Enable SSH
+- Enable SSH (if you don't know how to secure SSH, you should google a tutorial)
 
 #### Set up wifi via command line:
 `sudo nano /etc/wpa_supplicant/wpa_supplicant.conf`
@@ -52,11 +53,73 @@ network={
     psk="Password"
 }
 ```
-Then `sudo reboot'
+Then `sudo reboot`
 
 #### Instal tools:
 - `sudo apt-get install git`
-- `sudo apt-get install Pure-FTPd`
+- `sudo apt-get install Pure-FTPd` (This will work as is, but you probably should google how to secure it)
+
+#### Install fadecandy server:
+`git clone https://github.com/scanlime/fadecandy.git`
+- We should put this into the same folder as the rest of our project, so that it will work with the launch scripts later
+- Also don't forget to add the fcserver15x9.json to the bin folder
+
+#### Install Python libraries:
+##### Tools:
+```
+sudo apt-get install python-setuptools
+sudo apt-get install python-pip
+sudo apt-get install python-dev
+```
+##### Modules:
+```
+sudo apt-get install python-pyaudio
+```
+```
+sudo apt-get install aubio-tools libaubio-dev libaubio-doc
+```
+```
+python -m pip install aubio
+```
+	
+	
+```
+git clone https://github.com/ptone/pyosc.git
+sudo ./setup.py install
+```
+
+**If installing on a Mac use these instead:**
+```
+sudo easy_install aubio
+sudo easy_install pyaudio
+```
+
+#### Audio:
+Change the following two lines in /usr/share/alsa/alsa.conf
+```		
+defaults.ctl.card 0
+defaults.pcm.card 0
+```	
+use `sudo nano /usr/share/alsa/alsa.conf`
+```  
+defaults.ctl.card 1
+defaults.pcm.card 1
+```		
+
+Create or edit the file `/etc/modprobe.d/alsa-base.conf` and add the following 
+```		
+pcm.!default {
+    type hw
+    card 1
+}
+ctl.!default {
+    type hw
+    card 1
+}
+```
+		
+
+
 
 
 
