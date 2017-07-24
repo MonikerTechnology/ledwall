@@ -1,2 +1,1 @@
-# ledwall
-My 15x9 LED wall
+#15 x 9 LED art
