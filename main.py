@@ -115,7 +115,7 @@ parser.add_option('-l', '--layout', dest='layout', default='ledwall15x9.json',
 parser.add_option('-s', '--server', dest='server', default='piledwall:7890',
                     action='store', type='string',
                     help='ip and port of server')
-parser.add_option('-f', '--fps', dest='fps', default=20,
+parser.add_option('-f', '--fps', dest='fps', default=30,
                     action='store', type='int',
                     help='frames per second')
 
@@ -163,6 +163,48 @@ print
 
 
 def music(t, coord, ii, n_pixels):
+
+    # this was inside the color finciton
+    x, y, z = coord
+    r,g,b = 0,0,0
+
+    #Z line
+    if (r,g,b) == (0,0,0):
+        r,g,b = draw.lineX(linePos,x,z,(x*17,pitchColor,150),mod)
+    #Z line
+    if (r,g,b) == (0,0,0):
+        r,g,b = draw.lineX(linePos+4,x,z,(0,pitchColor*.6,0),mod)
+        if (r,g,b) != (0,0,0):
+            b = color_utils.cos(1, offset=t / 10, period=10, minn=0, maxx=1)
+            r = color_utils.cos(5, offset=t / 4, period=2, minn=0, maxx=1)
+            b = 150
+            r = (x * 15) * r
+
+    #Bass booms
+    count = 0
+    while count < 8:
+        if (r,g,b) == (0,0,0):
+            r,g,b = draw.boom(centerX[count],centerZ[count], x, z,color[count],pos[count])
+        count += 1
+
+    #color the rest
+    if (r,g,b) == (0,0,0):
+        b = color_utils.cos(1, offset=t / 10, period=10, minn=0, maxx=1)
+        b = b * pitchColor / 7
+
+
+
+    r = int(r)
+    g = int(g)
+    b = int(b)
+    r /= 256
+    g /= 256
+    b /= 256
+
+
+    return (r*redOSC, g*greenOSC, b*blueOSC)
+
+def musicv2(t, coord, ii, n_pixels):
 
     # this was inside the color finciton
     x, y, z = coord
@@ -395,13 +437,15 @@ pitchMax = 1000
 pitchMin = 50
 volumeMax = 50
 volumeMin = 10
-loopCount = 0
+loopCount = 0 # to track FPS
 countByTwo = 0
 pitchDelay = 1 #sets a delay so the pitch color doesnt flicker
 pitchColor = 1
-
-
 count = 0
+
+# fps counter
+oneSec = 0
+sleepFPS = .03
 
 def scale(val, src, dst):
     """
@@ -418,6 +462,28 @@ while run_main == True:
     t = time.time() - start_time
     colorOSC = touchOSC.faderRedData*touchOSC.brightnessData, touchOSC.faderGreenData*touchOSC.brightnessData, touchOSC.faderBlueData*touchOSC.brightnessData
     redOSC,greenOSC,blueOSC = colorOSC
+
+    #print ("Loops per sec: %i ") % int(loopCount / t)
+    #print loopCount
+    #print t
+
+    # this tracks the FPS and adjusts the delay to keep it consistant.
+    loopCount += 1
+    if oneSec < t:
+        oneSec += 1
+        trueFPS = loopCount
+        # print options.fps
+        # print ("Loops per sec: %i") % loopCount
+        # print
+        if trueFPS < options.fps - 1:
+            sleepFPS *= .95
+        elif trueFPS > options.fps + 1:
+            sleepFPS *= 1.05
+        loopCount = 0
+    time.sleep(sleepFPS)
+
+
+
 
 
 
@@ -540,7 +606,7 @@ while run_main == True:
         # print ("Loops per sec: %i ") % int(loopCount / t)
         # print
 
-        loopCount += 1
+
 
         pixels = [music(t, coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]
         client.put_pixels(pixels, channel=0)
@@ -553,13 +619,135 @@ while run_main == True:
     elif touchOSC.mode31 == 1 or mode31 == 1:
         pixels = [rainbow(t*scale(touchOSC.speedData,(1,100),(.05,2)), coord, ii, n_pixels, random_values) for ii, coord in enumerate(coordinates)]
         client.put_pixels(pixels, channel=0)
-        time.sleep(1 / options.fps)
+        # time.sleep(1 / options.fps)
     elif touchOSC.mode41 == 1:
         pixels = [spatial_stripes(t*scale(touchOSC.speedData,(1,100),(.05,2)), coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]
         client.put_pixels(pixels, channel=0)
-        time.sleep(1 / options.fps)
+        # time.sleep(1 / options.fps)
     elif touchOSC.mode71 == 1:
         doNothing = 0
+    elif touchOSC.mode51 == 1: # React to music
+
+        # pull the values in
+        pitch = audio.pitch
+        volume = float(audio.volume) * 50000
+
+
+        #count += 1
+
+        # this is for the bass booms
+        speed = .005 * touchOSC.speedData
+        if doBoom[i] == 1:
+            i += 1
+            if i == 8:
+                i = 0
+
+        delay += 1 #keeps from doing too many booms on the same note
+
+        tolerance = pitchMin * 4
+        # if (pitch < tolerance and volume > volumeMin * 1.00) and pitch > 0 and doBoom[i] == 0 and delay > 50:
+        if pitch < tolerance and pitch > 0 and doBoom[i] == 0 and volume > (volumeMin * 1.5) and delay > 5:
+            delay = 0
+            doBoom[i] = 1 # sets this as an active boom
+            centerX[i] = randint(0, 14)
+            centerZ[i] =  draw.inverse(int(scale(pitch,(10,int(tolerance)),(0,3))))
+            color[i] = randint(50, 250),randint(50, 250),randint(100, 256)
+        count = 0
+        while count < 8: # rotats through all active booms and increases the step
+            if pos[count] <= 6.0 and doBoom[count] == 1:
+                pos[count] += scale(touchOSC.speedData,(1,100),(.005,.5))
+            else:
+                pos[count] = 0
+                doBoom[count] = 0
+            count += 1 # keep track of the
+
+
+
+        # pitch color and Z axis line
+        pitchDelay -= 1 # sets a delay so the pitch color doesnt flicker
+        if pitchDelay == 0:
+            pitchColor = int(draw.scale(pitch,(pitchMin,pitchMax+1),(50,225)))
+            if volume > volumeMax * .8:
+                linePos = 0
+                mod = 0
+            elif volume > volumeMax * .7:
+                linePos = 0
+                mod = 1
+            elif volume > volumeMax * .6:
+                linePos = 1
+                mod = 0
+            elif volume > volumeMax * .5:
+                linePos = 1
+                mod = 1
+            elif volume > volumeMax * .3:
+                linePos = 2
+                mod = 1
+            elif volume > volumeMax * .2:
+                linePos = 3
+                mod = 0
+            elif volume > volumeMax * .1:
+                linePos = 3
+                mod = 1
+            else:
+                linePos = 4
+                mod = 0
+            pitchDelay = 2
+
+        # print ("volume: %f") % volume
+        # print ("pitch %f ")% pitch
+
+
+
+
+        #Dynamically keep track of the min and max pitch
+        if pitch > pitchMax:
+            pitchMax = pitch
+        if pitch < pitchMin and pitch > 20:
+            pitchMin = pitch
+        #Dynamically keep track of the min and max volume
+        if volume > volumeMax:
+            volumeMax = volume
+        if volume < volumeMin and volume > 2.5:
+            volumeMin = volume
+
+        #every 2 seconds try to move the pitch and volume in
+        if countByTwo < t and volumeMin * 1.5 < volumeMax:
+            volumeMax *= .9
+            volumeMin *= 1.1
+        if countByTwo < t and pitchMin * 1.5 < pitchMax:
+            pitchMax *= .9
+            pitchMin *= 1.1
+        if countByTwo < t:
+            countByTwo += 2
+
+            # print
+            # print ("pitchMax: %f ")% pitchMax
+            # print ("pitchMin: %f ")% pitchMin
+            # print ("volumeMax: %f ")% volumeMax
+            # print ("volumeMin: %f ")% volumeMin
+            # print
+
+        #print volume
+        # print "pitch color: %i" % pitchColor
+        print ("pitch: %f ")% pitch
+        print ("pitchMax: %f ")% pitchMax
+        print ("pitchMin: %f ")% pitchMin
+        print tolerance
+        print ("volumeMax: %f ")% volumeMax
+        print ("volumeMin: %f ")% volumeMin
+        print ("volume %f") % volume
+        print delay
+        print
+        # print ("time: %f") % t
+        # print ("count by two: %i") % countByTwo
+        # print loopCount
+        # print ("Loops per sec: %i ") % int(loopCount / t)
+        # print
+
+
+
+        pixels = [musicv2(t, coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]
+        client.put_pixels(pixels, channel=0)
     else:
         pixels = [pixel_color(t, coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]
         client.put_pixels(pixels, channel=0)
@@ -579,5 +767,5 @@ while run_main == True:
     audio.run = run_audio
     touchOSC.run = run_touchOSC
 
-    #time.sleep(1 / options.fps)
+    # time.sleep(1 / options.fps)
     #time.sleep(.01)
