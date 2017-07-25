@@ -10,12 +10,12 @@
 - Spell check this document
 
 ## Description:
-#### Software:
+### Software:
 This is the software for my 15 x 9 LED wall. Anyone is welcome to use this software, however I am creating this github page as a repository for me to work out of for this project and to come back to the software should my Raspberry Pi have a major malfunction. Over time I hope to add some pictures and videos, as well as clean up the code. I have addapted bits and peices of the code from other people and I have tried to give credit as best I can remember, if you see some of your code here please let me know because I would love to give you credit for it. 
 
 The project is centered around the main.py python script. It uses the Open Pixel Connection (OPC) library to talk to the fadecandy server. The main.py also calls up an Open Sound Control (OSC) server to listen to commands sent from the touchOSC iphone app.
 
-#### Hardware:
+### Hardware:
 This matrix is composed of three strings of 45 LEDs each, each zigzaged into 3 rows of 15. The each pixel was hand soldered to create a 4 inch space between each LED. The three strings are connected to a fadecandy board, and then to a Raspberry Pi. There is also a USB mic for capturing audo for live music interaction. 
 
 
@@ -23,7 +23,7 @@ This matrix is composed of three strings of 45 LEDs each, each zigzaged into 3 r
 Remember how to do this in case of a pi faliure or you have to reproduce this in the future. 
 
 
-#### Create bootable SD for the Pi
+### Create bootable SD for the Pi:
 I used the minimal image as it doesn't have a Graphical User Interface (gui) or extras and I figured it should be faster. 
 
 This is on a mac: 
@@ -36,14 +36,14 @@ Ctl + t to check the status
 
 "rdisk" is much faster than just "disk" - it doesn’t buffer
 
-#### Change Raspberry Pi configuration:
+### Change Raspberry Pi configuration:
 `sudo raspi-config`
 - Enable autologin
 - Change password
 - Change hostname (piledwall)
 - Enable SSH (if you don't know how to secure SSH, you should google a tutorial)
 
-#### Set up wifi via command line:
+### Set up wifi via command line:
 `sudo nano /etc/wpa_supplicant/wpa_supplicant.conf`
 
 Add the following to the bottom of the file replacing "testing" and "password" with your SSID and WIFI password. (keep the quotes e.g. ssid="myNetwork"
@@ -55,23 +55,23 @@ network={
 ```
 Then `sudo reboot`
 
-#### Instal tools:
+### Instal tools:
 - `sudo apt-get install git`
 - `sudo apt-get install Pure-FTPd` (This will work as is, but you probably should google how to secure it)
 
-#### Install fadecandy server:
+### Install fadecandy server:
 `git clone https://github.com/scanlime/fadecandy.git`
 - We should put this into the same folder as the rest of our project, so that it will work with the launch scripts later
 - Also don't forget to add the fcserver15x9.json to the bin folder
 
-#### Install Python libraries:
+### Install Python libraries:
 ##### Tools:
 ```
 sudo apt-get install python-setuptools
 sudo apt-get install python-pip
 sudo apt-get install python-dev
 ```
-##### Modules:
+#### Modules:
 ```
 sudo apt-get install python-pyaudio
 ```
@@ -94,7 +94,7 @@ sudo easy_install aubio
 sudo easy_install pyaudio
 ```
 
-#### Audio:
+### Audio:
 Change the following two lines in /usr/share/alsa/alsa.conf
 ```		
 defaults.ctl.card 0
@@ -117,7 +117,47 @@ ctl.!default {
     card 1
 }
 ```
-		
+
+### Create systemd service:
+I am no expert here, but this is what I pulled together and it works great. It starts up on boot, and can easily be killed.(Using ctr-c doesn't work here becasue the program starts a few threads.  
+`pi@piledwall:~ $ sudo nano /etc/systemd/system/ledwall.service`
+```
+	[Unit]
+	Description=Power-On-LEDwall
+	
+	[Service]
+	Type=forking
+	ExecStart=/usr/bin/ledwall.sh
+	
+	
+	[Install]
+	WantedBy=multi-user.target
+```
+The ExecStart path will point to the script that will start the fadecandy server and main.py
+- Here are some example commands 
+```
+	sudo systemctl status -l ledwall
+	sudo systemctl enable ledwall
+	sudo systemctl stop ledwall
+	sudo systemctl start ledwall
+```
+Then create the scrip. Note that there a few file pathes that may need to be updated to fit your situation.
+`pi@piledwall:~ $ sudo nano /usr/bin/ledwall.sh`
+```
+#!/bin/sh
+sleep 10
+echo "Starting Fadecandy Server..."
+sudo /home/pi/project/fadecandy/bin/fcserver-rpi /home/pi/project/fadecandy/bin/fcserver_config.json &
+#&>> /home/pi/project/log.txt &
+echo "Fadecandy started"
+echo ""
+echo "Starting python..."
+echo "changing directory to ...projects"
+cd /home/pi/project/
+sudo /usr/bin/python /home/pi/project/main.py --layout=/home/pi/project/ledwall15x9.json &
+#&>> /home/pi/project/log.txt &
+echo "Python started"
+```
 
 
 
