@@ -88,6 +88,12 @@ def restartPython():
     client.put_pixels(pixels, channel=0)
     os.system("sudo systemctl restart ledwall.service")
 
+def scale(val, src, dst):
+    """
+    Scale the given value from the scale of src to the scale of dst.
+    """
+    return ((val - src[0]) / (src[1]-src[0])) * (dst[1]-dst[0]) + dst[0]
+
 
 #t1 = thread.start_new_thread(checkServer, ())
     #print t1.isAlive()
@@ -437,36 +443,29 @@ pitchMax = 1000
 pitchMin = 50
 volumeMax = 50
 volumeMin = 10
-loopCount = 0 # to track FPS
+
 countByTwo = 0
 pitchDelay = 1 #sets a delay so the pitch color doesnt flicker
 pitchColor = 1
 count = 0
 
 # fps counter
-oneSec = 0
-sleepFPS = .03
+oneSec = 0 # moves every second
+sleepFPS = .03 # Guess!
+loopCount = 0 # to track FPS
 
-def scale(val, src, dst):
-    """
-    Scale the given value from the scale of src to the scale of dst.
-    """
-    return ((val - src[0]) / (src[1]-src[0])) * (dst[1]-dst[0]) + dst[0]
+
 
 random_values = [random.random() for ii in range(n_pixels)]
-#touchOSC.mode11 = 1
 while run_main == True:
 
     # set looping variables
+    t = time.time() - start_time # keep track of how long the program has been running
+    colorOSC = touchOSC.faderRedData*touchOSC.brightnessData, touchOSC.faderGreenData*touchOSC.brightnessData, touchOSC.faderBlueData*touchOSC.brightnessData # RGB tuple 0-256
+    redOSC,greenOSC,blueOSC = colorOSC # RGB 0-256
 
-    t = time.time() - start_time
-    colorOSC = touchOSC.faderRedData*touchOSC.brightnessData, touchOSC.faderGreenData*touchOSC.brightnessData, touchOSC.faderBlueData*touchOSC.brightnessData
-    redOSC,greenOSC,blueOSC = colorOSC
 
-    #print ("Loops per sec: %i ") % int(loopCount / t)
-    #print loopCount
-    #print t
-
+    #----------------------------------------------
     # this tracks the FPS and adjusts the delay to keep it consistant.
     loopCount += 1
     if oneSec < t:
@@ -481,6 +480,8 @@ while run_main == True:
             sleepFPS *= 1.05
         loopCount = 0
     time.sleep(sleepFPS)
+    # End FPS tracker
+    #----------------------------------------------
 
 
 
@@ -488,11 +489,8 @@ while run_main == True:
 
 
 
-    mode11 = 0 #audio
-    mode21 = 0 #draw circle
-    mode31 = 0 #lava lamp
     # call the function and draw the pixels
-    if touchOSC.mode11 == 1 or mode11 == 1: # React to music
+    if touchOSC.mode11 == 1: # React to music
 
         # pull the values in
         pitch = audio.pitch
@@ -615,18 +613,18 @@ while run_main == True:
         touchOSC.padYData
         padYData = scale(touchOSC.padYData,(0,14),(0,8))
         pixels = [control_circle(t, coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]
-        client.put_pixels(pixels, channel=0)
-    elif touchOSC.mode31 == 1 or mode31 == 1:
+        client.put_pixels(pixels, channel=0) # Draw circle
+    elif touchOSC.mode31 == 1:
         pixels = [rainbow(t*scale(touchOSC.speedData,(1,100),(.05,2)), coord, ii, n_pixels, random_values) for ii, coord in enumerate(coordinates)]
         client.put_pixels(pixels, channel=0)
-        # time.sleep(1 / options.fps)
+        # time.sleep(1 / options.fps) # ranbow (lava lamp)
     elif touchOSC.mode41 == 1:
         pixels = [spatial_stripes(t*scale(touchOSC.speedData,(1,100),(.05,2)), coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]
         client.put_pixels(pixels, channel=0)
-        # time.sleep(1 / options.fps)
+        # time.sleep(1 / options.fps) # spatial_stripes
     elif touchOSC.mode71 == 1:
         doNothing = 0
-    elif touchOSC.mode51 == 1: # React to music
+    elif touchOSC.mode51 == 1: # React to musicv2
 
         # pull the values in
         pitch = audio.pitch
@@ -755,7 +753,6 @@ while run_main == True:
 
     if touchOSC.kill == 1:
         killSwitch()
-
     if touchOSC.system11 == 1:
         restartPython()
     elif touchOSC.system21 == 1:
@@ -766,6 +763,3 @@ while run_main == True:
         shutdownPi()
     audio.run = run_audio
     touchOSC.run = run_touchOSC
-
-    # time.sleep(1 / options.fps)
-    #time.sleep(.01)
