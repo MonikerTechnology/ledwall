@@ -46,7 +46,7 @@ run = True # Used to kill the main loop, ending the program
 
 
 
-server = OSCServer( ("10.0.0.191", 8000) )#This has to be the IP of the RaspberryPi on the network
+server = OSCServer( ("10.0.0.234", 8000) )#This has to be the IP of the RaspberryPi on the network
 client = OSCClient()
 
 def handle_timeout(self):
@@ -158,25 +158,25 @@ def mode71(path, tags, args, source):
 	print "Mode 7: ", state;
 
 # To control kill, restart, shutdown
-def system11(path, tags, args, source): # Kill python
+def system11(path, tags, args, source): # Restart Python
 	state=int(args[0])
 	global system11
 	system11 = state
 	print "System11: ", state;
 
-def system21(path, tags, args, source): # Restart RaspberryPi
+def system21(path, tags, args, source): # Kill python
 	state=int(args[0])
 	global system21
 	system21 = state
 	print "System21: ", state;
 
-def system31(path, tags, args, source): # shutdown RaspberryPi
+def system31(path, tags, args, source): # Restart RaspberryPi
 	state=int(args[0])
 	global system31
 	system31 = state
 	print "System31: ", state;
 
-def system41(path, tags, args, source): # Nothing yet
+def system41(path, tags, args, source): # shutdown RaspberryPi
 	state=int(args[0])
 	global system41
 	system41 = state

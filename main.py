@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 
-
-
 from __future__ import division
 import time
 import sys
@@ -11,7 +9,6 @@ import random
 import os
 
 # My custom
-
 from func import draw
 import touchOSC
 import audio
@@ -31,12 +28,10 @@ except ImportError:
 import opc
 import color_utils
 
-
-
 #for the live audio
-import aubio
-import numpy as num
-import pyaudio
+#import aubio
+#import numpy as num
+#import pyaudio
 import time
 
 
@@ -49,7 +44,7 @@ run_touchOSC = True
 run_check_touchOSC = True
 run_main = True
 
-# Checks the touchOSC server for input
+# Checks the touchOSC server for input, launch via thread
 def check_touchOSC():
     global run_check_touchOSC
     while run_check_touchOSC == True:
@@ -57,7 +52,7 @@ def check_touchOSC():
     touchOSC.server.close()
     return ()
 
-# Starts listening
+# Starts listening, launch via thread
 def startListening():
     audio.startAudio()
     return ()
@@ -87,7 +82,11 @@ def killSwitch():
     return ()
 
 def restartPi():
-    os.system("sudo restart now")
+    os.system("sudo shutdown -r now")
+def shutdownPi():
+    os.system("sudo shutdown now")
+def restartPython():
+    os.system("sudo systemctl restart ledwall.service")
 
 
 #t1 = thread.start_new_thread(checkServer, ())
@@ -96,18 +95,13 @@ def restartPi():
 # Set up
 t_check_touchOSC = threading.Thread(target=check_touchOSC, args=())
 t_startListening = threading.Thread(target=startListening, args=())
-#t_killSwitch = threading.Thread(target=killSwitch, args=())
 
 # start
 t_check_touchOSC.start()
 t_startListening.start()
-#t_killSwitch.start()
+
+
 time.sleep(1)
-# Clear up input after: end = raw_input("Press q to quit ")
-print ""
-print ""
-print ""
-print ""
 
 
 
@@ -531,15 +525,15 @@ while run_main == True:
 
         #print volume
         # print "pitch color: %i" % pitchColor
-        print ("pitch: %f ")% pitch
-        print ("pitchMax: %f ")% pitchMax
-        print ("pitchMin: %f ")% pitchMin
-        print tolerance
-        print ("volumeMax: %f ")% volumeMax
-        print ("volumeMin: %f ")% volumeMin
-        print ("volume %f") % volume
-        print delay
-        print
+        # print ("pitch: %f ")% pitch
+        # print ("pitchMax: %f ")% pitchMax
+        # print ("pitchMin: %f ")% pitchMin
+        # print tolerance
+        # print ("volumeMax: %f ")% volumeMax
+        # print ("volumeMin: %f ")% volumeMin
+        # print ("volume %f") % volume
+        # print delay
+        # print
         # print ("time: %f") % t
         # print ("count by two: %i") % countByTwo
         # print loopCount
@@ -575,9 +569,13 @@ while run_main == True:
         killSwitch()
 
     if touchOSC.system11 == 1:
-        killSwitch()
+        restartPython()
     elif touchOSC.system21 == 1:
+        killSwitch()
+    elif touchOSC.system31 == 1:
         restartPi()
+    elif touchOSC.system41 == 1:
+        shutdownPi()
     audio.run = run_audio
     touchOSC.run = run_touchOSC
 

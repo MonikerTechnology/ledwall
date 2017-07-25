@@ -91,11 +91,11 @@ def startAudio():
 
         if runTime + 5 > fiveSec:
             fiveSec += 5
-            print
-            print ("Run time (m) %f ") % (runTime / 60)
-            print ("Volume: %f") % volume 
-            print ("Pitch: %f") % pitch
-            print
+            # print
+            # print ("Run time (m) %f ") % (runTime / 60)
+            # print ("Volume: %f") % volume
+            # print ("Pitch: %f") % pitch
+            # print
 
 
 
