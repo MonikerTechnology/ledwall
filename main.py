@@ -12,6 +12,8 @@ import os
 from func import draw
 import touchOSC
 import audio
+import opc
+import color_utils
 
 #
 import thread
@@ -25,8 +27,7 @@ try:
 except ImportError:
     import simplejson as json
 
-import opc
-import color_utils
+
 
 #for the live audio
 #import aubio
@@ -63,18 +64,11 @@ def killSwitch():
     global run_audio
     global run_check_touchOSC
     global run_main
-    #while end == "run" and touchOSC.kill == 0:
-        #pizza = 1
-
-        #end = raw_input("Press enter to quit")
     run_audio = False
     run_check_touchOSC = False
     #sudo kill $(ps aux | grep 'fadecandy' | awk '{print $2}')
     #sudo kill $(ps aux | grep 'main.py' | awk '{print $2}')
     time.sleep(.5)
-    print
-    print
-    print "Quiting..."
     run_main = False
     pixels = [(0,0,0) for ii, coord in enumerate(coordinates)]
     client.put_pixels(pixels, channel=0)
@@ -82,10 +76,16 @@ def killSwitch():
     return ()
 
 def restartPi():
+    pixels = [(0,0,0) for ii, coord in enumerate(coordinates)]
+    client.put_pixels(pixels, channel=0)
     os.system("sudo shutdown -r now")
 def shutdownPi():
+    pixels = [(0,0,0) for ii, coord in enumerate(coordinates)]
+    client.put_pixels(pixels, channel=0)
     os.system("sudo shutdown now")
 def restartPython():
+    pixels = [(0,0,0) for ii, coord in enumerate(coordinates)]
+    client.put_pixels(pixels, channel=0)
     os.system("sudo systemctl restart ledwall.service")
 
 
