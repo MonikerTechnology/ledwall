@@ -5,10 +5,15 @@ import time
 import types
 import os
 #import RPi.GPIO as GPIO
+
+# credit to the this program goes to Grege0reo on instructables. I've just adapted it for my needs.
+
+# these will get * by brightnessData in main.py
 faderRedData = 1
 faderGreenData = 1
 faderBlueData = 1
 
+# The main display modes modes (change to a list?)
 mode11 = 0
 mode21 = 0
 mode31 = 0
@@ -19,21 +24,27 @@ mode71 = 0
 
 kill = 0
 
+# Buttons to perfor system functions
+system11 = 0 # Kill python
+system21 = 0 # Restart Pi
+system31 = 0 # shutdown Pi
+system41 = 0
+
 brightnessData = 256
 speedData = 40
 
-touchPixel = [0] * 135
+
 
 control = 0
 
 padXData = 0
 padYData = 0
 
-run = True
+run = True # Used to kill the main loop, ending the program
 
 
 
-# credit to the this program goes to Grege0reo on instructables. I've just adapted it for my needs.
+
 
 server = OSCServer( ("10.0.0.191", 8000) )#This has to be the IP of the RaspberryPi on the network
 client = OSCClient()
@@ -48,20 +59,20 @@ server.handle_timeout = types.MethodType(handle_timeout, server)
 def faderRed(path, tags, args, source):
 	value=int(args[0])#Value is the variable that will transform the input from the faders into whole numbers(easier to deal with); it will also get the 'y' value of the XP pads
 	global faderRedData
-	faderRedData = value * .01
+	faderRedData = value * .01 # * .01 so we can * by the brightness slider
 	print "FaderRed Value:", value
 
 
 def faderGreen(path, tags, args, source):
 	value=int(args[0])#Value is the variable that will transform the input from the faders into whole numbers(easier to deal with); it will also get the 'y' value of the XP pads
 	global faderGreenData
-	faderGreenData = value * .01
+	faderGreenData = value * .01 # * .01 so we can * by the brightness slider
 	print "FaderGreen Value:", value
 
 def faderBlue(path, tags, args, source):
 	value=int(args[0])#Value is the variable that will transform the input from the faders into whole numbers(easier to deal with); it will also get the 'y' value of the XP pads
 	global faderBlueData
-	faderBlueData = value * .01
+	faderBlueData = value * .01 # * .01 so we can * by the brightness slider
 	print "FaderBlue Value:", value
 
 def speed(path, tags, args, source):
@@ -103,11 +114,8 @@ def kill_switch(path, tags, args, source):
 	if state == 1:
 		server.close()#THIS IS THE EMERGENCY KILL BUTTON!
 
-def autopilot(path, tags, args, source):
-	state=int(args[0])
-	print "Autopilot: ", state;
-
-def mode11(path, tags, args, source):
+# mode buttons for the main functions e.g. music, draw, lava
+def mode11(path, tags, args, source): # music
 	state=int(args[0])
 	global mode11
 	mode11 = state
@@ -149,12 +157,39 @@ def mode71(path, tags, args, source):
 	mode71 = state
 	print "Mode 7: ", state;
 
+# To control kill, restart, shutdown
+def system11(path, tags, args, source): # Kill python
+	state=int(args[0])
+	global system11
+	system11 = state
+	print "System11: ", state;
+
+def system21(path, tags, args, source): # Restart RaspberryPi
+	state=int(args[0])
+	global system21
+	system21 = state
+	print "System21: ", state;
+
+def system31(path, tags, args, source): # shutdown RaspberryPi
+	state=int(args[0])
+	global system31
+	system31 = state
+	print "System31: ", state;
+
+def system41(path, tags, args, source): # Nothing yet
+	state=int(args[0])
+	global system41
+	system41 = state
+	print "System41: ", state;
+
+# old python kill switch
 def kill(path, tags, args, source):
 	state=int(args[0])
 	global kill
 	kill = state
 	print "Kill: ", state;
 
+# unused
 def control(path, tags, args, source):
 	state=int(args[0])
 	global control
@@ -191,13 +226,16 @@ server.addMsgHandler("/mode/5/1", mode51)
 server.addMsgHandler("/mode/6/1", mode61)
 server.addMsgHandler("/mode/7/1", mode71)
 server.addMsgHandler("/kill", kill)
+server.addMsgHandler("/system/1/1", system11)
+server.addMsgHandler("/system/2/1", system21)
+server.addMsgHandler("/system/3/1", system31)
+server.addMsgHandler("/system/4/1", system41)
 server.addMsgHandler("/control", control)
 server.addMsgHandler("/speed", speed)
 server.addMsgHandler("/brightness", brightness)
 server.addMsgHandler("/pad", pad)
 server.addMsgHandler("/1/xy1", xypad)
 server.addMsgHandler("/1/toggle1", kill_switch)
-server.addMsgHandler("/toggle1/toggle2", autopilot)
 server.addMsgHandler("accxyz", accel)#The Accelerometeer Values
 #The way that the MSG Handlers work is by taking the values from set accessory, then it puts them into a function
 #The function then takes the values and separates them according to their class (args, source, path, and tags)

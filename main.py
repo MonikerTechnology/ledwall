@@ -8,6 +8,7 @@ import sys
 import optparse
 from random import randint
 import random
+import os
 
 # My custom
 
@@ -37,23 +38,6 @@ import aubio
 import numpy as num
 import pyaudio
 import time
-
-
-
-
-touchOSC.faderRedData
-touchOSC.faderGreenData
-touchOSC.faderBlueData
-
-touchOSC.mode11
-touchOSC.mode21
-touchOSC.mode31
-touchOSC.mode41
-touchOSC.mode51
-touchOSC.mode61
-touchOSC.mode71
-
-touchOSC.control
 
 
 #-------------------------------------------------------------------------------
@@ -101,6 +85,9 @@ def killSwitch():
     client.put_pixels(pixels, channel=0)
     print
     return ()
+
+def restartPi():
+    os.system("sudo restart now")
 
 
 #t1 = thread.start_new_thread(checkServer, ())
@@ -586,6 +573,11 @@ while run_main == True:
 
     if touchOSC.kill == 1:
         killSwitch()
+
+    if touchOSC.system11 == 1:
+        killSwitch()
+    elif touchOSC.system21 == 1:
+        restartPi()
     audio.run = run_audio
     touchOSC.run = run_touchOSC
 
