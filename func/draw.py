@@ -1,3 +1,4 @@
+import color_utils
 #To use backAndForth
 #timer = 0
 #reset = 1 ## always start with 1
@@ -107,41 +108,46 @@ def circle(centerX,centerZ, x, z,color):
 #----------------------------------------------------------------
 #step 1 - 6
 
-def boom(centerX,centerZ, x, z,color,step):
+def boom(centerX,centerZ, x, z,color,step,total):
     coord = x,z
     center = centerX,centerZ
     r,g,b = 0,0,0
     #print "boom draw loop"
+    colorVar = scale(step,(0,total),(0,1))
+    
 
     if step == 0:
         return (r,g,b)
     elif step >= 1 and step < 2:
         if coord == center:
             r,g,b = color
+            r *= colorVar
+            g *= colorVar
+            b *= colorVar
     elif step >= 2 and step < 3:
         if (centerX == x or centerX + 1 == x or centerX - 1 == x) and (centerZ == z or centerZ + 1 == z or centerZ - 1 == z):
             r,g,b = color
-            r *= .9
-            g *= .9
-            b *= 1.1
+            r *= colorVar
+            g *= colorVar
+            b *= colorVar
     elif step >= 3 and step < 4:
         if (centerX == x or centerX + 1 == x or centerX - 1 == x or centerX + 2 == x or centerX - 2 == x) and (centerZ == z or centerZ + 1 == z or centerZ - 1 == z or centerZ + 2 == z or centerZ - 2 == z):
             r,g,b = color
-            r *= .7
-            g *= .7
-            b *= .8
+            r *= colorVar
+            g *= colorVar
+            b *= colorVar
     elif step >= 4 and step < 5:
         if (centerX == x or centerX + 1 == x or centerX - 1 == x or centerX + 2 == x or centerX - 2 == x or centerX + 3 == x or centerX - 3 == x) and (centerZ == z or centerZ + 1 == z or centerZ - 1 == z or centerZ + 2 == z or centerZ - 2 == z or centerZ + 3 == z or centerZ - 3 == z):
             r,g,b = color
-            r *= .6
-            g *= .5
-            b *= .7
+            r *= colorVar
+            g *= colorVar
+            b *= colorVar
     elif step >= 5 and step < 6:
         if (centerX == x or centerX + 1 == x or centerX - 1 == x or centerX + 2 == x or centerX - 2 == x or centerX + 3 == x or centerX - 3 == x or centerX + 4 == x or centerX - 4 == x) and (centerZ == z or centerZ + 1 == z or centerZ - 1 == z or centerZ + 2 == z or centerZ - 2 == z or centerZ + 3 == z or centerZ - 3 == z or centerZ + 4 == z or centerZ - 4 == z):
             r,g,b = color
-            r *= .4
-            g *= .3
-            b *= .4
+            r *= colorVar
+            g *= colorVar
+            b *= colorVar
 
     elif step >= 6:
         r,g,b = 0,0,0
@@ -200,6 +206,51 @@ def lineX(centerZ,x,z,color,mod):
         r,g,b = color
     elif z == centerZ and mod == 0:
         r,g,b = color
+
+
+    return(r,g,b)
+
+def volumeWave(centerZ,x,z,color,volume,volumeMin,volumeMax):
+    r,g,b = 0,0,0
+    x = float(x)
+    volumeScale = scale(volume, (volumeMin,volumeMax), (centerZ,5))
+
+
+    if z <= centerZ and volumeScale - 3 <= z:
+        r,g,b = color
+    if z <= centerZ and int(volumeScale - 1) == z:
+        var = volumeScale - int(volumeScale)
+        r *= scale(var,(0,1),(1,0))
+        g *= scale(var,(0,1),(1,0))
+        b *= scale(var,(0,1),(1,0))
+        if x % 2 != 0:
+            r *= .8
+            g *= .8
+            b *= .8
+
+    if z <= centerZ and int(volumeScale - 2) == z:
+        var = volumeScale - int(volumeScale)
+        r *= scale(var,(0,1),(.8,0))
+        g *= scale(var,(0,1),(.8,0))
+        b *= scale(var,(0,1),(.8,0))
+        if x % 2 != 0:
+            r *= .2
+            g *= .2
+            b *= .2
+
+    if z <= centerZ and int(volumeScale - 3) == z:
+        var = volumeScale - int(volumeScale)
+        r *= scale(var,(0,1),(.7,0))
+        g *= scale(var,(0,1),(.7,0))
+        b *= scale(var,(0,1),(.7,0))
+        if x % 2 != 0:
+            r *= .1
+            g *= .1
+            b *= .1
+
+
+
+
 
 
     return(r,g,b)

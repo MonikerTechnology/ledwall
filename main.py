@@ -190,7 +190,7 @@ def music(t, coord, ii, n_pixels):
     count = 0
     while count < 8:
         if (r,g,b) == (0,0,0):
-            r,g,b = draw.boom(centerX[count],centerZ[count], x, z,color[count],pos[count])
+            r,g,b = draw.boom(centerX[count],centerZ[count], x, z,color[count],pos[count],6)
         count += 1
 
     #color the rest
@@ -216,29 +216,44 @@ def musicv2(t, coord, ii, n_pixels):
     x, y, z = coord
     r,g,b = 0,0,0
 
-    #Z line
-    if (r,g,b) == (0,0,0):
-        r,g,b = draw.lineX(linePos,x,z,(x*17,pitchColor,150),mod)
-    #Z line
-    if (r,g,b) == (0,0,0):
-        r,g,b = draw.lineX(linePos+4,x,z,(0,pitchColor*.6,0),mod)
-        if (r,g,b) != (0,0,0):
-            b = color_utils.cos(1, offset=t / 10, period=10, minn=0, maxx=1)
-            r = color_utils.cos(5, offset=t / 4, period=2, minn=0, maxx=1)
-            b = 150
-            r = (x * 15) * r
+
 
     #Bass booms
     count = 0
     while count < 8:
         if (r,g,b) == (0,0,0):
-            r,g,b = draw.boom(centerX[count],centerZ[count], x, z,color[count],pos[count])
+            r,g,b = draw.boom(centerX[count],centerZ[count], x, z,color[count],pos[count],3)
         count += 1
 
-    #color the rest
+    pitchScale = scale (pitch,(pitchMin,pitchMax),(0,1))
+    pitchColorR = int(scale(pitch,(0,pitchMax+1),(100,256)))
+    pitchColorG = int(scale(pitch,(0,pitchMax+1),(50,256)))
+    pitchColorB = int(scale(pitch,(pitchMin,pitchMax+1),(256,50)))
+    pitchColor = pitchColorR, pitchColorG, pitchColorB
+
+    #Z line
+    waveSpeed = scale(touchOSC.speedData,(1,100),(1000,1))
     if (r,g,b) == (0,0,0):
-        b = color_utils.cos(1, offset=t / 10, period=10, minn=0, maxx=1)
-        b = b * pitchColor / 7
+        r,g,b = draw.volumeWave(9,x,z,pitchColor,volume,volumeMin,volumeMax)
+        b *= color_utils.cos(x, offset=t / waveSpeed * 3, period=20, minn=0, maxx=1)
+        r *= color_utils.cos(x, offset=t / waveSpeed * 7, period=30, minn=0, maxx=1)
+        #g *= color_utils.cos(x, offset=t / waveSpeed, period=25, minn=0, maxx=1)
+
+    if (r,g,b) == (0,0,0):
+        # Scale the x and z to match the original map file wall.json
+        x = scale(x, (0,14), (-0.7,0.7))
+        z = scale(z, (0,8), (-0.4,0.4))
+        # make x, y, z -> r, g, b sine waves
+        r = color_utils.cos(x, offset=t / 4, period=2, minn=0, maxx=1) * 25
+        g = color_utils.cos(y, offset=t / 4, period=2, minn=0, maxx=1) * 25
+        b = color_utils.cos(z, offset=t / 4, period=2, minn=0, maxx=1) * 25
+        r, g, b = color_utils.contrast((r, g, b), 0.5, 1.5)
+
+
+    #color the rest
+    # if (r,g,b) == (0,0,0):
+    #     b = color_utils.cos(1, offset=t / 10, period=10, minn=0, maxx=1)
+    #     b = b * pitchColor / 7
 
 
 
@@ -464,6 +479,12 @@ while run_main == True:
     colorOSC = touchOSC.faderRedData*touchOSC.brightnessData, touchOSC.faderGreenData*touchOSC.brightnessData, touchOSC.faderBlueData*touchOSC.brightnessData # RGB tuple 0-256
     redOSC,greenOSC,blueOSC = colorOSC # RGB 0-256
 
+    print
+    print
+    print "offset"
+    print t / 10
+    print
+    print
 
     #----------------------------------------------
     # this tracks the FPS and adjusts the delay to keep it consistant.
@@ -634,7 +655,7 @@ while run_main == True:
         #count += 1
 
         # this is for the bass booms
-        speed = .005 * touchOSC.speedData
+        speed = touchOSC.speedData
         if doBoom[i] == 1:
             i += 1
             if i == 8:
@@ -642,57 +663,23 @@ while run_main == True:
 
         delay += 1 #keeps from doing too many booms on the same note
 
-        tolerance = pitchMin * 4
+        #tolerance = pitchMin * 4 # this was decent
+        tolerance = 150
         # if (pitch < tolerance and volume > volumeMin * 1.00) and pitch > 0 and doBoom[i] == 0 and delay > 50:
         if pitch < tolerance and pitch > 0 and doBoom[i] == 0 and volume > (volumeMin * 1.5) and delay > 5:
             delay = 0
             doBoom[i] = 1 # sets this as an active boom
             centerX[i] = randint(0, 14)
-            centerZ[i] =  draw.inverse(int(scale(pitch,(10,int(tolerance)),(0,3))))
+            centerZ[i] =  int(scale(pitch,(10,int(tolerance)),(0,3)))
             color[i] = randint(50, 250),randint(50, 250),randint(100, 256)
         count = 0
         while count < 8: # rotats through all active booms and increases the step
-            if pos[count] <= 6.0 and doBoom[count] == 1:
-                pos[count] += scale(touchOSC.speedData,(1,100),(.005,.5))
+            if pos[count] <= 3.9 and doBoom[count] == 1:
+                pos[count] += scale(touchOSC.speedData,(1,100),(.1,1))
             else:
                 pos[count] = 0
                 doBoom[count] = 0
             count += 1 # keep track of the
-
-
-
-        # pitch color and Z axis line
-        pitchDelay -= 1 # sets a delay so the pitch color doesnt flicker
-        if pitchDelay == 0:
-            pitchColor = int(draw.scale(pitch,(pitchMin,pitchMax+1),(50,225)))
-            if volume > volumeMax * .8:
-                linePos = 0
-                mod = 0
-            elif volume > volumeMax * .7:
-                linePos = 0
-                mod = 1
-            elif volume > volumeMax * .6:
-                linePos = 1
-                mod = 0
-            elif volume > volumeMax * .5:
-                linePos = 1
-                mod = 1
-            elif volume > volumeMax * .3:
-                linePos = 2
-                mod = 1
-            elif volume > volumeMax * .2:
-                linePos = 3
-                mod = 0
-            elif volume > volumeMax * .1:
-                linePos = 3
-                mod = 1
-            else:
-                linePos = 4
-                mod = 0
-            pitchDelay = 2
-
-        # print ("volume: %f") % volume
-        # print ("pitch %f ")% pitch
 
 
 
@@ -718,12 +705,6 @@ while run_main == True:
         if countByTwo < t:
             countByTwo += 2
 
-            # print
-            # print ("pitchMax: %f ")% pitchMax
-            # print ("pitchMin: %f ")% pitchMin
-            # print ("volumeMax: %f ")% volumeMax
-            # print ("volumeMin: %f ")% volumeMin
-            # print
 
         #print volume
         # print "pitch color: %i" % pitchColor
@@ -741,9 +722,9 @@ while run_main == True:
         # print loopCount
         # print ("Loops per sec: %i ") % int(loopCount / t)
         # print
-
-
-
+        print
+        print scale(volume, (volumeMin,volumeMax), (9,0))
+        print
         pixels = [musicv2(t, coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]
         client.put_pixels(pixels, channel=0)
     else:

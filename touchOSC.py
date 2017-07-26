@@ -10,7 +10,7 @@ import os
 
 # these will get * by brightnessData in main.py
 faderRedData = 1
-faderGreenData = 1
+faderGreenData = .5
 faderBlueData = 1
 
 # The main display modes modes (change to a list?)
@@ -30,8 +30,8 @@ system21 = 0 # Restart Pi
 system31 = 0 # shutdown Pi
 system41 = 0
 
-brightnessData = 256
-speedData = 40
+brightnessData = 200
+speedData = 50
 
 
 
@@ -163,6 +163,9 @@ def system11(path, tags, args, source): # Restart Python
 	global system11
 	system11 = state
 	print "System11: ", state;
+	time.sleep(5)
+	os.system("sudo systemctl restart ledwall.service")
+
 
 def system21(path, tags, args, source): # Kill python
 	state=int(args[0])
@@ -175,12 +178,16 @@ def system31(path, tags, args, source): # Restart RaspberryPi
 	global system31
 	system31 = state
 	print "System31: ", state;
+	time.sleep(5)
+	os.system("sudo shutdown -r now")
 
 def system41(path, tags, args, source): # shutdown RaspberryPi
 	state=int(args[0])
 	global system41
 	system41 = state
 	print "System41: ", state;
+	time.sleep(5)
+	os.system("sudo shutdown now")
 
 # old python kill switch
 def kill(path, tags, args, source):
