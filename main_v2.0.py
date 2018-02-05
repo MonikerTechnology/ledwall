@@ -194,6 +194,7 @@ topic = "/LEDwall"
 
 #def on_message(client, userdata, message):
 def on_message(MQTTclient, userdata, message):
+    global mode
     #print("message received " ,str(message.payload.decode("utf-8")))
     #print("message topic=",message.topic)
     MQTTMessage = str(message.payload.decode("utf-8"))
@@ -201,7 +202,7 @@ def on_message(MQTTclient, userdata, message):
     #print("message qos=",message.qos)
     #print("message retain flag=",message.retain)
 
-    global mode = MQTTMessage[0:8] # first 8 char is mode
+    mode = MQTTMessage[0:8] # first 8 char is mode
     # Mode      Data
     # rainbowX  None
     # HSVXXXXX  int int int
