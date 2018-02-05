@@ -235,7 +235,7 @@ def on_message(MQTTclient, userdata, message):
         print "Empty mode"
         mode = MQTTMessage[0:8]
         #make blank???
-    elif "rainbowX" == MQTTMessage[0:8]":
+    elif "rainbowX" == MQTTMessage[0:8]:
         print "rainbowX mode"
         mode = MQTTMessage[0:8]
 
