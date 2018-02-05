@@ -143,7 +143,7 @@ parser.add_option('-f', '--fps', dest='fps', default=30,
 options, args = parser.parse_args()
 
 if options.layout == 'ledwall15x9.json':
-    print "\nUsing default layout: " , options.layout , "\n"
+    print "\nNo layout selected, using default layout: " , options.layout , "\n"
 
 if not options.layout:
     parser.print_help()
@@ -199,7 +199,7 @@ def on_message(client, userdata, message):
     #print("message qos=",message.qos)
     #print("message retain flag=",message.retain)
 
-    mode = MQTTMessage[0:7] # first 8 char is mode
+    mode = MQTTMessage[0:8] # first 8 char is mode
     # Mode      Data
     # rainbowX  None
     # HSVXXXXX  int int int
@@ -216,7 +216,7 @@ def on_message(client, userdata, message):
         pixels = [rainbow(t*scale(30,(1,100),(.05,2)), coord, ii, n_pixels, random_values) for ii, coord in enumerate(coordinates)]
         client.put_pixels(pixels, channel=0)
     else: # Catch all - maybe loading pattern?
-        print "Empty mode"
+        print "Empty mode - catch all"
 
 
 print
