@@ -9,9 +9,6 @@ import random
 import os
 
 # My custom
-#from func import draw
-#import touchOSC
-#import audio
 import opc
 import color_utils
 
@@ -29,13 +26,12 @@ except ImportError:
 
 
 
-#for the live audio
-#import aubio
-#import numpy as num
-#import pyaudio
-import time
 
-
+try:
+    echo "Trying to start FC server\n"
+    os.system("sudo /home/pi/fadecandy/bin/fcserver-rpi /home/pi/fadecandy/bin/fcserver_config.json &")
+except:
+    echo "Maybe it is already running?\n"
 #-------------------------------------------------------------------------------
 # Threads for audio input and touchOSC
 
@@ -93,18 +89,6 @@ def scale(val, src, dst):
     Scale the given value from the scale of src to the scale of dst.
     """
     return ((val - src[0]) / (src[1]-src[0])) * (dst[1]-dst[0]) + dst[0]
-
-
-#t1 = thread.start_new_thread(checkServer, ())
-    #print t1.isAlive()
-
-# Set up
-#t_check_touchOSC = threading.Thread(target=check_touchOSC, args=())
-#t_startListening = threading.Thread(target=startListening, args=())
-
-# start
-#t_check_touchOSC.start()
-#t_startListening.start()
 
 
 time.sleep(1)
