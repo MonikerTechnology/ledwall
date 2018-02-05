@@ -176,7 +176,7 @@ topic = "/test"
 
 print("creating new instance")
 MQTTclient = mqtt.Client("P1") #create new instance
-MXTTclient.on_message=on_message #attach function to callback
+MQTTclient.on_message=on_message #attach function to callback
 print("connecting to broker")
 MQTTclient.connect(broker_address) #connect to broker
 MQTTclient.loop_start() #start the loop
