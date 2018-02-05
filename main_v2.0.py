@@ -214,9 +214,9 @@ def on_message(MQTTclient, userdata, message):
     # Maybe use this for initial set up?
     if mode == "HSVXXXXX": 
         print "HSV mode"
-        print MQTTMessage[8:11]
-        print MQTTMessage[11:14]
-        print MQTTMessage[14:17]
+        print MQTTMessage[8:13]
+        print MQTTMessage[14:19]
+        print MQTTMessage[20:24]
       
         r,g,b = colorsys.hsv_to_rgb(float(MQTTMessage[8:13]), float(MQTTMessage[13:18]), float(MQTTMessage[18:22]))
         print r * 255
