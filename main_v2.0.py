@@ -180,6 +180,7 @@ print
 
 #-------------------------------------------------------------------------------
 # Setup MQTT
+mode = "default" #global
 
 print
 print " __  __  _____  ____  ____ "
@@ -200,7 +201,7 @@ def on_message(MQTTclient, userdata, message):
     #print("message qos=",message.qos)
     #print("message retain flag=",message.retain)
 
-    mode = MQTTMessage[0:8] # first 8 char is mode
+    global mode = MQTTMessage[0:8] # first 8 char is mode
     # Mode      Data
     # rainbowX  None
     # HSVXXXXX  int int int
@@ -350,7 +351,7 @@ loopCount = 0 # to track FPS
 random_values = [random.random() for ii in range(n_pixels)]
 try:
     while run_main == True:
-        print "Does the main loop run?"
+        
 
         # set looping variables
         t = time.time() - start_time # keep track of how long the program has been running
