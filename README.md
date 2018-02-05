@@ -1,4 +1,4 @@
-# version_2.0 in progress
+# version_2.0 in progress (did it upload?)
 # 15 x 9 LED art
 
 ## Reminders:
