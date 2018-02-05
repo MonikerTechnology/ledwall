@@ -38,7 +38,8 @@ print
 print
 print
 
-
+#-------------------------------------------------------------------------------
+# Try to start fadecandy server 
 try:
     print("Trying to start FC server\n")
     os.system("sudo /home/pi/fadecandy/bin/fcserver-rpi /home/pi/fadecandy/bin/fcserver_config.json &")
@@ -164,17 +165,28 @@ print
 
 #-------------------------------------------------------------------------------
 # Setup MQTT
+def on_message(client, userdata, message):
+        print("message received " ,str(message.payload.decode("utf-8")))
+        print("message topic=",message.topic)
+        #print("message qos=",message.qos)
+        #print("message retain flag=",message.retain)
 
+broker_address="localhost" #Controled locally
+topic = "/test"
 
-broker_address="localhost" 
-print("creating new MQTT instance")
+print("creating new instance")
 client = mqtt.Client("P1") #create new instance
+client.on_message=on_message #attach function to callback
 print("connecting to broker")
 client.connect(broker_address) #connect to broker
-print("Subscribing to topic","house/bulbs/bulb1")
-client.subscribe("/LEDwall")
-print("Publishing message to topic","house/bulbs/bulb1")
-# client.publish("house/bulbs/bulb1","OFF")
+client.loop_start() #start the loop
+print("Subscribing to topic",topic)
+client.subscribe(topic)
+
+#print("Publishing message to topic","/test")
+#client.publish("/test","OFF")
+
+#client.loop_stop() #stop the loop
 
 
 #-------------------------------------------------------------------------------
@@ -284,7 +296,8 @@ oneSec = 0 # moves every second
 sleepFPS = .03 # Guess!
 loopCount = 0 # to track FPS
 
-
+# valid mode options:
+# "rainbow", "music", "spatial",
 def setMode():  
     if 1: 
         print "Empty mode"
@@ -335,6 +348,8 @@ except KeyboardInterrupt:
     # Kill fadecandy server
     print "killing fadecandy server"
     os.system("sudo kill $(ps aux | grep 'fadecandy' | awk '{print $2}')")
+    print "Stopping the MQTT loop"
+    client.loop_stop() #stop the MQTT loop
     try:
         sys.exit(0)
     except SystemExit:
