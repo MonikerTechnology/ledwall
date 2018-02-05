@@ -299,7 +299,7 @@ loopCount = 0 # to track FPS
 # valid mode options:
 # "rainbow", "music", "spatial",
 def setMode():  
-    if 1: 
+    if 0: 
         print "Empty mode"
     elif 0:
         print "Empty mode"
