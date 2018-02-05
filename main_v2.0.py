@@ -24,7 +24,15 @@ try:
 except ImportError:
     import simplejson as json
 
+
 print
+print
+print " _      ___________   _    _       _ _" 
+print "| |    |  ___|  _  \ | |  | |     | | |"
+print "| |    | |__ | | | | | |  | | __ _| | |"
+print "| |    |  __|| | | | | |/\| |/ _` | | |"
+print "| |____| |___| |/ /  \  /\  / (_| | | |"
+print "\_____/\____/|___/    \/  \/ \__,_|_|_|"
 print
 print
 print
@@ -117,7 +125,7 @@ parser.add_option('-f', '--fps', dest='fps', default=30,
 options, args = parser.parse_args()
 
 if options.layout == 'ledwall15x9.json':
-    print "using default layout: " , options.layout
+    print "\nUsing default layout: " , options.layout , "\n"
 
 if not options.layout:
     parser.print_help()
