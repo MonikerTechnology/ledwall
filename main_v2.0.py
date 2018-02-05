@@ -175,13 +175,13 @@ broker_address="localhost" #Controled locally
 topic = "/test"
 
 print("creating new instance")
-client = mqtt.Client("P1") #create new instance
-client.on_message=on_message #attach function to callback
+MQTTclient = mqtt.Client("P1") #create new instance
+MXTTclient.on_message=on_message #attach function to callback
 print("connecting to broker")
-client.connect(broker_address) #connect to broker
-client.loop_start() #start the loop
+MQTTclient.connect(broker_address) #connect to broker
+MQTTclient.loop_start() #start the loop
 print("Subscribing to topic",topic)
-client.subscribe(topic)
+MQTTclient.subscribe(topic)
 
 #print("Publishing message to topic","/test")
 #client.publish("/test","OFF")
@@ -348,7 +348,7 @@ except KeyboardInterrupt:
     print "killing fadecandy server"
     os.system("sudo kill $(ps aux | grep 'fadecandy' | awk '{print $2}')")
     print "Stopping the MQTT loop"
-    client.loop_stop() #stop the MQTT loop
+    MQTTclient.loop_stop() #stop the MQTT loop
     try:
         sys.exit(0)
     except SystemExit:
