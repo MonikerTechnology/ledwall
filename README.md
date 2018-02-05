@@ -1,6 +1,23 @@
 # version_2.0 in progress (did it upload?)
 # 15 x 9 LED art
 
+## Goals for v2.0
+- Error handling
+  - No audio - broken
+   - Lack of sound then display something cool
+  -  No wifi - loading pattern
+  - No OSC
+- HTML wifi set up - auto scan then broadcast if not connected
+  - Physica button??
+- Better start up pattern / test pattern
+- HomeKit- bridge to many local scripts
+  - Secondary control….physical? (prolly naw)
+- More/better audio effects
+- Update github
+- Cool MOTD ssh banner
+- More secure?
+
+
 ## Reminders:
 - Upload remote file from TouchOSC app!!
 - Add pictures and videos
