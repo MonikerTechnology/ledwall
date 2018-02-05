@@ -28,16 +28,27 @@ except ImportError:
 
 print
 print
-print "__/\\\______________/\\\\\\\\\\\\\\\__/\\\\\\\\\\\\_______________/\\\______________/\\\_________________/\\\\\\_____/\\\\\\____   "     
-print " _\/\\\_____________\/\\\///////////__\/\\\////////\\\____________\/\\\_____________\/\\\________________\////\\\____\////\\\____    "   
-print "  _\/\\\_____________\/\\\_____________\/\\\______\//\\\___________\/\\\_____________\/\\\___________________\/\\\_______\/\\\____     " 
-print "   _\/\\\_____________\/\\\\\\\\\\\_____\/\\\_______\/\\\___________\//\\\____/\\\____/\\\___/\\\\\\\\\_______\/\\\_______\/\\\____     "
-print "    _\/\\\_____________\/\\\///////______\/\\\_______\/\\\____________\//\\\__/\\\\\__/\\\___\////////\\\______\/\\\_______\/\\\____    "
-print "     _\/\\\_____________\/\\\_____________\/\\\_______\/\\\_____________\//\\\/\\\/\\\/\\\______/\\\\\\\\\\_____\/\\\_______\/\\\____   "
-print "      _\/\\\_____________\/\\\_____________\/\\\_______/\\\_______________\//\\\\\\//\\\\\______/\\\/////\\\_____\/\\\_______\/\\\____  "
-print "      _\/\\\\\\\\\\\\\\\_\/\\\\\\\\\\\\\\\_\/\\\\\\\\\\\\/_________________\//\\\__\//\\\______\//\\\\\\\\/\\__/\\\\\\\\\__/\\\\\\\\\_ "
-print "        _\///////////////__\///////////////__\////////////____________________\///____\///________\////////\//__\/////////__\/////////__"
-print 
+                                                                                                                                                  
+                                                                                                                                                  
+print "LLLLLLLLLLL             EEEEEEEEEEEEEEEEEEEEEEDDDDDDDDDDDDD             WWWWWWWW                           WWWWWWWW               lllllll lllllll "
+print "L:::::::::L             E::::::::::::::::::::ED::::::::::::DDD          W::::::W                           W::::::W               l:::::l l:::::l "
+print "L:::::::::L             E::::::::::::::::::::ED:::::::::::::::DD        W::::::W                           W::::::W               l:::::l l:::::l "
+print "LL:::::::LL             EE::::::EEEEEEEEE::::EDDD:::::DDDDD:::::D       W::::::W                           W::::::W               l:::::l l:::::l "
+print "  L:::::L                 E:::::E       EEEEEE  D:::::D    D:::::D       W:::::W           WWWWW           W:::::Waaaaaaaaaaaaa    l::::l  l::::l "
+print "  L:::::L                 E:::::E               D:::::D     D:::::D       W:::::W         W:::::W         W:::::W a::::::::::::a   l::::l  l::::l "
+print "  L:::::L                 E::::::EEEEEEEEEE     D:::::D     D:::::D        W:::::W       W:::::::W       W:::::W  aaaaaaaaa:::::a  l::::l  l::::l "
+print "  L:::::L                 E:::::::::::::::E     D:::::D     D:::::D         W:::::W     W:::::::::W     W:::::W            a::::a  l::::l  l::::l "
+print "  L:::::L                 E:::::::::::::::E     D:::::D     D:::::D          W:::::W   W:::::W:::::W   W:::::W      aaaaaaa:::::a  l::::l  l::::l "
+print "  L:::::L                 E::::::EEEEEEEEEE     D:::::D     D:::::D           W:::::W W:::::W W:::::W W:::::W     aa::::::::::::a  l::::l  l::::l "
+print "  L:::::L                 E:::::E               D:::::D     D:::::D            W:::::W:::::W   W:::::W:::::W     a::::aaaa::::::a  l::::l  l::::l "
+print "  L:::::L         LLLLLL  E:::::E       EEEEEE  D:::::D    D:::::D              W:::::::::W     W:::::::::W     a::::a    a:::::a  l::::l  l::::l "
+print "LL:::::::LLLLLLLLL:::::LEE::::::EEEEEEEE:::::EDDD:::::DDDDD:::::D                W:::::::W       W:::::::W      a::::a    a:::::a l::::::ll::::::l "
+print "L::::::::::::::::::::::LE::::::::::::::::::::ED:::::::::::::::DD                  W:::::W         W:::::W       a:::::aaaa::::::a l::::::ll::::::l "
+print "L::::::::::::::::::::::LE::::::::::::::::::::ED::::::::::::DDD                     W:::W           W:::W         a::::::::::aa:::al::::::ll::::::l "
+print "LLLLLLLLLLLLLLLLLLLLLLLLEEEEEEEEEEEEEEEEEEEEEEDDDDDDDDDDDDD                         WWW             WWW           aaaaaaaaaa  aaaallllllllllllllll "
+                                                                                                                                                  
+                                                                                                                                                  
+print
 print 
 print "SETUP"
 
@@ -168,6 +179,14 @@ print
 
 #-------------------------------------------------------------------------------
 # Setup MQTT
+
+print
+print " __  __  _____  ____  ____ "
+print "(  \/  )(  _  )(_  _)(_  _)"
+print " )    (  )(_)(   )(    )(  "
+print "(_/\/\_)(___/\\ (__)  (__) "
+
+
 def on_message(client, userdata, message):
         print("message received " ,str(message.payload.decode("utf-8")))
         print("message topic=",message.topic)
@@ -187,7 +206,9 @@ MQTTclient.on_message=on_message #attach function to callback
 print("connecting to broker")
 MQTTclient.connect(broker_address) #connect to broker
 MQTTclient.loop_start() #start the loop
-print("Subscribing to topic",topic,"\n")
+print("Subscribing to topic",topic)
+print
+print
 MQTTclient.subscribe(topic)
 
 #print("Publishing message to topic","/test")
