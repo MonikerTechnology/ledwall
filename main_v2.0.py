@@ -298,16 +298,7 @@ loopCount = 0 # to track FPS
 
 # valid mode options:
 # "rainbow", "music", "spatial",
-def setMode():  
-    if 0: 
-        print "Empty mode"
-    elif 0:
-        print "Empty mode"
-    elif 0:
-        print "Empty mode"
-    else: # Catch all 
-        pixels = [rainbow(t*scale(30,(1,100),(.05,2)), coord, ii, n_pixels, random_values) for ii, coord in enumerate(coordinates)]
-        client.put_pixels(pixels, channel=0)
+
 
 
 random_values = [random.random() for ii in range(n_pixels)]
@@ -335,11 +326,19 @@ try:
         # End FPS tracker
         #----------------------------------------------
 
-        setMode()
+      
+        if 0: 
+            print "Empty mode"
+        elif 0:
+            print "Empty mode"
+        elif 0:
+            print "Empty mode"
+        else: # Catch all 
+            pixels = [rainbow(t*scale(30,(1,100),(.05,2)), coord, ii, n_pixels, random_values) for ii, coord in enumerate(coordinates)]
+            client.put_pixels(pixels, channel=0)
 
 
-        # call the rainbow function
-        # later this needs to be in a switch
+
         
 
 
