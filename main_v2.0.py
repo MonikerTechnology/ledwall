@@ -183,6 +183,7 @@ print
 # Setup MQTT
 
 mode = "default" #global
+lastMode = ""
 redMultiplier = 0
 greenMultiplier = 0
 blueMultiplier = 0
@@ -201,6 +202,7 @@ topic = "/LEDwall"
 #def on_message(client, userdata, message):
 def on_message(MQTTclient, userdata, message):
     global mode
+    global lastMode
     global redMultiplier
     global greenMultiplier
     global blueMultiplier
@@ -211,7 +213,8 @@ def on_message(MQTTclient, userdata, message):
     #print("message qos=",message.qos)
     #print("message retain flag=",message.retain)
 
-    mode = MQTTMessage[0:8] # first 8 char is mode
+    #lastMode = mode
+    #mode = MQTTMessage[0:8] # first 8 char is mode
     # Mode      Data
     # rainbowX  None
     # HSVXXXXX  0.000,0.850,0.960
@@ -220,19 +223,21 @@ def on_message(MQTTclient, userdata, message):
     # offXXXXX  None
 
     # Maybe use this for initial set up?
-    if mode == "HSVXXXXX": 
-        print "HSV mode"
+    if "HSVXXXXX" == MQTTMessage[0:8]: 
+        print "New HSV data"
         #print MQTTMessage[8:13]
         #print MQTTMessage[14:19]
         #print MQTTMessage[20:24]
       
         redMultiplier, greenMultiplier, blueMultiplier = colorsys.hsv_to_rgb(float(MQTTMessage[8:13]), float(MQTTMessage[14:19]), float(MQTTMessage[20:24]))
 
-    elif mode == "offXXXXX":
+    elif "offXXXXX" == MQTTMessage[0:8]:
         print "Empty mode"
+        mode = MQTTMessage[0:8]
         #make blank???
-    elif mode == "rainbowX":
+    elif "rainbowX" == MQTTMessage[0:8]":
         print "rainbowX mode"
+        mode = MQTTMessage[0:8]
 
     else: # Catch all - maybe loading pattern?
         print "Empty mode - catch all"
