@@ -25,13 +25,13 @@ except ImportError:
     import simplejson as json
 
 
-
-
 try:
     print("Trying to start FC server\n")
     os.system("sudo /home/pi/fadecandy/bin/fcserver-rpi /home/pi/fadecandy/bin/fcserver_config.json &")
 except:
     print("Maybe it is already running?\n")
+
+
 #-------------------------------------------------------------------------------
 # Threads for audio input and touchOSC
 
@@ -262,7 +262,8 @@ loopCount = 0 # to track FPS
 
 
 random_values = [random.random() for ii in range(n_pixels)]
-while run_main == True:
+def main()
+    while run_main == True:
 
     # set looping variables
     t = time.time() - start_time # keep track of how long the program has been running
@@ -299,3 +300,11 @@ while run_main == True:
     #client.put_pixels(pixels, channel=0)
 
 
+try:
+    main()
+except KeyboardInterrupt:
+    print 'Interrupted'
+    try:
+        sys.exit(0)
+    except SystemExit:
+        os._exit(0)
