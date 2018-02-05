@@ -28,10 +28,10 @@ except ImportError:
 
 
 try:
-    echo "Trying to start FC server\n"
+    print("Trying to start FC server\n")
     os.system("sudo /home/pi/fadecandy/bin/fcserver-rpi /home/pi/fadecandy/bin/fcserver_config.json &")
 except:
-    echo "Maybe it is already running?\n"
+    print("Maybe it is already running?\n")
 #-------------------------------------------------------------------------------
 # Threads for audio input and touchOSC
 
