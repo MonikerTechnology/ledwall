@@ -192,12 +192,31 @@ broker_address="localhost" #Controled locally
 topic = "/LEDwall"
 
 def on_message(client, userdata, message):
-        print("message received " ,str(message.payload.decode("utf-8")))
-        print("message topic=",message.topic)
-        MQTTMessage = str(message.payload.decode("utf-8"))
-        print MQTTMessage
-        #print("message qos=",message.qos)
-        #print("message retain flag=",message.retain)
+    #print("message received " ,str(message.payload.decode("utf-8")))
+    #print("message topic=",message.topic)
+    MQTTMessage = str(message.payload.decode("utf-8"))
+    print "MQTT message recived: " + MQTTMessage
+    #print("message qos=",message.qos)
+    #print("message retain flag=",message.retain)
+
+    mode = MQTTMessage[0:7] # first 8 char is mode
+    # Mode      Data
+    # rainbowX  None
+    # HSVXXXXX  int int int
+    # loadingX  None
+    # musicXXX  None
+    # offXXXXX  None
+
+    if mode == "something": 
+        print "Empty mode"
+    elif mode == "something":
+        print "Empty mode"
+    elif mode == "rainbowX":
+        print "rainbowX mode"
+        pixels = [rainbow(t*scale(30,(1,100),(.05,2)), coord, ii, n_pixels, random_values) for ii, coord in enumerate(coordinates)]
+        client.put_pixels(pixels, channel=0)
+    else: # Catch all - maybe loading pattern?
+        print "Empty mode"
 
 
 print
@@ -208,7 +227,7 @@ MQTTclient.on_message=on_message #attach function to callback
 print("connecting to broker")
 MQTTclient.connect(broker_address) #connect to broker
 MQTTclient.loop_start() #start the loop
-print("Subscribing to topic",topic)
+print "Subscribing to topic: " + topic
 print
 print
 MQTTclient.subscribe(topic)
@@ -357,15 +376,8 @@ try:
         #----------------------------------------------
 
       
-        if 0: 
-            print "Empty mode"
-        elif 0:
-            print "Empty mode"
-        elif 0:
-            print "Empty mode"
-        else: # Catch all 
-            pixels = [rainbow(t*scale(30,(1,100),(.05,2)), coord, ii, n_pixels, random_values) for ii, coord in enumerate(coordinates)]
-            client.put_pixels(pixels, channel=0)
+
+       
 
 
 

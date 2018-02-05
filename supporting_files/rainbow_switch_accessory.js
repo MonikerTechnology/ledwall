@@ -7,12 +7,12 @@ var err = null; // in case there were any problems
 
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
-var name = "RainMode";                                       //Name to Show to IOS
-var UUID = "hap-nodejs:accessories:RGBLight";     //Change the RGBLight to something unique for each light - this should be unique for each node on your system
-var USERNAME = "AC:AF:AC:2C:5D:C1";              //This must also be unique for each node - make sure you change it!
+var name = "rainbow";                                       //Name to Show to IOS
+var UUID = "hap-nodejs:accessories:rainbow";     //Change the RGBLight to something unique for each light - this should be unique for each node on your system
+var USERNAME = "AC:A6:AC:2C:5D:C1";              //This must also be unique for each node - make sure you change it!
 
-var MQTT_IP = '192.168.1.174'
-var lightTopic = '/deskLEDs'
+var MQTT_IP = 'localhost'
+var lightTopic = '/LEDwall'
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
 
@@ -24,12 +24,12 @@ var SWITCH = {
           SWITCH.powerOn = true;
           if(err) { return console.log(err); }
           console.log("...LEDswitch is now on.");
-          client.publish(lightTopic, 'p1');
+          client.publish(lightTopic, 'rainbowX');
     } else {
           SWITCH.powerOn = false;
           if(err) { return console.log(err); }
           console.log("...LEDswitch is now off.");
-          client.publish(lightTopic, 'p0');
+          client.publish(lightTopic, 'offXXXXX');
     }
   },
     identify: function() {
