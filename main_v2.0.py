@@ -51,6 +51,7 @@ print "LLLLLLLLLLLLLLLLLLLLLLLLEEEEEEEEEEEEEEEEEEEEEEDDDDDDDDDDDDD              
 print
 print 
 print "SETUP"
+print
 
 #-------------------------------------------------------------------------------
 # Try to start fadecandy server 
@@ -187,6 +188,9 @@ print " )    (  )(_)(   )(    )(  "
 print "(_/\/\_)(___/\\\ (__)  (__) " #double \\ to escape
 
 
+broker_address="localhost" #Controled locally
+topic = "/LEDwall"
+
 def on_message(client, userdata, message):
         print("message received " ,str(message.payload.decode("utf-8")))
         print("message topic=",message.topic)
@@ -195,8 +199,6 @@ def on_message(client, userdata, message):
         #print("message qos=",message.qos)
         #print("message retain flag=",message.retain)
 
-broker_address="localhost" #Controled locally
-topic = "/test"
 
 print
 print "MQTT initializing..."
