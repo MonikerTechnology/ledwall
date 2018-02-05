@@ -262,7 +262,10 @@ delay = 0
 
 
 
-#define variables for music
+# fps counter
+oneSec = 0 # moves every second
+sleepFPS = .03 # Guess!
+loopCount = 0 # to track FPS
 
 
 
