@@ -262,7 +262,7 @@ loopCount = 0 # to track FPS
 
 
 random_values = [random.random() for ii in range(n_pixels)]
-def main()
+def main():
     while run_main == True:
 
     # set looping variables
