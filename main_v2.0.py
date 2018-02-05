@@ -11,6 +11,7 @@ import os
 # My custom
 import opc
 import color_utils
+import paho.mqtt.client as mqtt
 
 #
 import thread
@@ -162,6 +163,18 @@ else:
 print
 
 #-------------------------------------------------------------------------------
+# Setup MQTT
+
+
+broker_address="localhost" 
+print("creating new MQTT instance")
+client = mqtt.Client("P1") #create new instance
+print("connecting to broker")
+client.connect(broker_address) #connect to broker
+print("Subscribing to topic","house/bulbs/bulb1")
+client.subscribe("/LEDwall")
+print("Publishing message to topic","house/bulbs/bulb1")
+# client.publish("house/bulbs/bulb1","OFF")
 
 
 #-------------------------------------------------------------------------------
@@ -262,12 +275,9 @@ print
 n_pixels = len(coordinates)
 start_time = time.time()
 
-
-
 #This is the main loop
 delay = 0
-
-
+mode = "default"
 
 # fps counter
 oneSec = 0 # moves every second
@@ -275,7 +285,16 @@ sleepFPS = .03 # Guess!
 loopCount = 0 # to track FPS
 
 
-
+setMode():  
+    if 1: 
+        print "Empty mode"
+    elif 0:
+        print "Empty mode"
+    elif 0:
+        print "Empty mode"
+    else: # Catch all 
+        pixels = [rainbow(t*scale(30,(1,100),(.05,2)), coord, ii, n_pixels, random_values) for ii, coord in enumerate(coordinates)]
+        client.put_pixels(pixels, channel=0)
 
 
 random_values = [random.random() for ii in range(n_pixels)]
@@ -303,12 +322,12 @@ try:
         # End FPS tracker
         #----------------------------------------------
 
+        setMode()
 
 
         # call the rainbow function
         # later this needs to be in a switch
-        pixels = [rainbow(t*scale(30,(1,100),(.05,2)), coord, ii, n_pixels, random_values) for ii, coord in enumerate(coordinates)]
-        client.put_pixels(pixels, channel=0)
+        
 
 
 except KeyboardInterrupt:
