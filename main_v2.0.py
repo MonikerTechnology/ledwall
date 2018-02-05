@@ -24,6 +24,11 @@ try:
 except ImportError:
     import simplejson as json
 
+print
+print
+print
+print
+
 
 try:
     print("Trying to start FC server\n")
@@ -112,8 +117,8 @@ parser.add_option('-f', '--fps', dest='fps', default=30,
 options, args = parser.parse_args()
 
 if options.layout == 'ledwall15x9.json':
-    print "using default layout: " , layout
-    
+    print "using default layout: " , options.layout
+
 if not options.layout:
     parser.print_help()
     print
