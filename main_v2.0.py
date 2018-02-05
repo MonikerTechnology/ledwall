@@ -242,7 +242,8 @@ def rainbow(t, coord, ii, n_pixels, random_values):
 
 
 def pixel_color(t, coord, ii, n_pixels):
-    r,g,b = colorOSC
+    #r,g,b = colorOSC
+    r,g,b = 50,50,50
     r *= .95
     g *= .95
     b *= .95
@@ -310,7 +311,7 @@ while run_main == True:
 
     # call the function and draw the pixels
 
-    pixels = [pixel_color(t, coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]
-    client.put_pixels(pixels, channel=0)
+    #pixels = [pixel_color(t, coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]
+    #client.put_pixels(pixels, channel=0)
 
 
