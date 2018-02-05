@@ -214,8 +214,7 @@ def on_message(MQTTclient, userdata, message):
         print "Empty mode"
     elif mode == "rainbowX":
         print "rainbowX mode"
-        pixels = [rainbow(t*scale(30,(1,100),(.05,2)), coord, ii, n_pixels, random_values) for ii, coord in enumerate(coordinates)]
-        client.put_pixels(pixels, channel=0)
+
     else: # Catch all - maybe loading pattern?
         print "Empty mode - catch all"
 
@@ -346,9 +345,6 @@ oneSec = 0 # moves every second
 sleepFPS = .03 # Guess!
 loopCount = 0 # to track FPS
 
-# valid mode options:
-# "rainbow", "music", "spatial",
-
 
 
 random_values = [random.random() for ii in range(n_pixels)]
@@ -375,6 +371,12 @@ try:
         time.sleep(sleepFPS)
         # End FPS tracker
         #----------------------------------------------
+
+        if mode == rainbowX:
+            pixels = [rainbow(t*scale(30,(1,100),(.05,2)), coord, ii, n_pixels, random_values) for ii, coord in enumerate(coordinates)]
+            client.put_pixels(pixels, channel=0)
+        else: # catch all maybe do loading
+            nothing = 0
 
       
 
