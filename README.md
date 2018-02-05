@@ -11,6 +11,7 @@
   - Physica button??
 - Better start up pattern / test pattern
 - HomeKit- bridge to many local scripts
+  - MQTT
   - Secondary control….physical? (prolly naw)
 - More/better audio effects
 - Update github
