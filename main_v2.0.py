@@ -184,7 +184,7 @@ print
 print " __  __  _____  ____  ____ "
 print "(  \/  )(  _  )(_  _)(_  _)"
 print " )    (  )(_)(   )(    )(  "
-print "(_/\/\_)(___/\\ (__)  (__) "
+print "(_/\/\_)(___/\\\ (__)  (__) " #double \\ to escape
 
 
 def on_message(client, userdata, message):
