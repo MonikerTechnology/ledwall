@@ -111,6 +111,9 @@ parser.add_option('-f', '--fps', dest='fps', default=30,
 
 options, args = parser.parse_args()
 
+if options.layout == 'ledwall15x9.json':
+    print "using default layout: " , layout
+    
 if not options.layout:
     parser.print_help()
     print
@@ -288,13 +291,17 @@ try:
 
 
 
-
-        pixels = [rainbow(t*scale(10,(1,100),(.05,2)), coord, ii, n_pixels, random_values) for ii, coord in enumerate(coordinates)]
+        # call the rainbow function
+        # later this needs to be in a switch
+        pixels = [rainbow(t*scale(30,(1,100),(.05,2)), coord, ii, n_pixels, random_values) for ii, coord in enumerate(coordinates)]
         client.put_pixels(pixels, channel=0)
 
 
 except KeyboardInterrupt:
     print 'Interrupted'
+    # Kill fadecandy server
+    print "killing fadecandy server"
+    os.system("sudo kill $(ps aux | grep 'fadecandy' | awk '{print $2}')")
     try:
         sys.exit(0)
     except SystemExit:
