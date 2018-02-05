@@ -9,9 +9,9 @@ import random
 import os
 
 # My custom
-from func import draw
-import touchOSC
-import audio
+#from func import draw
+#import touchOSC
+#import audio
 import opc
 import color_utils
 
@@ -99,12 +99,12 @@ def scale(val, src, dst):
     #print t1.isAlive()
 
 # Set up
-t_check_touchOSC = threading.Thread(target=check_touchOSC, args=())
-t_startListening = threading.Thread(target=startListening, args=())
+#t_check_touchOSC = threading.Thread(target=check_touchOSC, args=())
+#t_startListening = threading.Thread(target=startListening, args=())
 
 # start
-t_check_touchOSC.start()
-t_startListening.start()
+#t_check_touchOSC.start()
+#t_startListening.start()
 
 
 time.sleep(1)
@@ -168,133 +168,7 @@ print
 
 
 
-def music(t, coord, ii, n_pixels):
 
-    # this was inside the color finciton
-    x, y, z = coord
-    r,g,b = 0,0,0
-
-    #Z line
-    if (r,g,b) == (0,0,0):
-        r,g,b = draw.lineX(linePos,x,z,(x*17,pitchColor,150),mod)
-    #Z line
-    if (r,g,b) == (0,0,0):
-        r,g,b = draw.lineX(linePos+4,x,z,(0,pitchColor*.6,0),mod)
-        if (r,g,b) != (0,0,0):
-            b = color_utils.cos(1, offset=t / 10, period=10, minn=0, maxx=1)
-            r = color_utils.cos(5, offset=t / 4, period=2, minn=0, maxx=1)
-            b = 150
-            r = (x * 15) * r
-
-    #Bass booms
-    count = 0
-    while count < 8:
-        if (r,g,b) == (0,0,0):
-            r,g,b = draw.boom(centerX[count],centerZ[count], x, z,color[count],pos[count],6)
-        count += 1
-
-    #color the rest
-    if (r,g,b) == (0,0,0):
-        b = color_utils.cos(1, offset=t / 10, period=10, minn=0, maxx=1)
-        b = b * pitchColor / 7
-
-
-
-    r = int(r)
-    g = int(g)
-    b = int(b)
-    r /= 256
-    g /= 256
-    b /= 256
-
-
-    return (r*redOSC, g*greenOSC, b*blueOSC)
-
-def musicv2(t, coord, ii, n_pixels):
-
-    # this was inside the color finciton
-    x, y, z = coord
-    r,g,b = 0,0,0
-
-
-
-    #Bass booms
-    count = 0
-    while count < 8:
-        if (r,g,b) == (0,0,0):
-            r,g,b = draw.boom(centerX[count],centerZ[count], x, z,color[count],pos[count],3)
-        count += 1
-
-    pitchScale = scale (pitch,(pitchMin,pitchMax),(0,1))
-    pitchColorR = int(scale(pitch,(0,pitchMax+1),(100,256)))
-    pitchColorG = int(scale(pitch,(0,pitchMax+1),(50,256)))
-    pitchColorB = int(scale(pitch,(pitchMin,pitchMax+1),(256,50)))
-    pitchColor = pitchColorR, pitchColorG, pitchColorB
-
-    #Z line
-    waveSpeed = scale(touchOSC.speedData,(1,100),(1000,1))
-    if (r,g,b) == (0,0,0):
-        r,g,b = draw.volumeWave(9,x,z,pitchColor,volume,volumeMin,volumeMax)
-        b *= color_utils.cos(x, offset=t / waveSpeed * 3, period=20, minn=0, maxx=1)
-        r *= color_utils.cos(x, offset=t / waveSpeed * 7, period=30, minn=0, maxx=1)
-        #g *= color_utils.cos(x, offset=t / waveSpeed, period=25, minn=0, maxx=1)
-
-    if (r,g,b) == (0,0,0):
-        # Scale the x and z to match the original map file wall.json
-        x = scale(x, (0,14), (-0.7,0.7))
-        z = scale(z, (0,8), (-0.4,0.4))
-        # make x, y, z -> r, g, b sine waves
-        r = color_utils.cos(x, offset=t / 4, period=2, minn=0, maxx=1) * 25
-        g = color_utils.cos(y, offset=t / 4, period=2, minn=0, maxx=1) * 25
-        b = color_utils.cos(z, offset=t / 4, period=2, minn=0, maxx=1) * 25
-        r, g, b = color_utils.contrast((r, g, b), 0.5, 1.5)
-
-
-    #color the rest
-    # if (r,g,b) == (0,0,0):
-    #     b = color_utils.cos(1, offset=t / 10, period=10, minn=0, maxx=1)
-    #     b = b * pitchColor / 7
-
-
-
-    r = int(r)
-    g = int(g)
-    b = int(b)
-    r /= 256
-    g /= 256
-    b /= 256
-
-
-    return (r*redOSC, g*greenOSC, b*blueOSC)
-
-
-def control_circle(t, coord, ii, n_pixels):
-    """Compute the color of a given pixel.
-
-    t: time in seconds since the program started.
-    ii: which pixel this is, starting at 0
-    coord: the (x, y, z) position of the pixel as a tuple
-    n_pixels: the total number of pixels
-
-    Returns an (r, g, b) tuple in the range 0-255
-
-    """
-    x,y,z = coord
-
-    padXData = touchOSC.padXData
-    padYData = int(touchOSC.padYData * .65)
-    #print padYData
-    #print touchOSC.padYData
-
-
-    r,g,b = colorOSC
-
-    #if x == padXData and z == padYData:
-    r,g,b = draw.circle(padXData,padYData, x, z,colorOSC)
-    #draw.circle(5,5, x, z)
-
-
-    return (r, g, b)
 
 
 def rainbow(t, coord, ii, n_pixels, random_values):
@@ -366,56 +240,7 @@ def rainbow(t, coord, ii, n_pixels, random_values):
 
     return (r*redOSC, g*greenOSC, b*blueOSC)
 
-def spatial_stripes(t, coord, ii, n_pixels):
-    """Compute the color of a given pixel.
 
-    t: time in seconds since the program started.
-    ii: which pixel this is, starting at 0
-    coord: the (x, y, z) position of the pixel as a tuple
-    n_pixels: the total number of pixels
-
-    Returns an (r, g, b) tuple in the range 0-255
-
-    """
-
-    x, y, z = coord
-
-    # Scale the x and z to match the original map file wall.json
-    x = scale(x, (0,14), (-0.7,0.7))
-    z = scale(z, (0,8), (-0.4,0.4))
-
-    # make moving stripes for x, y, and z
-    r = color_utils.cos(x, offset=t / 4, period=1, minn=0, maxx=0.7)
-    g = color_utils.cos(y, offset=t / 4, period=1, minn=0, maxx=0.7)
-    b = color_utils.cos(z, offset=t / 4, period=1, minn=0, maxx=0.7)
-    r, g, b = color_utils.contrast((r, g, b), 0.5, 2)
-
-    # make a moving white dot showing the order of the pixels in the layout file
-    spark_ii = (t*80) % n_pixels
-    spark_rad = 8
-    spark_val = max(0, (spark_rad - color_utils.mod_dist(ii, spark_ii, n_pixels)) / spark_rad)
-    spark_val = min(1, spark_val*2)
-    r += spark_val
-    g += spark_val
-    b += spark_val
-
-    # apply gamma curve
-    # only do this on live leds, not in the simulator
-    #r, g, b = color_utils.gamma((r, g, b), 2.2)
-
-    return (r*redOSC, g*greenOSC, b*blueOSC)
-
-
-def pixel_color(t, coord, ii, n_pixels):
-    r,g,b = colorOSC
-    r *= .95
-    g *= .95
-    b *= .95
-    return (r,g,b)
-
-def blank(t, coord, ii, n_pixels):
-    r,g,b = 0,0,0
-    return (r,g,b)
 
 
 
@@ -439,35 +264,7 @@ delay = 0
 
 #define variables for music
 
-# Bass booms
-i = 0
-doBoom = [0,0,0,0,0,0,0,0] #for if conditions have been meet to do a boom
-centerX = [0,0,0,0,0,0,0,0] #for each boom
-centerZ = [0,0,0,0,0,0,0,0] #for each boom
-pos = [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0] #the step each boom is at
-color = [(0,0,0),(0,0,0),(0,0,0),(0,0,0),(0,0,0),(0,0,0),(0,0,0),(0,0,0)] #the color for each boom
-delay = 0 #keeps from doing too many booms on the same note
 
-
-# config
-# Larger is faster max = 1
-speed = .001 #bass booms
-
-# Keep track of vol and pitch
-pitchMax = 1000
-pitchMin = 50
-volumeMax = 50
-volumeMin = 10
-
-countByTwo = 0
-pitchDelay = 1 #sets a delay so the pitch color doesnt flicker
-pitchColor = 1
-count = 0
-
-# fps counter
-oneSec = 0 # moves every second
-sleepFPS = .03 # Guess!
-loopCount = 0 # to track FPS
 
 
 
@@ -476,15 +273,6 @@ while run_main == True:
 
     # set looping variables
     t = time.time() - start_time # keep track of how long the program has been running
-    colorOSC = touchOSC.faderRedData*touchOSC.brightnessData, touchOSC.faderGreenData*touchOSC.brightnessData, touchOSC.faderBlueData*touchOSC.brightnessData # RGB tuple 0-256
-    redOSC,greenOSC,blueOSC = colorOSC # RGB 0-256
-
-    print
-    print
-    print "offset"
-    print t / 10
-    print
-    print
 
     #----------------------------------------------
     # this tracks the FPS and adjusts the delay to keep it consistant.
@@ -507,240 +295,14 @@ while run_main == True:
 
 
 
-
+    pixels = [rainbow(t*scale(touchOSC.speedData,(1,100),(.05,2)), coord, ii, n_pixels, random_values) for ii, coord in enumerate(coordinates)]
+    client.put_pixels(pixels, channel=0)
+    # time.sleep(1 / options.fps) # ranbow (lava lamp)
 
 
     # call the function and draw the pixels
-    if touchOSC.mode11 == 1: # React to music
 
-        # pull the values in
-        pitch = audio.pitch
-        volume = float(audio.volume) * 50000
+    pixels = [pixel_color(t, coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]
+    client.put_pixels(pixels, channel=0)
 
 
-        #count += 1
-
-        # this is for the bass booms
-        speed = .005 * touchOSC.speedData
-        if doBoom[i] == 1:
-            i += 1
-            if i == 8:
-                i = 0
-
-        delay += 1 #keeps from doing too many booms on the same note
-
-        tolerance = pitchMin * 4
-        # if (pitch < tolerance and volume > volumeMin * 1.00) and pitch > 0 and doBoom[i] == 0 and delay > 50:
-        if pitch < tolerance and pitch > 0 and doBoom[i] == 0 and volume > (volumeMin * 1.5) and delay > 5:
-            delay = 0
-            doBoom[i] = 1 # sets this as an active boom
-            centerX[i] = randint(0, 14)
-            centerZ[i] =  draw.inverse(int(scale(pitch,(10,int(tolerance)),(0,3))))
-            color[i] = randint(50, 250),randint(50, 250),randint(100, 256)
-        count = 0
-        while count < 8: # rotats through all active booms and increases the step
-            if pos[count] <= 6.0 and doBoom[count] == 1:
-                pos[count] += scale(touchOSC.speedData,(1,100),(.005,.5))
-            else:
-                pos[count] = 0
-                doBoom[count] = 0
-            count += 1 # keep track of the
-
-
-
-        # pitch color and Z axis line
-        pitchDelay -= 1 # sets a delay so the pitch color doesnt flicker
-        if pitchDelay == 0:
-            pitchColor = int(draw.scale(pitch,(pitchMin,pitchMax+1),(50,225)))
-            if volume > volumeMax * .8:
-                linePos = 0
-                mod = 0
-            elif volume > volumeMax * .7:
-                linePos = 0
-                mod = 1
-            elif volume > volumeMax * .6:
-                linePos = 1
-                mod = 0
-            elif volume > volumeMax * .5:
-                linePos = 1
-                mod = 1
-            elif volume > volumeMax * .3:
-                linePos = 2
-                mod = 1
-            elif volume > volumeMax * .2:
-                linePos = 3
-                mod = 0
-            elif volume > volumeMax * .1:
-                linePos = 3
-                mod = 1
-            else:
-                linePos = 4
-                mod = 0
-            pitchDelay = 2
-
-        # print ("volume: %f") % volume
-        # print ("pitch %f ")% pitch
-
-
-
-
-        #Dynamically keep track of the min and max pitch
-        if pitch > pitchMax:
-            pitchMax = pitch
-        if pitch < pitchMin and pitch > 20:
-            pitchMin = pitch
-        #Dynamically keep track of the min and max volume
-        if volume > volumeMax:
-            volumeMax = volume
-        if volume < volumeMin and volume > 2.5:
-            volumeMin = volume
-        #every 2 seconds move the pitch and volume in
-        if countByTwo < t:
-            countByTwo += 2
-            pitchMax *= .9
-            pitchMin *= 1.1
-            volumeMax *= .9
-            volumeMin *= 1.1
-            # print
-            # print ("pitchMax: %f ")% pitchMax
-            # print ("pitchMin: %f ")% pitchMin
-            # print ("volumeMax: %f ")% volumeMax
-            # print ("volumeMin: %f ")% volumeMin
-            # print
-
-        #print volume
-        # print "pitch color: %i" % pitchColor
-        # print ("pitch: %f ")% pitch
-        # print ("pitchMax: %f ")% pitchMax
-        # print ("pitchMin: %f ")% pitchMin
-        # print tolerance
-        # print ("volumeMax: %f ")% volumeMax
-        # print ("volumeMin: %f ")% volumeMin
-        # print ("volume %f") % volume
-        # print delay
-        # print
-        # print ("time: %f") % t
-        # print ("count by two: %i") % countByTwo
-        # print loopCount
-        # print ("Loops per sec: %i ") % int(loopCount / t)
-        # print
-
-
-
-        pixels = [music(t, coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]
-        client.put_pixels(pixels, channel=0)
-    elif touchOSC.mode21 == 1:
-        padXData = touchOSC.padXData
-        touchOSC.padYData
-        padYData = scale(touchOSC.padYData,(0,14),(0,8))
-        pixels = [control_circle(t, coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]
-        client.put_pixels(pixels, channel=0) # Draw circle
-    elif touchOSC.mode31 == 1:
-        pixels = [rainbow(t*scale(touchOSC.speedData,(1,100),(.05,2)), coord, ii, n_pixels, random_values) for ii, coord in enumerate(coordinates)]
-        client.put_pixels(pixels, channel=0)
-        # time.sleep(1 / options.fps) # ranbow (lava lamp)
-    elif touchOSC.mode41 == 1:
-        pixels = [spatial_stripes(t*scale(touchOSC.speedData,(1,100),(.05,2)), coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]
-        client.put_pixels(pixels, channel=0)
-        # time.sleep(1 / options.fps) # spatial_stripes
-    elif touchOSC.mode71 == 1:
-        doNothing = 0
-    elif touchOSC.mode51 == 1: # React to musicv2
-
-        # pull the values in
-        pitch = audio.pitch
-        volume = float(audio.volume) * 50000
-
-
-        #count += 1
-
-        # this is for the bass booms
-        speed = touchOSC.speedData
-        if doBoom[i] == 1:
-            i += 1
-            if i == 8:
-                i = 0
-
-        delay += 1 #keeps from doing too many booms on the same note
-
-        #tolerance = pitchMin * 4 # this was decent
-        tolerance = 150
-        # if (pitch < tolerance and volume > volumeMin * 1.00) and pitch > 0 and doBoom[i] == 0 and delay > 50:
-        if pitch < tolerance and pitch > 0 and doBoom[i] == 0 and volume > (volumeMin * 1.5) and delay > 5:
-            delay = 0
-            doBoom[i] = 1 # sets this as an active boom
-            centerX[i] = randint(0, 14)
-            centerZ[i] =  int(scale(pitch,(10,int(tolerance)),(0,3)))
-            color[i] = randint(50, 250),randint(50, 250),randint(100, 256)
-        count = 0
-        while count < 8: # rotats through all active booms and increases the step
-            if pos[count] <= 3.9 and doBoom[count] == 1:
-                pos[count] += scale(touchOSC.speedData,(1,100),(.1,1))
-            else:
-                pos[count] = 0
-                doBoom[count] = 0
-            count += 1 # keep track of the
-
-
-
-
-        #Dynamically keep track of the min and max pitch
-        if pitch > pitchMax:
-            pitchMax = pitch
-        if pitch < pitchMin and pitch > 20:
-            pitchMin = pitch
-        #Dynamically keep track of the min and max volume
-        if volume > volumeMax:
-            volumeMax = volume
-        if volume < volumeMin and volume > 2.5:
-            volumeMin = volume
-
-        #every 2 seconds try to move the pitch and volume in
-        if countByTwo < t and volumeMin * 1.5 < volumeMax:
-            volumeMax *= .9
-            volumeMin *= 1.1
-        if countByTwo < t and pitchMin * 1.5 < pitchMax:
-            pitchMax *= .9
-            pitchMin *= 1.1
-        if countByTwo < t:
-            countByTwo += 2
-
-
-        #print volume
-        # print "pitch color: %i" % pitchColor
-        print ("pitch: %f ")% pitch
-        print ("pitchMax: %f ")% pitchMax
-        print ("pitchMin: %f ")% pitchMin
-        print tolerance
-        print ("volumeMax: %f ")% volumeMax
-        print ("volumeMin: %f ")% volumeMin
-        print ("volume %f") % volume
-        print delay
-        print
-        # print ("time: %f") % t
-        # print ("count by two: %i") % countByTwo
-        # print loopCount
-        # print ("Loops per sec: %i ") % int(loopCount / t)
-        # print
-        print
-        print scale(volume, (volumeMin,volumeMax), (9,0))
-        print
-        pixels = [musicv2(t, coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]
-        client.put_pixels(pixels, channel=0)
-    else:
-        pixels = [pixel_color(t, coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]
-        client.put_pixels(pixels, channel=0)
-
-
-    if touchOSC.kill == 1:
-        killSwitch()
-    if touchOSC.system11 == 1:
-        restartPython()
-    elif touchOSC.system21 == 1:
-        killSwitch()
-    elif touchOSC.system31 == 1:
-        restartPi()
-    elif touchOSC.system41 == 1:
-        shutdownPi()
-    audio.run = run_audio
-    touchOSC.run = run_touchOSC
