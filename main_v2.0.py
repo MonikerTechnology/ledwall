@@ -311,7 +311,7 @@ try:
 
 
 except KeyboardInterrupt:
-    print 'Interrupted'
+    print '\nInterrupt detected'
     # Kill fadecandy server
     print "killing fadecandy server"
     os.system("sudo kill $(ps aux | grep 'fadecandy' | awk '{print $2}')")
