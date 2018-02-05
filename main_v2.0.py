@@ -285,7 +285,7 @@ sleepFPS = .03 # Guess!
 loopCount = 0 # to track FPS
 
 
-setMode():  
+def setMode():  
     if 1: 
         print "Empty mode"
     elif 0:
