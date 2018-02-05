@@ -298,7 +298,7 @@ while run_main == True:
 
 
 
-    pixels = [rainbow(t*scale(touchOSC.speedData,(1,100),(.05,2)), coord, ii, n_pixels, random_values) for ii, coord in enumerate(coordinates)]
+    pixels = [rainbow(t*scale(10,(1,100),(.05,2)), coord, ii, n_pixels, random_values) for ii, coord in enumerate(coordinates)]
     client.put_pixels(pixels, channel=0)
     # time.sleep(1 / options.fps) # ranbow (lava lamp)
 
