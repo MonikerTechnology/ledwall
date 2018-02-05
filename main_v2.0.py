@@ -241,7 +241,12 @@ def rainbow(t, coord, ii, n_pixels, random_values):
     return (r*250, g*250, b*250)
 
 
-
+def pixel_color(t, coord, ii, n_pixels):
+    r,g,b = colorOSC
+    r *= .95
+    g *= .95
+    b *= .95
+    return (r,g,b)
 
 
 #-------------------------------------------------------------------------------
