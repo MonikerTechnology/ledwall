@@ -25,6 +25,7 @@ var SWITCH = {
           if(err) { return console.log(err); }
           console.log("...LEDswitch is now on.");
           client.publish(lightTopic, 'rainbowX');
+          SWITCH.powerOn = false;
     } else {
           SWITCH.powerOn = false;
           if(err) { return console.log(err); }
