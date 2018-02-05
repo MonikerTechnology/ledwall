@@ -217,7 +217,7 @@ def on_message(MQTTclient, userdata, message):
         print MQTTMessage[8:11]
         print MQTTMessage[11:14]
         print MQTTMessage[14:17]
-        h = 0, s = 0, v = 0
+      
         r,g,b = colorsys.hsv_to_rgb(int(MQTTMessage[8:11]), int(MQTTMessage[11:14]), MQTTMessage[14:17])
         print r
         print g
