@@ -78,6 +78,27 @@ Then `sudo reboot`
 - `sudo apt-get install git`
 - `sudo apt-get install Pure-FTPd` (This will work as is, but you probably should google how to secure it)
 
+
+### Install Everything for HomeKit
+
+#### HAP-nodeJS
+- https://github.com/KhaosT/HAP-NodeJS
+
+#### MQTT
+- Mosquitto (maybe not needed? def good for testing)
+  - https://mosquitto.org/2013/01/mosquitto-debian-repository/
+  - if you need an updated repo
+    - 	sudo wget http://repo.mosquitto.org/debian/mosquitto-stretch.list
+- MQTT for node or npm or something? Needed for HAP-NodeJS
+  - sudo npm install node
+- Local client for testing
+  - apt-get install mosquitto mosquitto-clients 
+- To test open two terminals and enter the following:
+  - mosquitto_sub -t "/test/topic"
+  - mosquitto_pub -t "/test/topic" -m "HELLO"
+
+
+
 ### Install FadeCandy server:
 `git clone https://github.com/scanlime/fadecandy.git`
 - We should put this into the same folder as the rest of our project so that it will work with the launch scripts later

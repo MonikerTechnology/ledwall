@@ -7,6 +7,7 @@ import optparse
 from random import randint
 import random
 import os
+import colorsys
 
 # My custom
 import opc
@@ -210,10 +211,20 @@ def on_message(MQTTclient, userdata, message):
     # musicXXX  None
     # offXXXXX  None
 
-    if mode == "something": 
+    # Maybe use this for initial set up?
+    if mode == "HSVXXXXX": 
+        print "HSV mode"
+        print MQTTMessage[8:11]
+        print MQTTMessage[11:14]
+        print MQTTMessage[14:17]
+        h = 0, s = 0, v = 0
+        r,g,b = colorsys.hsv_to_rgb(int(MQTTMessage[8:11]), int(MQTTMessage[11:14]), MQTTMessage[14:17])
+        print r
+        print g
+        print b
+    elif mode == "offXXXXX":
         print "Empty mode"
-    elif mode == "something":
-        print "Empty mode"
+        #make blank???
     elif mode == "rainbowX":
         print "rainbowX mode"
 
@@ -376,8 +387,11 @@ try:
         #----------------------------------------------
 
         if mode == "rainbowX":
-            print "so may loops"
             pixels = [rainbow(t*scale(30,(1,100),(.05,2)), coord, ii, n_pixels, random_values) for ii, coord in enumerate(coordinates)]
+            client.put_pixels(pixels, channel=0)
+        elif mode == "offXXXXX":
+            mothing = 0
+            pixels = [pixel_color(t, coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]
             client.put_pixels(pixels, channel=0)
         else: # catch all maybe do loading
             nothing = 0
