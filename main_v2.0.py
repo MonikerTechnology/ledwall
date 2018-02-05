@@ -262,7 +262,7 @@ loopCount = 0 # to track FPS
 
 
 random_values = [random.random() for ii in range(n_pixels)]
-def main():
+try:
     while run_main == True:
 
         # set looping variables
@@ -291,17 +291,8 @@ def main():
 
         pixels = [rainbow(t*scale(10,(1,100),(.05,2)), coord, ii, n_pixels, random_values) for ii, coord in enumerate(coordinates)]
         client.put_pixels(pixels, channel=0)
-        # time.sleep(1 / options.fps) # ranbow (lava lamp)
 
 
-        # call the function and draw the pixels
-
-        #pixels = [pixel_color(t, coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]
-        #client.put_pixels(pixels, channel=0)
-
-
-try:
-    main()
 except KeyboardInterrupt:
     print 'Interrupted'
     try:
