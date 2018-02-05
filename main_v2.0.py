@@ -28,20 +28,23 @@ except ImportError:
 
 print
 print
-print " _      ___________   _    _       _ _" 
-print "| |    |  ___|  _  \ | |  | |     | | |"
-print "| |    | |__ | | | | | |  | | __ _| | |"
-print "| |    |  __|| | | | | |/\| |/ _` | | |"
-print "| |____| |___| |/ /  \  /\  / (_| | | |"
-print "\_____/\____/|___/    \/  \/ \__,_|_|_|"
-print
-print
-print
+print "__/\\\______________/\\\\\\\\\\\\\\\__/\\\\\\\\\\\\_______________/\\\______________/\\\_________________/\\\\\\_____/\\\\\\____   "     
+print " _\/\\\_____________\/\\\///////////__\/\\\////////\\\____________\/\\\_____________\/\\\________________\////\\\____\////\\\____    "   
+print "  _\/\\\_____________\/\\\_____________\/\\\______\//\\\___________\/\\\_____________\/\\\___________________\/\\\_______\/\\\____     " 
+print "   _\/\\\_____________\/\\\\\\\\\\\_____\/\\\_______\/\\\___________\//\\\____/\\\____/\\\___/\\\\\\\\\_______\/\\\_______\/\\\____     "
+print "    _\/\\\_____________\/\\\///////______\/\\\_______\/\\\____________\//\\\__/\\\\\__/\\\___\////////\\\______\/\\\_______\/\\\____    "
+print "     _\/\\\_____________\/\\\_____________\/\\\_______\/\\\_____________\//\\\/\\\/\\\/\\\______/\\\\\\\\\\_____\/\\\_______\/\\\____   "
+print "      _\/\\\_____________\/\\\_____________\/\\\_______/\\\_______________\//\\\\\\//\\\\\______/\\\/////\\\_____\/\\\_______\/\\\____  "
+print "      _\/\\\\\\\\\\\\\\\_\/\\\\\\\\\\\\\\\_\/\\\\\\\\\\\\/_________________\//\\\__\//\\\______\//\\\\\\\\/\\__/\\\\\\\\\__/\\\\\\\\\_ "
+print "        _\///////////////__\///////////////__\////////////____________________\///____\///________\////////\//__\/////////__\/////////__"
+print 
+print 
+print "SETUP"
 
 #-------------------------------------------------------------------------------
 # Try to start fadecandy server 
 try:
-    print("Trying to start FC server\n")
+    print("Trying to start FC server...")
     os.system("sudo /home/pi/fadecandy/bin/fcserver-rpi /home/pi/fadecandy/bin/fcserver_config.json &")
     print("\nBackgrounding FC server and continuing with python\n")
 except:
@@ -168,19 +171,23 @@ print
 def on_message(client, userdata, message):
         print("message received " ,str(message.payload.decode("utf-8")))
         print("message topic=",message.topic)
+        MQTTMessage = str(message.payload.decode("utf-8"))
+        print MQTTMessage
         #print("message qos=",message.qos)
         #print("message retain flag=",message.retain)
 
 broker_address="localhost" #Controled locally
 topic = "/test"
 
+print
+print "MQTT initializing..."
 print("creating new instance")
 MQTTclient = mqtt.Client("P1") #create new instance
 MQTTclient.on_message=on_message #attach function to callback
 print("connecting to broker")
 MQTTclient.connect(broker_address) #connect to broker
 MQTTclient.loop_start() #start the loop
-print("Subscribing to topic",topic)
+print("Subscribing to topic",topic,"\n")
 MQTTclient.subscribe(topic)
 
 #print("Publishing message to topic","/test")
