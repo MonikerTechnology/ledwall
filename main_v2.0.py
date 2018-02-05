@@ -41,6 +41,7 @@ print
 try:
     print("Trying to start FC server\n")
     os.system("sudo /home/pi/fadecandy/bin/fcserver-rpi /home/pi/fadecandy/bin/fcserver_config.json &")
+    print("\nBackgrounding FC server and continuing with python\n")
 except:
     print("Maybe it is already running?\n")
 
