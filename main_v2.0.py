@@ -191,7 +191,8 @@ print "(_/\/\_)(___/\\\ (__)  (__) " #double \\ to escape
 broker_address="localhost" #Controled locally
 topic = "/LEDwall"
 
-def on_message(client, userdata, message):
+#def on_message(client, userdata, message):
+def on_message(MQTTclient, userdata, message):
     #print("message received " ,str(message.payload.decode("utf-8")))
     #print("message topic=",message.topic)
     MQTTMessage = str(message.payload.decode("utf-8"))
