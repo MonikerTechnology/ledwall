@@ -219,9 +219,9 @@ def on_message(MQTTclient, userdata, message):
         print MQTTMessage[20:24]
       
         r,g,b = colorsys.hsv_to_rgb(float(MQTTMessage[8:13]), float(MQTTMessage[14:19]), float(MQTTMessage[20:22]))
-        print r * 255
-        print g * 255
-        print b * 255
+        print r 
+        print g 
+        print b 
     elif mode == "offXXXXX":
         print "Empty mode"
         #make blank???
