@@ -265,39 +265,39 @@ random_values = [random.random() for ii in range(n_pixels)]
 def main():
     while run_main == True:
 
-    # set looping variables
-    t = time.time() - start_time # keep track of how long the program has been running
+        # set looping variables
+        t = time.time() - start_time # keep track of how long the program has been running
 
-    #----------------------------------------------
-    # this tracks the FPS and adjusts the delay to keep it consistant.
-    loopCount += 1
-    if oneSec < t:
-        oneSec += 1
-        trueFPS = loopCount
-        # print options.fps
-        # print ("Loops per sec: %i") % loopCount
-        # print
-        if trueFPS < options.fps - 1:
-            sleepFPS *= .95
-        elif trueFPS > options.fps + 1:
-            sleepFPS *= 1.05
-        loopCount = 0
-    time.sleep(sleepFPS)
-    # End FPS tracker
-    #----------------------------------------------
-
-
+        #----------------------------------------------
+        # this tracks the FPS and adjusts the delay to keep it consistant.
+        loopCount += 1
+        if oneSec < t:
+            oneSec += 1
+            trueFPS = loopCount
+            # print options.fps
+            # print ("Loops per sec: %i") % loopCount
+            # print
+            if trueFPS < options.fps - 1:
+                sleepFPS *= .95
+            elif trueFPS > options.fps + 1:
+                sleepFPS *= 1.05
+            loopCount = 0
+        time.sleep(sleepFPS)
+        # End FPS tracker
+        #----------------------------------------------
 
 
-    pixels = [rainbow(t*scale(10,(1,100),(.05,2)), coord, ii, n_pixels, random_values) for ii, coord in enumerate(coordinates)]
-    client.put_pixels(pixels, channel=0)
-    # time.sleep(1 / options.fps) # ranbow (lava lamp)
 
 
-    # call the function and draw the pixels
+        pixels = [rainbow(t*scale(10,(1,100),(.05,2)), coord, ii, n_pixels, random_values) for ii, coord in enumerate(coordinates)]
+        client.put_pixels(pixels, channel=0)
+        # time.sleep(1 / options.fps) # ranbow (lava lamp)
 
-    #pixels = [pixel_color(t, coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]
-    #client.put_pixels(pixels, channel=0)
+
+        # call the function and draw the pixels
+
+        #pixels = [pixel_color(t, coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]
+        #client.put_pixels(pixels, channel=0)
 
 
 try:
