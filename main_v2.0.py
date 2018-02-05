@@ -350,6 +350,7 @@ loopCount = 0 # to track FPS
 random_values = [random.random() for ii in range(n_pixels)]
 try:
     while run_main == True:
+        print "Does the main loop run?"
 
         # set looping variables
         t = time.time() - start_time # keep track of how long the program has been running
