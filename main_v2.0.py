@@ -372,7 +372,7 @@ try:
         # End FPS tracker
         #----------------------------------------------
 
-        if mode == rainbowX:
+        if mode == "rainbowX":
             pixels = [rainbow(t*scale(30,(1,100),(.05,2)), coord, ii, n_pixels, random_values) for ii, coord in enumerate(coordinates)]
             client.put_pixels(pixels, channel=0)
         else: # catch all maybe do loading
