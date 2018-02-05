@@ -181,7 +181,12 @@ print
 
 #-------------------------------------------------------------------------------
 # Setup MQTT
+
 mode = "default" #global
+redMultiplier = 0
+greenMultiplier = 0
+blueMultiplier = 0
+
 
 print
 print " __  __  _____  ____  ____ "
@@ -196,6 +201,9 @@ topic = "/LEDwall"
 #def on_message(client, userdata, message):
 def on_message(MQTTclient, userdata, message):
     global mode
+    global redMultiplier
+    global greenMultiplier
+    global blueMultiplier
     #print("message received " ,str(message.payload.decode("utf-8")))
     #print("message topic=",message.topic)
     MQTTMessage = str(message.payload.decode("utf-8"))
@@ -206,7 +214,7 @@ def on_message(MQTTclient, userdata, message):
     mode = MQTTMessage[0:8] # first 8 char is mode
     # Mode      Data
     # rainbowX  None
-    # HSVXXXXX  int int int
+    # HSVXXXXX  0.000,0.850,0.960
     # loadingX  None
     # musicXXX  None
     # offXXXXX  None
@@ -214,14 +222,12 @@ def on_message(MQTTclient, userdata, message):
     # Maybe use this for initial set up?
     if mode == "HSVXXXXX": 
         print "HSV mode"
-        print MQTTMessage[8:13]
-        print MQTTMessage[14:19]
-        print MQTTMessage[20:24]
+        #print MQTTMessage[8:13]
+        #print MQTTMessage[14:19]
+        #print MQTTMessage[20:24]
       
-        r,g,b = colorsys.hsv_to_rgb(float(MQTTMessage[8:13]), float(MQTTMessage[14:19]), float(MQTTMessage[20:24]))
-        print r 
-        print g 
-        print b 
+        redMultiplier, greenMultiplier, blueMultiplier = colorsys.hsv_to_rgb(float(MQTTMessage[8:13]), float(MQTTMessage[14:19]), float(MQTTMessage[20:24]))
+
     elif mode == "offXXXXX":
         print "Empty mode"
         #make blank???
@@ -326,7 +332,7 @@ def rainbow(t, coord, ii, n_pixels, random_values):
     # only do this on live leds, not in the simulator
     r, g, b = color_utils.gamma((r, g, b), 2.2)
 
-    return (r*250, g*250, b*250)
+    return (r*250*redMultiplier, g*250*greenMultiplier, b*250*blueMultiplier)
 
 
 def pixel_color(t, coord, ii, n_pixels):
