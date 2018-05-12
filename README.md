@@ -84,6 +84,35 @@ Then `sudo reboot`
 #### HAP-nodeJS
 - https://github.com/KhaosT/HAP-NodeJS
 
+.service file for HAP-NodeJS
+```
+#
+#Place this file in /etc/systemd/system/name_of_file.service
+#
+#
+#Here are some example commands 
+#	sudo systemctl status -l name_of_file.service
+#	sudo systemctl enable name_of_file.service
+#	sudo systemctl stop name_of_file.service
+#   	sudo systemctl start name_of_file.service
+#   	journalctl -u name_of_file.service
+
+[Unit] 
+Description=HAP-NodejS 
+
+[Service] 
+Type=simple
+
+#Everything must use absolute path
+WorkingDirectory=/home/pi/HAP-NodeJS 
+ExecStartPre=/bin/echo "hap-nodejs.service started" 
+ExecStart=/usr/bin/node /home/pi/HAP-NodeJS/BridgedCore.js 
+ExecStop=/bin/echo "hap-nodejs.services stopped" 
+
+[Install]
+WantedBy=multi-user.target
+```
+
 #### MQTT
 - Mosquitto (maybe not needed? def good for testing)
   - https://mosquitto.org/2013/01/mosquitto-debian-repository/
