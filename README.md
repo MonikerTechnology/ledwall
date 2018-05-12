@@ -1,5 +1,23 @@
-# version_2.0 in progress
+# version_2.0 in progress (did it upload?)
 # 15 x 9 LED art
+
+## Goals for v2.0
+- Error handling
+  - No audio - broken
+   - Lack of sound then display something cool
+  -  No wifi - loading pattern
+  - No OSC
+- HTML wifi set up - auto scan then broadcast if not connected
+  - Physica button??
+- Better start up pattern / test pattern
+- HomeKit- bridge to many local scripts
+  - MQTT
+  - Secondary control….physical? (prolly naw)
+- More/better audio effects
+- Update github
+- Cool MOTD ssh banner
+- More secure?
+
 
 ## Reminders:
 - Upload remote file from TouchOSC app!!
@@ -59,6 +77,56 @@ Then `sudo reboot`
 ### Instal tools:
 - `sudo apt-get install git`
 - `sudo apt-get install Pure-FTPd` (This will work as is, but you probably should google how to secure it)
+
+
+### Install Everything for HomeKit
+
+#### HAP-nodeJS
+- https://github.com/KhaosT/HAP-NodeJS
+
+.service file for HAP-NodeJS
+```
+#
+#Place this file in /etc/systemd/system/name_of_file.service
+#
+#
+#Here are some example commands 
+#	sudo systemctl status -l name_of_file.service
+#	sudo systemctl enable name_of_file.service
+#	sudo systemctl stop name_of_file.service
+#   	sudo systemctl start name_of_file.service
+#   	journalctl -u name_of_file.service
+
+[Unit] 
+Description=HAP-NodejS 
+
+[Service] 
+Type=simple
+
+#Everything must use absolute path
+WorkingDirectory=/home/pi/HAP-NodeJS 
+ExecStartPre=/bin/echo "hap-nodejs.service started" 
+ExecStart=/usr/bin/node /home/pi/HAP-NodeJS/BridgedCore.js 
+ExecStop=/bin/echo "hap-nodejs.services stopped" 
+
+[Install]
+WantedBy=multi-user.target
+```
+
+#### MQTT
+- Mosquitto (maybe not needed? def good for testing)
+  - https://mosquitto.org/2013/01/mosquitto-debian-repository/
+  - if you need an updated repo
+    - 	sudo wget http://repo.mosquitto.org/debian/mosquitto-stretch.list
+- MQTT for node or npm or something? Needed for HAP-NodeJS
+  - sudo npm install node
+- Local client for testing
+  - apt-get install mosquitto mosquitto-clients 
+- To test open two terminals and enter the following:
+  - mosquitto_sub -t "/test/topic"
+  - mosquitto_pub -t "/test/topic" -m "HELLO"
+
+
 
 ### Install FadeCandy server:
 `git clone https://github.com/scanlime/fadecandy.git`
