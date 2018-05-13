@@ -55,6 +55,7 @@ acc.addService(Service.Switch, "Switch")
   .getCharacteristic(Characteristic.On)
   .on('get', function(callback) {
     console.log("The current state is %s", state ? "on" : "off");
+    //send message
     client.publish(lightTopic, 'unflip');
     callback(null, state);
   })
