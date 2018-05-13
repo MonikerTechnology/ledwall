@@ -8,7 +8,8 @@ Usage::
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import logging
 import time
-import main_v2.1
+import main
+
 try:
     import json
 except ImportError:
@@ -64,6 +65,8 @@ def start(server_class=HTTPServer, handler_class=S, port=321):
         try:
             postDic = json.loads(post_data.decode('utf-8'))
             print(postDic)
+            if (postDic["type"] == "power"):
+                postDic["power"]
         except:
             logging.info("Bad format, could not convert to JSON")
         #httpd.serve_forever()
