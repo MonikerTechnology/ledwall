@@ -79,8 +79,8 @@ def startListening():
     return ()
 
 #t_HTTPserver = threading.Thread()
-def startHTTPserver():
-    HTTPserver.start()
+def startHTTPserver(port):
+    HTTPserver.start(port)
     return()
 
 # Main kill switch to stop the threads
