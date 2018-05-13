@@ -240,7 +240,7 @@ def on_message(MQTTclient, userdata, message):
         mode = MQTTMessage[0:8]
 
     else: # Catch all - maybe loading pattern?
-        (print "Empty mode - catch all")
+        print("Empty mode - catch all")
 
 
 print
