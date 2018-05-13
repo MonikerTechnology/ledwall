@@ -17,26 +17,26 @@ var lightTopic = '/LEDwall'
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
 
 // here's a fake hardware device that we'll expose to HomeKit
-// var SWITCH = {
-//     setPowerOn: function(on) {
-//     console.log("Turning the LEDWallPower %s!...", on ? "on" : "off");
-//     if (on) {
-//           SWITCH.powerOn = true;
-//           if(err) { return console.log(err); }
-//           console.log("...LEDWallPower is now on.");
-//           client.publish(lightTopic, 'rainbowX');
-//           SWITCH.powerOn = false;
-//     } else {
-//           SWITCH.powerOn = false;
-//           if(err) { return console.log(err); }
-//           console.log("...LEDWallPower is now off.");
-//           client.publish(lightTopic, 'offXXXXX');
-//     }
-//   },
-//     identify: function() {
-//     console.log("Identify the LEDWallPower.");
-//     }
-// }
+var SWITCH = {
+    setPowerOn: function(on) {
+    console.log("Turning the LEDWallPower %s!...", on ? "on" : "off");
+    if (on) {
+          SWITCH.powerOn = true;
+          if(err) { return console.log(err); }
+          console.log("...LEDWallPower is now on.");
+          //client.publish(lightTopic, 'rainbowX');
+          SWITCH.powerOn = false;
+    } else {
+          SWITCH.powerOn = false;
+          if(err) { return console.log(err); }
+          console.log("...LEDWallPower is now off.");
+          //client.publish(lightTopic, 'offXXXXX');
+    }
+  },
+    identify: function() {
+    console.log("Identify the LEDWallPower.");
+    }
+}
 
 // // MQTT Setup
 // var mqtt = require('mqtt');
