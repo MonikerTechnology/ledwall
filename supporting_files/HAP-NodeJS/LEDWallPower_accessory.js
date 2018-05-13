@@ -17,13 +17,18 @@ var lightTopic = '/LEDwall'
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
 
+
+var reqBody = {"sometextasdfasf asdf asdf asdf asdf asdf ":"aSDF"};
+req.write(JSON.stringify(reqBody));
+
 var options = {
   host: "192.168.1.151",
   port: 1234,
   path: "/",
   method: "POST",
   headers: {
-    "Content-Type": "application/x-www-form-urlencoded"
+    "Content-Type": "application/json",
+    "Content-Length": Buffer.byteLength(reqBody)
   }
 };
 
@@ -40,8 +45,7 @@ var req = http.request(options, function (res) {
   });
 });
 //(JSON.stringify(data))
-var reqBody = {"sometextasdfasf asdf asdf asdf asdf asdf ":"aSDF"};
-req.write(JSON.stringify(reqBody));
+
 req.end();
 
 
