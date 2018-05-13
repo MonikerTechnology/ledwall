@@ -2,61 +2,54 @@ var Accessory = require('../').Accessory;
 var Service = require('../').Service;
 var Characteristic = require('../').Characteristic;
 var uuid = require('../').uuid;
-var http = require("http");
+var http = require("http"); //Added for the http post requests
 var err = null; // in case there were any problems
 //
 
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
 var name = "LEDWallPower";                                       //Name to Show to IOS
-var UUID = "hap-nodejs:accessories:LEDWallPower";     //Change the RGBLight to something unique for each light - this should be unique for each node on your system
+var UUID = "hap-nodejs:accessories:LEDWallPower";     //Change the RGBLight to something unique for each light - this should be unique for each node on your system - also find uuid.generate and change it to match
 var USERNAME = "BB:A6:AC:2C:5D:C1";              //This must also be unique for each node - make sure you change it!
 
-var MQTT_IP = 'localhost'
-var lightTopic = '/LEDwall'
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
 
-var postData;
+var postData; //This is where the post data gets stored for calling post(postdata);
 function post(data) {
-var reqBody = JSON.stringify(data);
+  var reqBody = JSON.stringify(data); //Convert JSON to string so it can be measured and sent
 
-var options = {
-  host: "192.168.1.151",
-  port: 1234,
-  path: "/",
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-    "Content-Length": Buffer.byteLength(reqBody)
-  }
-};
+  var options = {
+    host: "localhost",
+    port: 1234,
+    path: "/",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Content-Length": Buffer.byteLength(reqBody) //Gotcha!
+    }
+  };
 
-var req = http.request(options, function (res) {
-  var responseString = "";
+  var req = http.request(options, function (res) {
+    var responseString = "";
 
-  res.on("data", function (data) {
-      responseString += data;
-      // save all the data from response
+    res.on("data", function (data) {
+        responseString += data;
+        // save all the data from response
+    });
+    res.on("end", function () {
+        console.log(responseString); 
+        // print to console when response ends
+    });
   });
-  res.on("end", function () {
-      console.log(responseString); 
-      // print to console when response ends
-  });
-});
 
-req.on('error', function(err) {
-  // Error handling here
-  console.log(err);
-});
-req.write(reqBody);
-req.end();
+  req.on('error', function(err) { //catch errors if the connection fails i.e. the server on the other end isn't running or maybe the adress is wrong
+    // Error handling here
+    console.log(err);
+  });
+  req.write(reqBody); //Send the data
+  req.end(); //Close the connection - change or add delay to recive
 }
-
-// process.on('uncaughtException', function (err) {
-//   console.log(err);
-// });
-
 
 
 // here's a fake hardware device that we'll expose to HomeKit
@@ -74,7 +67,7 @@ var SWITCH = {
           //console.log(options);
           //req.write(reqBody);
           //req.end();
-          postData = {"sometextasdfasf asdf asdf asdf asdf asdf ":"aSDF"};
+          postData = {"power":"1"};
           post(postData);
           SWITCH.powerOn = false;
     } else {
@@ -83,6 +76,8 @@ var SWITCH = {
           console.log("...LEDWallPower is now off.");
           //req.write(reqBody);
           //client.publish(lightTopic, 'offXXXXX');
+          postData = {"power":"0"};
+          post(postData);
     }
   },
     identify: function() {
@@ -90,17 +85,6 @@ var SWITCH = {
     }
 }
 
-// // MQTT Setup
-// var mqtt = require('mqtt');
-// var options = {
-//   port: 1883,
-//   host: MQTT_IP,
-//   clientId: 'FGAK35243'
-// };
-// var client = mqtt.connect(options);
-// client.on('message', function(topic, message) {
-
-// });
 
 // Generate a consistent UUID for our LEDWallPower Accessory that will remain the same even when
 // restarting our server. We use the `uuid.generate` helper function to create a deterministic
