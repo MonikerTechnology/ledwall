@@ -211,9 +211,9 @@ print
 
 mode = "default" #global
 lastMode = ""
-redMultiplier =100
-greenMultiplier = 100
-blueMultiplier = 100
+redMultiplier = 1
+greenMultiplier = 1
+blueMultiplier = 1
 
 """
 print
@@ -442,8 +442,8 @@ try:
         # End FPS tracker
         #----------------------------------------------
         
-        #if HTTPserver.mode == "rainbow" and HTTPserver.power == 1:
-        if True:
+        if HTTPserver.mode == "rainbow" and HTTPserver.power == 1:
+        #if True:
             pixels = [rainbow(t*scale(30,(1,100),(.05,2)), coord, ii, n_pixels, random_values) for ii, coord in enumerate(coordinates)]
             client.put_pixels(pixels, channel=0)
         elif HTTPserver.mode == "off" or HTTPserver.power == 0:
