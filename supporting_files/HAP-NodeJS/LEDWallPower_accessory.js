@@ -18,7 +18,7 @@ var lightTopic = '/LEDwall'
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
 
 
-var reqBody = {"sometextasdfasf asdf asdf asdf asdf asdf ":"aSDF"};
+var reqBody = JSON.stringify({"sometextasdfasf asdf asdf asdf asdf asdf ":"aSDF"});
 
 
 var options = {
@@ -45,7 +45,7 @@ var req = http.request(options, function (res) {
   });
 });
 //(JSON.stringify(data))
-req.write(JSON.stringify(reqBody));
+req.write(reqBody);
 //req.end();
 
 
