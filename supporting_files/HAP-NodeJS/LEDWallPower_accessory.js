@@ -17,8 +17,9 @@ var lightTopic = '/LEDwall'
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
 
-function post() {
-var reqBody = JSON.stringify({"sometextasdfasf asdf asdf asdf asdf asdf ":"aSDF"});
+var postData;
+function post(data) {
+var reqBody = JSON.stringify(data);
 
 var options = {
   host: "192.168.1.151",
@@ -73,7 +74,8 @@ var SWITCH = {
           //console.log(options);
           //req.write(reqBody);
           //req.end();
-          post();
+          postData = {"sometextasdfasf asdf asdf asdf asdf asdf ":"aSDF"};
+          post(postData);
           SWITCH.powerOn = false;
     } else {
           SWITCH.powerOn = false;
