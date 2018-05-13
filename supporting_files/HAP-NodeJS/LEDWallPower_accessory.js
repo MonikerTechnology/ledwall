@@ -53,12 +53,6 @@ var SWITCH = {
           if(err) { return console.log(err); }
           console.log("...LEDWallPower is now on.");
           //client.publish(lightTopic, 'rainbowX');
-          var data = {"HSB":{"Hue":34,"Sat":54,"Bri":200}};
-          var xhr = new XMLHttpRequest();
-          xhr.open('POST', "http://localhost:1234/", true);
-          //xhr.setRequestHeader('Content-Type', 'application/json');
-          //xhr.send(JSON.stringify({"value": "value"}));
-          xhr.send(JSON.stringify(data));
           SWITCH.powerOn = false;
     } else {
           SWITCH.powerOn = false;
