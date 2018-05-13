@@ -289,6 +289,21 @@ MQTTclient.subscribe(topic)
 #client.loop_stop() #stop the loop
 
 """
+
+
+message = HTTPserver.postDic
+mode = "rainbowX"
+power = 0
+
+#power message
+#{"type":"power","power":1}
+
+#HSV message
+#{"type":"HSV","HSV":{"H":123,"S":123,"B":123}}
+
+#mode message
+#{"type":"mode","mode":"rainbow"}
+
 #-------------------------------------------------------------------------------
 # color modes function
 
@@ -424,8 +439,8 @@ try:
         time.sleep(sleepFPS)
         # End FPS tracker
         #----------------------------------------------
-        mode == "rainbowX"
-        if mode == "rainbowX":
+        
+        if mode == "rainbow" and power == 1:
             pixels = [rainbow(t*scale(30,(1,100),(.05,2)), coord, ii, n_pixels, random_values) for ii, coord in enumerate(coordinates)]
             client.put_pixels(pixels, channel=0)
         elif mode == "offXXXXX":

@@ -63,7 +63,7 @@ var SWITCH = {
           SWITCH.powerOn = true;
           if(err) { return console.log(err); }
           console.log("...LEDWallPower is now on.");
-          postData = {"power":"1"}; //set power to on
+          postData = {"power":1}; //set power to on
           post(postData); //call the function to send the data
           SWITCH.powerOn = false;
     } else {
@@ -72,7 +72,7 @@ var SWITCH = {
           console.log("...LEDWallPower is now off.");
           //req.write(reqBody);
           //client.publish(lightTopic, 'offXXXXX');
-          postData = {"power":"0"};
+          postData = {"power":0};
           post(postData);
     }
   },

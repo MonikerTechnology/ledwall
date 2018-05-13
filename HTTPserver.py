@@ -8,6 +8,11 @@ Usage::
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import logging
 import time
+import main_v2.1
+try:
+    import json
+except ImportError:
+    import simplejson as json
 
 run = True
 
@@ -29,9 +34,12 @@ class S(BaseHTTPRequestHandler):
         post_data = self.rfile.read(content_length) # <--- Gets the data itself
         logging.info("POST request,\nPath: %s\nHeaders:\n%s\n\nBody:\n%s\n",
                 str(self.path), str(self.headers), post_data.decode('utf-8'))
-        print
-        print("Data: (test)")
-        #print(post_data.decode('utf-8'))
+        #print
+
+        #message = post_data.decode('utf-8')
+        #message = json.loads(message)
+        #message["state"]
+
         
 
         self._set_response()
@@ -40,7 +48,7 @@ class S(BaseHTTPRequestHandler):
 
 def start(server_class=HTTPServer, handler_class=S, port=321):
     global httpd
-    global data
+    global postDic
     logging.basicConfig(level=logging.INFO)
     server_address = ('', port)
     httpd = server_class(server_address, handler_class)
@@ -51,14 +59,18 @@ def start(server_class=HTTPServer, handler_class=S, port=321):
 
     while run:
         print("HTTPD still running")
-        
         httpd.handle_request()
-        data = post_data.decode('utf-8')
+        #data = post_data.decode('utf-8')
+        try:
+            postDic = json.loads(post_data.decode('utf-8'))
+            print(postDic)
+        except:
+            logging.info("Bad format, could not convert to JSON")
         #httpd.serve_forever()
     httpd.server_close()
     logging.info('Stopping httpd...\n')
 
-start()
+#start()
 
 # if __name__ == '__main__':
 #     from sys import argv
