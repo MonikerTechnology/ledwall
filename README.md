@@ -86,6 +86,8 @@ Then `sudo reboot`
 #### HAP-nodeJS
 - https://github.com/KhaosT/HAP-NodeJS
 
+Default pairing code: `031-45-154`
+
 .service file for HAP-NodeJS
 ```
 #
