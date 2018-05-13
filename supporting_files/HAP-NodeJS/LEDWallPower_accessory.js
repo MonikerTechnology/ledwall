@@ -17,77 +17,77 @@ var lightTopic = '/LEDwall'
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
 
 // here's a fake hardware device that we'll expose to HomeKit
-var SWITCH = {
-    setPowerOn: function(on) {
-    console.log("Turning the LEDPower %s!...", on ? "on" : "off");
-    if (on) {
-          SWITCH.powerOn = true;
-          if(err) { return console.log(err); }
-          console.log("...LEDPower is now on.");
-          client.publish(lightTopic, 'rainbowX');
-          SWITCH.powerOn = false;
-    } else {
-          SWITCH.powerOn = false;
-          if(err) { return console.log(err); }
-          console.log("...LEDPower is now off.");
-          client.publish(lightTopic, 'offXXXXX');
-    }
-  },
-    identify: function() {
-    console.log("Identify the LEDPower.");
-    }
-}
+// var SWITCH = {
+//     setPowerOn: function(on) {
+//     console.log("Turning the LEDWallPower %s!...", on ? "on" : "off");
+//     if (on) {
+//           SWITCH.powerOn = true;
+//           if(err) { return console.log(err); }
+//           console.log("...LEDWallPower is now on.");
+//           client.publish(lightTopic, 'rainbowX');
+//           SWITCH.powerOn = false;
+//     } else {
+//           SWITCH.powerOn = false;
+//           if(err) { return console.log(err); }
+//           console.log("...LEDWallPower is now off.");
+//           client.publish(lightTopic, 'offXXXXX');
+//     }
+//   },
+//     identify: function() {
+//     console.log("Identify the LEDWallPower.");
+//     }
+// }
 
-// MQTT Setup
-var mqtt = require('mqtt');
-var options = {
-  port: 1883,
-  host: MQTT_IP,
-  clientId: 'FGAK35243'
-};
-var client = mqtt.connect(options);
-client.on('message', function(topic, message) {
+// // MQTT Setup
+// var mqtt = require('mqtt');
+// var options = {
+//   port: 1883,
+//   host: MQTT_IP,
+//   clientId: 'FGAK35243'
+// };
+// var client = mqtt.connect(options);
+// client.on('message', function(topic, message) {
 
-});
+// });
 
-// Generate a consistent UUID for our LEDPower Accessory that will remain the same even when
+// Generate a consistent UUID for our LEDWallPower Accessory that will remain the same even when
 // restarting our server. We use the `uuid.generate` helper function to create a deterministic
 // UUID based on an arbitrary "namespace" and the accessory name.
 var switchUUID = uuid.generate('hap-nodejs:accessories:Switch');
 
 // This is the Accessory that we'll return to HAP-NodeJS that represents our fake light.
-var LEDPower = exports.accessory = new Accessory(name, switchUUID);
+var LEDWallPower = exports.accessory = new Accessory(name, switchUUID);
 
 // Add properties for publishing (in case we're using Core.js and not BridgedCore.js)
-LEDPower.username = "1A:2B:3C:4D:5D:FE";
-LEDPower.pincode = "031-45-154";
+LEDWallPower.username = "1A:2B:3C:4D:5D:FE";
+LEDWallPower.pincode = "031-45-154";
 
 // set some basic properties (these values are arbitrary and setting them is optional)
-LEDPower
+LEDWallPower
   .getService(Service.AccessoryInformation)
   .setCharacteristic(Characteristic.Manufacturer, "Moniker Technology")
   .setCharacteristic(Characteristic.Model, "Rev-1")
   .setCharacteristic(Characteristic.SerialNumber, "A1S2NASF88EW");
 
 // listen for the "identify" event for this Accessory
-LEDPower.on('identify', function(paired, callback) {
+LEDWallPower.on('identify', function(paired, callback) {
   SWITCH.identify();
   callback(); // success
 });
 
-// Add the actual LEDPower Service and listen for change events from iOS.
+// Add the actual LEDWallPower Service and listen for change events from iOS.
 // We can see the complete list of Services and Characteristics in `lib/gen/HomeKitTypes.js`
-LEDPower
-  .addService(Service.Switch, "LEDPower") // services exposed to the user should have "names" like "Fake Light" for us
+LEDWallPower
+  .addService(Service.Switch, "LEDWallPower") // services exposed to the user should have "names" like "Fake Light" for us
   .getCharacteristic(Characteristic.On)
   .on('set', function(value, callback) {
     SWITCH.setPowerOn(value);
-    callback(); // Our fake LEDPower is synchronous - this value has been successfully set
+    callback(); // Our fake LEDWallPower is synchronous - this value has been successfully set
   });
 
 // We want to intercept requests for our current power state so we can query the hardware itself instead of
 // allowing HAP-NodeJS to return the cached Characteristic.value.
-LEDPower
+LEDWallPower
   .getService(Service.Switch)
   .getCharacteristic(Characteristic.On)
   .on('get', function(callback) {
