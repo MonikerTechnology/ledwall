@@ -48,6 +48,10 @@ req.write(reqBody);
 req.end();
 }
 
+process.on('uncaughtException', function (err) {
+  console.log(err);
+});
+
 // here's a fake hardware device that we'll expose to HomeKit
 var SWITCH = {
   
