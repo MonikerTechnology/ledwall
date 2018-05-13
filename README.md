@@ -61,7 +61,7 @@ Ctrl + t to check the status
 `sudo raspi-config`
 - Enable autologin
 - Change password
-- Change hostname (piledwall)
+- Change hostname (ledwall)
 - Enable SSH (if you don't know how to secure SSH, you should google a tutorial)
 
 ### Set up wifi via command line:
