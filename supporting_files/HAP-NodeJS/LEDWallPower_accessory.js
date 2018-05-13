@@ -48,7 +48,12 @@ req.write(reqBody);
 req.end();
 }
 
-process.on('uncaughtException', function (err) {
+// process.on('uncaughtException', function (err) {
+//   console.log(err);
+// });
+
+req.on('error', function(err) {
+  // Error handling here
   console.log(err);
 });
 
