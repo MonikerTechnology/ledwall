@@ -12,10 +12,9 @@ import colorsys
 # My custom
 import opc
 import color_utils
-#import paho.mqtt.client as mqtt
 
-#
-#import thread
+import HTTPserver
+import requests
 import threading
 
 import sys
@@ -65,38 +64,41 @@ except:
 
 
 #-------------------------------------------------------------------------------
-# Threads for audio input and touchOSC
+# Threads for audio input and the threading all kill switch stuff
 
 # Kill switches
 run_audio = True
-run_touchOSC = True
-run_check_touchOSC = True
 run_main = True
+run_HTTPserver = True
 
-# Checks the touchOSC server for input, launch via thread
-def check_touchOSC():
-    global run_check_touchOSC
-    while run_check_touchOSC == True:
-        touchOSC.server.handle_request()
-    touchOSC.server.close()
-    return ()
+
 
 # Starts listening, launch via thread
 def startListening():
     audio.startAudio()
     return ()
 
+#t_HTTPserver = threading.Thread()
+def startHTTPserver():
+    HTTPserver.start()
+    return()
+
 # Main kill switch to stop the threads
 def killSwitch():
     end = "run"
     global run_audio
-    global run_check_touchOSC
     global run_main
+    global run_HTTPserver
     run_audio = False
-    run_check_touchOSC = False
+    
     #sudo kill $(ps aux | grep 'fadecandy' | awk '{print $2}')
     #sudo kill $(ps aux | grep 'main.py' | awk '{print $2}')
     time.sleep(.5)
+    HTTPserver.run = False
+    try: # try to send one last request to kill the server
+            r = requests.get("http://localhost:321")
+        except:
+            pass
     run_main = False
     pixels = [(0,0,0) for ii, coord in enumerate(coordinates)]
     client.put_pixels(pixels, channel=0)
@@ -124,11 +126,19 @@ def scale(val, src, dst):
 
 
 time.sleep(1)
+#-------------------------------------------------------------------------------
+# Threading
 
 
+#add in a check to see if it stopped and restart it
+t_HTTPserver = threading.Thread(target=startHTTPserver, args=("321"))
+
+#start
+t_HTTPserver.start()
+    
 
 #-------------------------------------------------------------------------------
-# command line
+# command line options for main
 
 parser = optparse.OptionParser()
 parser.add_option('-l', '--layout', dest='layout', default='ledwall15x9.json',
@@ -422,8 +432,9 @@ except KeyboardInterrupt:
     # Kill fadecandy server
     print("killing fadecandy server")
     os.system("sudo kill $(ps aux | grep 'fadecandy' | awk '{print $2}')")
-    print("Stopping the MQTT loop")
-    MQTTclient.loop_stop() #stop the MQTT loop
+    killSwitch()
+    #print("Stopping the MQTT loop")
+    #MQTTclient.loop_stop() #stop the MQTT loop
     try:
         sys.exit(0)
     except SystemExit:
