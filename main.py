@@ -417,6 +417,7 @@ loopCount = 0 # to track FPS
 
 random_values = [random.random() for ii in range(n_pixels)]
 try:
+    print("about to start main loop")
     while run_main == True:
         
 
