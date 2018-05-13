@@ -211,9 +211,9 @@ print
 
 mode = "default" #global
 lastMode = ""
-redMultiplier = 0
-greenMultiplier = 0
-blueMultiplier = 0
+redMultiplier =100
+greenMultiplier = 100
+blueMultiplier = 100
 
 """
 print
