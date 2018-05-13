@@ -18,14 +18,10 @@ var lightTopic = '/LEDwall'
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
 
 var options = {
-  host: "127.0.0.1",
+  host: "http://127.0.0.1",
   port: 1234,
   path: "/",
   method: "POST",
-  headers: {
-      "Content-Type": "application/json"
-      
-  }
 };
 
 var req = http.request(options, function (res) {
