@@ -94,19 +94,27 @@ def killSwitch():
     #sudo kill $(ps aux | grep 'fadecandy' | awk '{print $2}')
     #sudo kill $(ps aux | grep 'main.py' | awk '{print $2}')
 
-    print("killing fadecandy server")
-    os.system("sudo kill $(ps aux | grep 'fadecandy' | awk '{print $2}')")
-    time.sleep(.5)
-
     print("killing HTTPserver")
+    print("Sending one last request to kill the HTTPserver")
     HTTPserver.run = False
     try: # try to send one last request to kill the server
         r = requests.get("http://localhost:321")
     except:
         pass
+    time.sleep(.5)
+
+    print
+    print
+    print("killing fadecandy server")
+    os.system("sudo kill $(ps aux | grep 'fadecandy' | awk '{print $2}')")
+    time.sleep(.5)
+
+
 
     print("Killing main")
     run_main = False
+    print
+    print
     print("Is the server thread running " + str(t_HTTPserver.is_alive()))
     pixels = [(0,0,0) for ii, coord in enumerate(coordinates)] #set all the pixels to off
     client.put_pixels(pixels, channel=0)
