@@ -124,11 +124,11 @@ var lightAction = {
     if((newState == true && this.currentState == 0) || (newState == false && this.currentState == 1) ){
       console.log("Setting new outlet state: " + newState.toString());
       if(newState == true){
-        client.publish(lightTopic, 'p1');
+        //client.publish(lightTopic, 'p1');
         this.currentState = 1;
       }
       else{
-        client.publish(lightTopic, 'p0');
+        //client.publish(lightTopic, 'p0');
         this.currentState = 0;
       }
     }
@@ -170,7 +170,7 @@ var lightAction = {
       pubHue = this.currentHue / 360;
       pubSaturation = this.currentSaturation / 100;
       toPublish = 'HSVXXXXX' + pubHue.toFixed(3).toString() + ',' + pubSaturation.toFixed(3).toString() + ',' + pubBrightness.toFixed(3).toString()
-      client.publish(lightTopic, toPublish);
+      //client.publish(lightTopic, toPublish);
 
       this.lastBrightness = this.currentBrightness;
       this.lastHue = this.currentHue;

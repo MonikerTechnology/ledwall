@@ -17,26 +17,32 @@ var lightTopic = '/LEDwall'
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
 
 // here's a fake hardware device that we'll expose to HomeKit
-// var SWITCH = {
-//     setPowerOn: function(on) {
-//     console.log("Turning the LEDswitch %s!...", on ? "on" : "off");
-//     if (on) {
-//           SWITCH.powerOn = true;
-//           if(err) { return console.log(err); }
-//           console.log("...LEDswitch is now on.");
-//           client.publish(lightTopic, 'rainbowX');
-//           SWITCH.powerOn = false;
-//     } else {
-//           SWITCH.powerOn = false;
-//           if(err) { return console.log(err); }
-//           console.log("...LEDswitch is now off.");
-//           client.publish(lightTopic, 'offXXXXX');
-//     }
-//   },
-//     identify: function() {
-//     console.log("Identify the LEDswitch.");
-//     }
-// }
+var SWITCH = {
+    setPowerOn: function(on) {
+    console.log("Turning the LEDswitch %s!...", on ? "on" : "off");
+    if (on) {
+          SWITCH.powerOn = true;
+          if(err) { return console.log(err); }
+          console.log("...LEDswitch is now on.");
+          //client.publish(lightTopic, 'rainbowX');
+          var data = {"HSB":{"Hue":34,"Sat":54,"Bri":200}};
+          var xhr = new XMLHttpRequest();
+          xhr.open('POST', "http://localhost:1234/", true);
+          //xhr.setRequestHeader('Content-Type', 'application/json');
+          //xhr.send(JSON.stringify({"value": "value"}));
+          xhr.send(JSON.stringify(data));
+          SWITCH.powerOn = false;
+    } else {
+          SWITCH.powerOn = false;
+          if(err) { return console.log(err); }
+          console.log("...LEDswitch is now off.");
+          //client.publish(lightTopic, 'offXXXXX');
+    }
+  },
+    identify: function() {
+    console.log("Identify the LEDswitch.");
+    }
+}
 
 // // MQTT Setup
 // var mqtt = require('mqtt');
