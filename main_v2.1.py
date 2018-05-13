@@ -232,11 +232,11 @@ def on_message(MQTTclient, userdata, message):
         redMultiplier, greenMultiplier, blueMultiplier = colorsys.hsv_to_rgb(float(MQTTMessage[8:13]), float(MQTTMessage[14:19]), float(MQTTMessage[20:24]))
 
     elif "offXXXXX" == MQTTMessage[0:8]:
-        (print "Empty mode")
+        print("Empty mode")
         mode = MQTTMessage[0:8]
         #make blank???
     elif "rainbowX" == MQTTMessage[0:8]:
-        (print "rainbowX mode")
+        print("rainbowX mode")
         mode = MQTTMessage[0:8]
 
     else: # Catch all - maybe loading pattern?
