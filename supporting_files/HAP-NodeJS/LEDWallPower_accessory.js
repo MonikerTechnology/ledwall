@@ -2,6 +2,7 @@ var Accessory = require('../').Accessory;
 var Service = require('../').Service;
 var Characteristic = require('../').Characteristic;
 var uuid = require('../').uuid;
+var http = require("http");
 var err = null; // in case there were any problems
 //
 
@@ -16,6 +17,33 @@ var lightTopic = '/LEDwall'
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
 
+var options = {
+  host: "http://localhost:1234",
+  path: "/",
+  method: "POST",
+  headers: {
+      "Content-Type": "application/json"
+      "Authorization": "Bearer token"
+  }
+};
+
+var req = http.request(options, function (res) {
+  var responseString = "";
+
+  res.on("data", function (data) {
+      responseString += data;
+      // save all the data from response
+  });
+  res.on("end", function () {
+      console.log(responseString); 
+      // print to console when response ends
+  });
+});
+
+var reqBody = "sometextasdfasf asdf asdf asdf asdf asdf ";
+req.write(reqBody);
+
+
 // here's a fake hardware device that we'll expose to HomeKit
 var SWITCH = {
     setPowerOn: function(on) {
@@ -25,6 +53,12 @@ var SWITCH = {
           if(err) { return console.log(err); }
           console.log("...LEDWallPower is now on.");
           //client.publish(lightTopic, 'rainbowX');
+          var data = {"HSB":{"Hue":34,"Sat":54,"Bri":200}};
+          var xhr = new XMLHttpRequest();
+          xhr.open('POST', "http://localhost:1234/", true);
+          //xhr.setRequestHeader('Content-Type', 'application/json');
+          //xhr.send(JSON.stringify({"value": "value"}));
+          xhr.send(JSON.stringify(data));
           SWITCH.powerOn = false;
     } else {
           SWITCH.powerOn = false;
