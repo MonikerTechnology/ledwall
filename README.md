@@ -142,6 +142,12 @@ sudo apt-get install python-setuptools
 sudo apt-get install python-pip
 sudo apt-get install python-dev
 ```
+
+Fory python3
+```
+sudo apt-get install python3-pip
+```
+
 #### Modules:
 ```
 sudo apt-get install python-pyaudio
