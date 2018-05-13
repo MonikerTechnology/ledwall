@@ -59,6 +59,11 @@ class S(BaseHTTPRequestHandler):
 def start(server_class=HTTPServer, handler_class=S, port=321):
     global httpd
     global postDic
+    global power
+    global mode
+    global H
+    global S
+    global V
     logging.basicConfig(level=logging.INFO)
     server_address = ('', port)
     httpd = server_class(server_address, handler_class)
