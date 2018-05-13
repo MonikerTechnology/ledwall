@@ -63,14 +63,8 @@ var SWITCH = {
           SWITCH.powerOn = true;
           if(err) { return console.log(err); }
           console.log("...LEDWallPower is now on.");
-          //client.publish(lightTopic, 'rainbowX');
-          //reqBody = JSON.stringify({"sometextasdfasf asdf asdf asdf asdf asdf ":"aSDF"});
-          //console.log(reqBody);
-          //console.log(options);
-          //req.write(reqBody);
-          //req.end();
-          postData = {"power":"1"};
-          post(postData);
+          postData = {"power":"1"}; //set power to on
+          post(postData); //call the function to send the data
           SWITCH.powerOn = false;
     } else {
           SWITCH.powerOn = false;
