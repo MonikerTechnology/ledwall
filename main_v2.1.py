@@ -363,6 +363,7 @@ start_time = time.time()
 #This is the main loop
 delay = 0
 mode = "default"
+#
 
 # fps counter
 oneSec = 0 # moves every second
