@@ -4,6 +4,7 @@
 ## Goals for v2.0
 - Python3
 - Error handling
+  - Auto restart of services
   - No audio - broken
    - Lack of sound then display something cool
   -  No wifi - loading pattern
