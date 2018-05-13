@@ -41,7 +41,7 @@ var req = http.request(options, function (res) {
 });
 //(JSON.stringify(data))
 var reqBody = {"sometextasdfasf asdf asdf asdf asdf asdf ":"aSDF"};
-req.write(JSON.stringify(reqBody);
+req.write(JSON.stringify(reqBody));
 
 
 // here's a fake hardware device that we'll expose to HomeKit
