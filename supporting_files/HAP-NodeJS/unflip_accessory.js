@@ -61,7 +61,7 @@ acc.addService(Service.Switch, "Switch")
   .on('set', function(value, callback) {
     console.log("The switch has been flipped");
     //send message
-    client.publish(lightTopic, 'unflip');
+    //client.publish(lightTopic, 'unflip');
     state = value;
     if(value) setTimeout(unFlip, 100);
     callback();
