@@ -24,14 +24,15 @@ class S(BaseHTTPRequestHandler):
         
 
     def do_POST(self):
+        global post_data
         content_length = int(self.headers['Content-Length']) # <--- Gets the size of data
         post_data = self.rfile.read(content_length) # <--- Gets the data itself
         logging.info("POST request,\nPath: %s\nHeaders:\n%s\n\nBody:\n%s\n",
                 str(self.path), str(self.headers), post_data.decode('utf-8'))
         print
         print("Data: (test)")
-        print(post_data.decode('utf-8'))
-        print
+        #print(post_data.decode('utf-8'))
+        
 
         self._set_response()
         self.wfile.write("POST request for {}".format(self.path).encode('utf-8'))
@@ -39,6 +40,7 @@ class S(BaseHTTPRequestHandler):
 
 def start(server_class=HTTPServer, handler_class=S, port=321):
     global httpd
+    global data
     logging.basicConfig(level=logging.INFO)
     server_address = ('', port)
     httpd = server_class(server_address, handler_class)
@@ -49,12 +51,14 @@ def start(server_class=HTTPServer, handler_class=S, port=321):
 
     while run:
         print("HTTPD still running")
+        
         httpd.handle_request()
+        data = post_data.decode('utf-8')
         #httpd.serve_forever()
     httpd.server_close()
     logging.info('Stopping httpd...\n')
 
-#start()
+start()
 
 # if __name__ == '__main__':
 #     from sys import argv
