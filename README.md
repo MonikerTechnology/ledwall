@@ -20,6 +20,7 @@
 - Update github
 - Cool MOTD ssh banner
 - More secure?
+- HTML status page...mayble with controls
 
 
 ## Reminders:
