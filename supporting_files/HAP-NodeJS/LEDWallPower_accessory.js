@@ -9,7 +9,7 @@ var err = null; // in case there were any problems
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
 var name = "LEDWallPower";                                       //Name to Show to IOS
 var UUID = "hap-nodejs:accessories:LEDWallPower";     //Change the RGBLight to something unique for each light - this should be unique for each node on your system
-var USERNAME = "AC:A6:AC:2C:5D:C1";              //This must also be unique for each node - make sure you change it!
+var USERNAME = "BB:A6:AC:2C:5D:C1";              //This must also be unique for each node - make sure you change it!
 
 var MQTT_IP = 'localhost'
 var lightTopic = '/LEDwall'
