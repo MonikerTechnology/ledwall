@@ -18,7 +18,8 @@ var lightTopic = '/LEDwall'
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
 
 var options = {
-  host: "http://localhost:1234",
+  host: "http://localhost",
+  port: 1234,
   path: "/",
   method: "POST",
   headers: {
