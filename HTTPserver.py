@@ -8,7 +8,15 @@ Usage::
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import logging
 import time
-import main
+#import main
+
+power = 0
+mode = "startup"
+H = 100
+S = 100
+V = 100
+postDic = ""
+
 
 try:
     import json
@@ -66,7 +74,13 @@ def start(server_class=HTTPServer, handler_class=S, port=321):
             postDic = json.loads(post_data.decode('utf-8'))
             print(postDic)
             if (postDic["type"] == "power"):
-                postDic["power"]
+                power = postDic["power"]
+            if (postDic["type"] == "mode"):
+                mode = postDic["mode"]
+            if (postDic["type"] == "HSV"):
+                H = postDic["HSV"]["H"]
+                S = postDic["HSV"]["S"]
+                V = postDic["HSV"]["V"]
         except:
             logging.info("Bad format, could not convert to JSON")
         #httpd.serve_forever()
