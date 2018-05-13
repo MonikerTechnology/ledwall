@@ -93,14 +93,22 @@ def killSwitch():
     
     #sudo kill $(ps aux | grep 'fadecandy' | awk '{print $2}')
     #sudo kill $(ps aux | grep 'main.py' | awk '{print $2}')
+
+    print("killing fadecandy server")
+    os.system("sudo kill $(ps aux | grep 'fadecandy' | awk '{print $2}')")
     time.sleep(.5)
+
+    print("killing HTTPserver")
     HTTPserver.run = False
     try: # try to send one last request to kill the server
         r = requests.get("http://localhost:321")
     except:
         pass
+
+    print("Killing main")
     run_main = False
-    pixels = [(0,0,0) for ii, coord in enumerate(coordinates)]
+    print("Is the server thread running " + str(t_HTTPserver.is_alive()))
+    pixels = [(0,0,0) for ii, coord in enumerate(coordinates)] #set all the pixels to off
     client.put_pixels(pixels, channel=0)
     print
     return ()
@@ -428,13 +436,10 @@ try:
 
 
 except KeyboardInterrupt:
+    print
     print('\nInterrupt detected')
-    # Kill fadecandy server
-    print("killing fadecandy server")
-    os.system("sudo kill $(ps aux | grep 'fadecandy' | awk '{print $2}')")
-    killSwitch()
-    #print("Stopping the MQTT loop")
-    #MQTTclient.loop_stop() #stop the MQTT loop
+    killSwitch() #shut down all the things as gracfully as possible
+
     try:
         sys.exit(0)
     except SystemExit:

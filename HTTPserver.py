@@ -38,9 +38,13 @@ def start(server_class=HTTPServer, handler_class=S, port=321):
     logging.basicConfig(level=logging.INFO)
     server_address = ('', port)
     httpd = server_class(server_address, handler_class)
+    time.sleep(.5)
+    print
+    print
     logging.info('Starting httpd...\n')
+
     while run:
-        print("still running")
+        print("HTTPD still running")
         httpd.handle_request()
         #httpd.serve_forever()
     httpd.server_close()
