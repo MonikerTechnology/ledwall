@@ -161,7 +161,8 @@ python -m pip install aubio
 
 Python3
 ```
-python3.4 -m pip install numpy
+sudo pip3 install aubio
+sudo python3 -m pip install numpy
 ```
     
 ```
