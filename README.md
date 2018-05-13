@@ -2,6 +2,7 @@
 # 15 x 9 LED art
 
 ## Goals for v2.0
+- Python3
 - Error handling
   - No audio - broken
    - Lack of sound then display something cool
