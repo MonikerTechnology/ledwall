@@ -86,6 +86,9 @@ Then `sudo reboot`
 #### HAP-nodeJS
 - https://github.com/KhaosT/HAP-NodeJS
 
+Default pairing code: `031-45-154`
+Use `sudo DEBUG=* node BridgedCore.js` for detailed output when troubleshooting
+
 .service file for HAP-NodeJS
 ```
 #
