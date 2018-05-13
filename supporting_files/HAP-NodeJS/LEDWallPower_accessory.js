@@ -17,9 +17,8 @@ var lightTopic = '/LEDwall'
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
 
-
+function post() {
 var reqBody = JSON.stringify({"sometextasdfasf asdf asdf asdf asdf asdf ":"aSDF"});
-
 
 var options = {
   host: "192.168.1.151",
@@ -45,9 +44,9 @@ var req = http.request(options, function (res) {
   });
 });
 //(JSON.stringify(data))
-//req.write(reqBody);
-//req.end();
-
+req.write(reqBody);
+req.end();
+}
 
 // here's a fake hardware device that we'll expose to HomeKit
 var SWITCH = {
@@ -60,11 +59,11 @@ var SWITCH = {
           console.log("...LEDWallPower is now on.");
           //client.publish(lightTopic, 'rainbowX');
           //reqBody = JSON.stringify({"sometextasdfasf asdf asdf asdf asdf asdf ":"aSDF"});
-          console.log(reqBody);
-          console.log(options);
-          req.write(reqBody);
-          req.end();
-
+          //console.log(reqBody);
+          //console.log(options);
+          //req.write(reqBody);
+          //req.end();
+          post();
           SWITCH.powerOn = false;
     } else {
           SWITCH.powerOn = false;
