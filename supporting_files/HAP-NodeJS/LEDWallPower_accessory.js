@@ -19,7 +19,7 @@ var lightTopic = '/LEDwall'
 
 
 var reqBody = {"sometextasdfasf asdf asdf asdf asdf asdf ":"aSDF"};
-req.write(JSON.stringify(reqBody));
+
 
 var options = {
   host: "192.168.1.151",
@@ -45,8 +45,8 @@ var req = http.request(options, function (res) {
   });
 });
 //(JSON.stringify(data))
-
-req.end();
+req.write(JSON.stringify(reqBody));
+//req.end();
 
 
 // here's a fake hardware device that we'll expose to HomeKit
