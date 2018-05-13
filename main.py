@@ -443,6 +443,8 @@ try:
         #----------------------------------------------
         
         #if HTTPserver.mode == "rainbow" and HTTPserver.power == 1:
+        print(HTTPserver.power)
+        print(type(HTTPserver.power))
         if HTTPserver.power == 1:
             pixels = [rainbow(t*scale(30,(1,100),(.05,2)), coord, ii, n_pixels, random_values) for ii, coord in enumerate(coordinates)]
             client.put_pixels(pixels, channel=0)
