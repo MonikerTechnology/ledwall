@@ -59,9 +59,11 @@ var SWITCH = {
           if(err) { return console.log(err); }
           console.log("...LEDWallPower is now on.");
           //client.publish(lightTopic, 'rainbowX');
-          reqBody = JSON.stringify({"sometextasdfasf asdf asdf asdf asdf asdf ":"aSDF"});
+          //reqBody = JSON.stringify({"sometextasdfasf asdf asdf asdf asdf asdf ":"aSDF"});
           req.write(reqBody);
           req.end();
+          console.log(reqBody);
+          console.log(options);
           SWITCH.powerOn = false;
     } else {
           SWITCH.powerOn = false;
