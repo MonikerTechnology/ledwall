@@ -51,32 +51,7 @@ var req = http.request(options, function (res) {
 
 // here's a fake hardware device that we'll expose to HomeKit
 var SWITCH = {
-  var reqBody = JSON.stringify({"sometextasdfasf asdf asdf asdf asdf asdf ":"aSDF"});
-
-
-var options = {
-  host: "192.168.1.151",
-  port: 1234,
-  path: "/",
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-    "Content-Length": Buffer.byteLength(reqBody)
-  }
-};
-
-var req = http.request(options, function (res) {
-  var responseString = "";
-
-  res.on("data", function (data) {
-      responseString += data;
-      // save all the data from response
-  });
-  res.on("end", function () {
-      console.log(responseString); 
-      // print to console when response ends
-  });
-});
+  
     setPowerOn: function(on) {
     console.log("Turning the LEDWallPower %s!...", on ? "on" : "off");
     if (on) {
@@ -84,7 +59,8 @@ var req = http.request(options, function (res) {
           if(err) { return console.log(err); }
           console.log("...LEDWallPower is now on.");
           //client.publish(lightTopic, 'rainbowX');
-          //req.write(reqBody);
+          req.write(reqBody);
+          req.end();
           SWITCH.powerOn = false;
     } else {
           SWITCH.powerOn = false;
