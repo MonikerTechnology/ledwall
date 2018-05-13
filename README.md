@@ -2,6 +2,7 @@
 # 15 x 9 LED art
 
 ## Goals for v2.0
+- Python3
 - Error handling
   - No audio - broken
    - Lack of sound then display something cool
@@ -11,8 +12,9 @@
   - Physica button??
 - Better start up pattern / test pattern
 - HomeKit- bridge to many local scripts
-  - MQTT
+  - MQTT --> Migrate to something more vanila...get and post with json?
   - Secondary control….physical? (prolly naw)
+    - Google Assistant
 - More/better audio effects
 - Update github
 - Cool MOTD ssh banner
