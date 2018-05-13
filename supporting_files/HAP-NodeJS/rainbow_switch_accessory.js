@@ -17,38 +17,38 @@ var lightTopic = '/LEDwall'
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
 
 // here's a fake hardware device that we'll expose to HomeKit
-var SWITCH = {
-    setPowerOn: function(on) {
-    console.log("Turning the LEDswitch %s!...", on ? "on" : "off");
-    if (on) {
-          SWITCH.powerOn = true;
-          if(err) { return console.log(err); }
-          console.log("...LEDswitch is now on.");
-          client.publish(lightTopic, 'rainbowX');
-          SWITCH.powerOn = false;
-    } else {
-          SWITCH.powerOn = false;
-          if(err) { return console.log(err); }
-          console.log("...LEDswitch is now off.");
-          client.publish(lightTopic, 'offXXXXX');
-    }
-  },
-    identify: function() {
-    console.log("Identify the LEDswitch.");
-    }
-}
+// var SWITCH = {
+//     setPowerOn: function(on) {
+//     console.log("Turning the LEDswitch %s!...", on ? "on" : "off");
+//     if (on) {
+//           SWITCH.powerOn = true;
+//           if(err) { return console.log(err); }
+//           console.log("...LEDswitch is now on.");
+//           client.publish(lightTopic, 'rainbowX');
+//           SWITCH.powerOn = false;
+//     } else {
+//           SWITCH.powerOn = false;
+//           if(err) { return console.log(err); }
+//           console.log("...LEDswitch is now off.");
+//           client.publish(lightTopic, 'offXXXXX');
+//     }
+//   },
+//     identify: function() {
+//     console.log("Identify the LEDswitch.");
+//     }
+// }
 
-// MQTT Setup
-var mqtt = require('mqtt');
-var options = {
-  port: 1883,
-  host: MQTT_IP,
-  clientId: 'FGAK35243'
-};
-var client = mqtt.connect(options);
-client.on('message', function(topic, message) {
+// // MQTT Setup
+// var mqtt = require('mqtt');
+// var options = {
+//   port: 1883,
+//   host: MQTT_IP,
+//   clientId: 'FGAK35243'
+// };
+// var client = mqtt.connect(options);
+// client.on('message', function(topic, message) {
 
-});
+// });
 
 // Generate a consistent UUID for our LEDswitch Accessory that will remain the same even when
 // restarting our server. We use the `uuid.generate` helper function to create a deterministic

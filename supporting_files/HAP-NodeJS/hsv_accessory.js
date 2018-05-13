@@ -17,17 +17,17 @@ var lightTopic = '/LEDwall'
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
 
 
-// MQTT Setup
-var mqtt = require('mqtt');
-var options = {
-  port: 1883,
-  host: MQTT_IP,
-  clientId: 'FGAK35243'
-};
-var client = mqtt.connect(options);
-client.on('message', function(topic, message) {
+// // MQTT Setup
+// var mqtt = require('mqtt');
+// var options = {
+//   port: 1883,
+//   host: MQTT_IP,
+//   clientId: 'FGAK35243'
+// };
+// var client = mqtt.connect(options);
+// client.on('message', function(topic, message) {
 
-});
+// });
 
 //setup HK light object
 var lightUUID = uuid.generate(UUID);

@@ -16,16 +16,16 @@ var lightTopic = '/LEDwall'
 
 
 // MQTT Setup
-var mqtt = require('mqtt');
-var options = {
-  port: 1883,
-  host: MQTT_IP,
-  clientId: 'FGAK35243'
-};
-var client = mqtt.connect(options);
-client.on('message', function(topic, message) {
+// var mqtt = require('mqtt');
+// var options = {
+//   port: 1883,
+//   host: MQTT_IP,
+//   clientId: 'FGAK35243'
+// };
+// var client = mqtt.connect(options);
+// client.on('message', function(topic, message) {
 
-});
+// });
 
 
 var state = false;
