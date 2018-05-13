@@ -55,12 +55,13 @@ acc.addService(Service.Switch, "Switch")
   .getCharacteristic(Characteristic.On)
   .on('get', function(callback) {
     console.log("The current state is %s", state ? "on" : "off");
-    //send message
-    client.publish(lightTopic, 'unflip');
+
     callback(null, state);
   })
   .on('set', function(value, callback) {
     console.log("The switch has been flipped");
+    //send message
+    client.publish(lightTopic, 'unflip');
     state = value;
     if(value) setTimeout(unFlip, 100);
     callback();
