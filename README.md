@@ -159,9 +159,11 @@ sudo apt-get install aubio-tools libaubio-dev libaubio-doc
 python -m pip install aubio
 ```
 
-Python3
+Python3 - The way of the future
 ```
-python3.4 -m pip install numpy
+sudo pip3 install aubio
+sudo python3 -m pip install numpy
+sudo apt-get install python3-pyaudio
 ```
     
 ```
