@@ -158,7 +158,11 @@ sudo apt-get install aubio-tools libaubio-dev libaubio-doc
 ```
 python -m pip install aubio
 ```
-    
+
+Python3
+```
+python3.4 -m pip install numpy
+```
     
 ```
 git clone https://github.com/ptone/pyosc.git
