@@ -15,8 +15,8 @@ import color_utils
 #import paho.mqtt.client as mqtt
 
 #
-import thread
-import threading
+#import thread
+#import threading
 
 import sys
 import subprocess
