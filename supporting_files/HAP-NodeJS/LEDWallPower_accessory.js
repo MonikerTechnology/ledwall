@@ -63,7 +63,7 @@ var SWITCH = {
           console.log(reqBody);
           console.log(options);
           req.write(reqBody);
-          //req.end();
+          req.end();
 
           SWITCH.powerOn = false;
     } else {
