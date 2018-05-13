@@ -96,9 +96,9 @@ def killSwitch():
     time.sleep(.5)
     HTTPserver.run = False
     try: # try to send one last request to kill the server
-            r = requests.get("http://localhost:321")
-        except:
-            pass
+        r = requests.get("http://localhost:321")
+    except:
+        pass
     run_main = False
     pixels = [(0,0,0) for ii, coord in enumerate(coordinates)]
     client.put_pixels(pixels, channel=0)
