@@ -134,7 +134,7 @@ parser = optparse.OptionParser()
 parser.add_option('-l', '--layout', dest='layout', default='ledwall15x9.json',
                     action='store', type='string',
                     help='layout file')
-parser.add_option('-s', '--server', dest='server', default='piledwall:7890',
+parser.add_option('-s', '--server', dest='server', default='ledwall:7890',
                     action='store', type='string',
                     help='ip and port of server')
 parser.add_option('-f', '--fps', dest='fps', default=30,
