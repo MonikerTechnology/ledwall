@@ -43,7 +43,11 @@ var req = http.request(options, function (res) {
       // print to console when response ends
   });
 });
-//(JSON.stringify(data))
+
+req.on('error', function(err) {
+  // Error handling here
+  console.log(err);
+});
 req.write(reqBody);
 req.end();
 }
@@ -52,10 +56,7 @@ req.end();
 //   console.log(err);
 // });
 
-req.on('error', function(err) {
-  // Error handling here
-  console.log(err);
-});
+
 
 // here's a fake hardware device that we'll expose to HomeKit
 var SWITCH = {
