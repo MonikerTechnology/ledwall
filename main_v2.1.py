@@ -12,7 +12,7 @@ import colorsys
 # My custom
 import opc
 import color_utils
-import paho.mqtt.client as mqtt
+#import paho.mqtt.client as mqtt
 
 #
 import thread
@@ -188,7 +188,7 @@ redMultiplier = 0
 greenMultiplier = 0
 blueMultiplier = 0
 
-
+"""
 print
 print(" __  __  _____  ____  ____ ")
 print("(  \/  )(  _  )(_  _)(_  _)")
@@ -261,7 +261,7 @@ MQTTclient.subscribe(topic)
 
 #client.loop_stop() #stop the loop
 
-
+"""
 #-------------------------------------------------------------------------------
 # color modes function
 
