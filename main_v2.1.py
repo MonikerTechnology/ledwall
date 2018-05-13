@@ -113,8 +113,8 @@ def killSwitch():
 
     print("Killing main")
     run_main = False
-    print
-    print
+    print()
+    print()
     print("Is the server thread running " + str(t_HTTPserver.is_alive()))
     pixels = [(0,0,0) for ii, coord in enumerate(coordinates)] #set all the pixels to off
     client.put_pixels(pixels, channel=0)
@@ -147,6 +147,7 @@ time.sleep(1)
 
 
 #add in a check to see if it stopped and restart it
+# also check fadecandy
 t_HTTPserver = threading.Thread(target=startHTTPserver, args=())
 
 #start
