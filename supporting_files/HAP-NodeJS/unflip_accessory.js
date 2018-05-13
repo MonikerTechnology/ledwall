@@ -36,8 +36,6 @@ var acc = exports.accessory = new Accessory("Switch", accUUID);
 
 function unFlip() {
   console.log("Unflipping...");
-  //send message
-  client.publish(lightTopic, 'unflip');
   state = false;
 
   acc.getService(Service.Switch)
@@ -62,7 +60,8 @@ acc.addService(Service.Switch, "Switch")
   })
   .on('set', function(value, callback) {
     console.log("The switch has been flipped");
-
+    //send message
+    client.publish(lightTopic, 'unflip');
     state = value;
     if(value) setTimeout(unFlip, 100);
     callback();
