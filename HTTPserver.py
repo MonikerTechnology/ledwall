@@ -33,7 +33,7 @@ class S(BaseHTTPRequestHandler):
         self.wfile.write("POST request for {}".format(self.path).encode('utf-8'))
 
 
-def start(server_class=HTTPServer, handler_class=S, port=8080):
+def start(server_class=HTTPServer, handler_class=S, port=321):
     global httpd
     logging.basicConfig(level=logging.INFO)
     server_address = ('', port)
