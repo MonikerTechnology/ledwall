@@ -23,7 +23,7 @@ var options = {
   path: "/",
   method: "POST",
   headers: {
-    'Content-Type': 'application/json'
+    "Content-Type": "application/json"
   }
 };
 
@@ -39,9 +39,9 @@ var req = http.request(options, function (res) {
       // print to console when response ends
   });
 });
-
-var reqBody = "sometextasdfasf asdf asdf asdf asdf asdf ";
-req.write(reqBody);
+//(JSON.stringify(data))
+var reqBody = {"sometextasdfasf asdf asdf asdf asdf asdf ":"aSDF"};
+req.write(JSON.stringify(reqBody);
 
 
 // here's a fake hardware device that we'll expose to HomeKit
