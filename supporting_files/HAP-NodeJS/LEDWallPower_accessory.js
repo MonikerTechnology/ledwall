@@ -18,7 +18,7 @@ var lightTopic = '/LEDwall'
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
 
 var options = {
-  host: "127.0.0.1",
+  host: "192.168.1.151",
   port: 1234,
   path: "/",
   method: "POST",
