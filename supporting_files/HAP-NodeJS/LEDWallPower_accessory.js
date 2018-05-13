@@ -20,7 +20,7 @@ function post(data) {
   var reqBody = JSON.stringify(data); //Convert JSON to string so it can be measured and sent
 
   var options = {
-    host: "localhost",
+    host: "http://localhost",
     port: 1234,
     path: "/",
     method: "POST",
