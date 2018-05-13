@@ -58,13 +58,13 @@ var SWITCH = {
           if(err) { return console.log(err); }
           console.log("...LEDWallPower is now on.");
           //client.publish(lightTopic, 'rainbowX');
-          req.write(reqBody);
+          //req.write(reqBody);
           SWITCH.powerOn = false;
     } else {
           SWITCH.powerOn = false;
           if(err) { return console.log(err); }
           console.log("...LEDWallPower is now off.");
-          req.write(reqBody);
+          //req.write(reqBody);
           //client.publish(lightTopic, 'offXXXXX');
     }
   },
