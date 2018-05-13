@@ -79,6 +79,7 @@ def start(server_class=HTTPServer, handler_class=S, port=321):
         try:
             if (postDic["type"] == "power"):
                 power = postDic["power"]
+                print("power set to: " + str(power))
             if (postDic["type"] == "mode"):
                 mode = postDic["mode"]
             if (postDic["type"] == "HSV"):
