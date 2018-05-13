@@ -12,6 +12,7 @@ import time
 
 power = 0
 mode = "startup"
+mode = "rainbow"
 H = 100
 S = 100
 V = 100
@@ -73,6 +74,9 @@ def start(server_class=HTTPServer, handler_class=S, port=321):
         try:
             postDic = json.loads(post_data.decode('utf-8'))
             print(postDic)
+        except:
+            logging.info("Bad format, could not convert to JSON")
+        try:
             if (postDic["type"] == "power"):
                 power = postDic["power"]
             if (postDic["type"] == "mode"):
@@ -82,7 +86,8 @@ def start(server_class=HTTPServer, handler_class=S, port=321):
                 S = postDic["HSV"]["S"]
                 V = postDic["HSV"]["V"]
         except:
-            logging.info("Bad format, could not convert to JSON")
+            logging.info("Bad format, does not begin with type")
+
         #httpd.serve_forever()
     httpd.server_close()
     logging.info('Stopping httpd...\n')

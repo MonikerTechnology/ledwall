@@ -292,7 +292,7 @@ MQTTclient.subscribe(topic)
 
 
 message = HTTPserver.postDic
-mode = "rainbowX"
+mode = "rainbow"
 power = 0
 
 #power message
