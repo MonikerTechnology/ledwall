@@ -16,12 +16,14 @@ var USERNAME = "BB:A6:AC:2C:5D:C1";              //This must also be unique for 
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
 
 var postData; //This is where the post data gets stored for calling post(postdata);
+
+// This is how we will communicate with the LED wall
 function post(data) {
   var reqBody = JSON.stringify(data); //Convert JSON to string so it can be measured and sent
 
   var options = {
-    host: "http://localhost",
-    port: 1234,
+    host: "localhost",
+    port: 321,
     path: "/",
     method: "POST",
     headers: {
