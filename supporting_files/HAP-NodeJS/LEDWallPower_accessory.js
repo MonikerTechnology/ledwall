@@ -22,6 +22,9 @@ var options = {
   port: 1234,
   path: "/",
   method: "POST",
+  headers: {
+    'Content-Type': 'application/json'
+  }
 };
 
 var req = http.request(options, function (res) {
