@@ -224,7 +224,7 @@ def on_message(MQTTclient, userdata, message):
 
     # Maybe use this for initial set up?
     if "HSVXXXXX" == MQTTMessage[0:8]: 
-        (print "New HSV data")
+        print("New HSV data")
         #print MQTTMessage[8:13]
         #print MQTTMessage[14:19]
         #print MQTTMessage[20:24]
