@@ -297,6 +297,7 @@ power = 0
 
 #power message
 #{"type":"power","power":1}
+#{"power":1,"type":"power"}
 
 #HSV message
 #{"type":"HSV","HSV":{"H":123,"S":123,"V":123}}
@@ -440,7 +441,8 @@ try:
         # End FPS tracker
         #----------------------------------------------
         
-        if HTTPserver.mode == "rainbow" and HTTPserver.power == 1:
+        #if HTTPserver.mode == "rainbow" and HTTPserver.power == 1:
+        if True:
             pixels = [rainbow(t*scale(30,(1,100),(.05,2)), coord, ii, n_pixels, random_values) for ii, coord in enumerate(coordinates)]
             client.put_pixels(pixels, channel=0)
         elif HTTPserver.mode == "off" or HTTPserver.power == 0:
