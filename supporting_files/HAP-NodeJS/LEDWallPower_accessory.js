@@ -60,10 +60,11 @@ var SWITCH = {
           console.log("...LEDWallPower is now on.");
           //client.publish(lightTopic, 'rainbowX');
           //reqBody = JSON.stringify({"sometextasdfasf asdf asdf asdf asdf asdf ":"aSDF"});
-          req.write(reqBody);
-          req.end();
           console.log(reqBody);
           console.log(options);
+          req.write(reqBody);
+          //req.end();
+
           SWITCH.powerOn = false;
     } else {
           SWITCH.powerOn = false;
