@@ -5,26 +5,26 @@
 
 ## Goals for v2.0
 - [ ] Python3
-- [x] Error handling
-  - Auto restart of services
-  - No audio - broken
-   - Lack of sound then display something cool
-  -  No wifi - loading pattern
-  - No OSC
-- HTML wifi set up - auto scan then broadcast if not connected
-  - Physica button??
-- Better start up pattern / test pattern
-- Mirate to http post for control
-  - Add HTTPS
-  - Add sha256 auth key
-  - HomeKit- bridge to many local scripts
-  - Secondary control….physical? (prolly naw)
-    - Google Assistant
-- More/better audio effects
-- Update github
-- Cool MOTD ssh banner
-- More secure?
-- HTML status page...mayble with controls
+- [ ] Error handling
+  - [ ] Auto restart of services
+  - [ ] No audio - broken
+   - [ ] Lack of sound then display something cool
+  -  [ ] No wifi - loading pattern
+  - [ ] No OSC
+- [ ] HTML wifi set up - auto scan then broadcast if not connected
+  - [ ] Physica button??
+- [ ] Better start up pattern / test pattern
+- [ ] Mirate to http post for control
+  - [ ] Add HTTPS
+  - [ ] Add sha256 auth key
+  - [ ] HomeKit- bridge to many local scripts
+  - [ ] Secondary control….physical? (prolly naw)
+    - [ ] Google Assistant
+- [ ] More/better audio effects
+- [ ] Update github
+- [ ] Cool MOTD ssh banner
+- [ ] More secure?
+- [ ] HTML status page...mayble with controls
 
 
 ## Reminders:
