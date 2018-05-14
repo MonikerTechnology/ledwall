@@ -88,7 +88,8 @@ def start(server_class=HTTPServer, handler_class=S, port=321):
         httpd.handle_request()
         #data = post_data.decode('utf-8')
         #try:
-        log.warning(file,"postDic" + str(postDic))
+        log.warning(file,"postDic")
+        print(postDic)
         postDic = json.loads(post_data.decode('utf-8'))
         log.info(file,postDic)
         #except:

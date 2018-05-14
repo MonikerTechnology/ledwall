@@ -206,7 +206,7 @@ if not options.layout:
 
 print
 print
-log.header(file,'    parsing layout file')
+log.header(file,'    parsing FC layout file')
 print
 
 coordinates = []
@@ -220,7 +220,7 @@ for item in json.load(open(options.layout)):
 
 client = opc.Client(options.server)
 if client.can_connect():
-    log.header(file,'    connected to %s' % options.server)
+    log.header(file,'    OPC connected to %s' % options.server)
 else:
     # can't connect, but keep running in case the server appears later
     log.warning(file,'    WARNING: could not connect to %s' % options.server)
