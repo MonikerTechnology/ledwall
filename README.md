@@ -1,6 +1,8 @@
 # version_2.0 in progress (did it upload?)
 # 15 x 9 LED art
 
+![alt text](supporting_files/ledwall.gif "Description goes here")
+
 ## Goals for v2.0
 - Python3
 - Error handling
@@ -12,8 +14,10 @@
 - HTML wifi set up - auto scan then broadcast if not connected
   - Physica button??
 - Better start up pattern / test pattern
-- HomeKit- bridge to many local scripts
-  - MQTT --> Migrate to something more vanila...get and post with json?
+- Mirate to http post for control
+  - Add HTTPS
+  - Add sha256 auth key
+  - HomeKit- bridge to many local scripts
   - Secondary control….physical? (prolly naw)
     - Google Assistant
 - More/better audio effects
