@@ -328,12 +328,8 @@ def startup(t, coord, ii, n_pixels):
         b = value[int(position)]
     elif (ii == 1 or ii == 29 or ii == 28):
         r = value[int(position)] * .7
-        g = value[int(position)] * .7
-        b = value[int(position)] * .7
-    elif (x == 0 and z == 5):
-        r = 200
-        b = 0
-        g = 0
+        g = value[int(position)] * .5
+        b = value[int(position)] * .5
     else: 
         r = 0
         g = 0
