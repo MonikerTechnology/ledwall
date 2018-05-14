@@ -479,6 +479,7 @@ try:
             client.put_pixels(pixels, channel=0)
         if HTTPserver.mode == "startup":
             pixels = [startup(t, coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]
+            client.put_pixels(pixels, channel=0)
         elif HTTPserver.mode == "off" or HTTPserver.power == 0:
             nothing = 0
             #pixels = [pixel_color(t, coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]
