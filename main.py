@@ -437,7 +437,7 @@ def rainbow(t, coord, ii, n_pixels, random_values):
     # only do this on live leds, not in the simulator
     r, g, b = color_utils.gamma((r, g, b), 2.2)
 
-    return (r*250*redMultiplier, g*250*greenMultiplier, b*250*blueMultiplier)
+    return (r*250*HTTPserver.redMultiplier, g*250*HTTPserver.greenMultiplier, b*250*HTTPserver.blueMultiplier)
 
 
 def pixel_color(t, coord, ii, n_pixels):
