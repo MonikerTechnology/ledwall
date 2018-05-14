@@ -309,7 +309,7 @@ power = 0
 # color modes function
 
 
-def startup(t, coord, ii, n_pixels):
+def startup(t, coord, ii, n_pixels, position):
     """Compute the color of a given pixel.
     t: time in seconds since the program started.
     ii: which pixel this is, starting at 0
