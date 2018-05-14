@@ -2,14 +2,14 @@ var Accessory = require('../').Accessory;
 var Service = require('../').Service;
 var Characteristic = require('../').Characteristic;
 var uuid = require('../').uuid;
-var http = require("http"); //Added for the http post reque
-var err = null; // in case there were any problemssts
+var http = require("http"); //Added for the http post requests
+var err = null; // in case there were any problems
 
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
-var name = "breathe";                                       //Name to Show to IOS
-var UUID = "hap-nodejs:accessories:breathe";     //Change the RGBLight to something unique for each light - this should be unique for each node on your system
-var USERNAME = "01:02:00:2C:5D:C1";              //This must also be unique for each node - make sure you change it!
+var name = "rainbow";                                       //Name to Show to IOS
+var UUID = "hap-nodejs:accessories:rainbow";     //Change the RGBLight to something unique for each light - this should be unique for each node on your system
+var USERNAME = "00:01:00:2C:5D:C2";              //This must also be unique for each node - make sure you change it!
 
 
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
@@ -57,7 +57,7 @@ function post(data) {
 
 var state = false;
 
-var accUUID = uuid.generate('hap-nodejs:accessories:breathe');
+var accUUID = uuid.generate('hap-nodejs:accessories:rainbow');
 
 var acc = exports.accessory = new Accessory("Switch", accUUID);
 
@@ -70,7 +70,7 @@ function unFlip() {
     .updateValue(state);
 }
 
-acc.username = "11:11:AA:AA:AA:AA";
+acc.username = "1A:A1:AA:AA:AA:AA";
 acc.pincode = "031-45-154";
 
 acc.on('identify', function(paired, callback) {
@@ -89,7 +89,7 @@ acc.addService(Service.Switch, "Switch")
     console.log("The switch has been flipped");
     //send message
     //client.publish(lightTopic, 'unflip');
-    postData = {"type":"mode","mode":"breathe"}; //set power to on
+    postData = {"type":"mode","mode":"rainbow"}; //set power to on
     post(postData); //call the function to send the data
     state = value;
     if(value) setTimeout(unFlip, 100);
