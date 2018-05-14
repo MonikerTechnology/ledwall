@@ -27,6 +27,7 @@
 - [ ] Cool MOTD ssh banner
 - [ ] More secure?
 - [ ] HTML status page...mayble with controls
+- [ ] Linux auto updates (security)
 
 
 ## Reminders:
