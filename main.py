@@ -329,7 +329,7 @@ def startup(t, coord, ii, n_pixels):
         r = 0
         g = 0
         b = 0
-    position += .5
+    position += .05
     if (position == 500):
         position = 0
 
