@@ -17,9 +17,9 @@ mode = "breathe"
 H = 100
 S = 100
 V = 100
-redMultiplier
-greenMultiplier
-blueMultiplier
+redMultiplier = 1
+greenMultiplier = 1
+blueMultiplier = 1
 postDic = ""
 
 
@@ -102,6 +102,7 @@ def start(server_class=HTTPServer, handler_class=S, port=321):
                 S = postDic["HSV"]["S"]
                 V = postDic["HSV"]["V"]
                 redMultiplier, greenMultiplier, blueMultiplier = colorsys.hsv_to_rgb(H, S, V)
+                print(str(redMultiplier) + " " + str(greenMultiplier))
         except:
             logging.info("Bad format, does not begin with 'type'")
 
