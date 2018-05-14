@@ -187,7 +187,7 @@ parser.add_option('-f', '--fps', dest='fps', default=30,
 options, args = parser.parse_args()
 
 if options.layout == 'supported_files/ledwall15x9.json':
-    log.info(file("\nNo layout selected, using default layout: " , options.layout , "\n")
+    log.info(file,"\nNo layout selected, using default layout: " + str(options.layout) + "\n")
 
 if not options.layout:
     parser.print_help()
