@@ -325,10 +325,10 @@ def startup(t, coord, ii, n_pixels):
         r = value[int(position)]
         g = value[int(position)]
         b = value[int(position)]
-    elif (ii == 1 or ii == 15 or ii == 16):
-        r = value[int(position)] / 3
-        g = value[int(position)] / 3
-        b = value[int(position)] / 3
+    elif (ii == 1 or ii == 29 or ii == 28):
+        r = value[int(position)] / 2
+        g = value[int(position)] / 2
+        b = value[int(position)] / 2
     else: 
         r = 0
         g = 0
@@ -461,7 +461,7 @@ position = 0
 value = [] # list from 0 - 250 - 0
 value.extend(range(0,250))
 value.extend(reversed(range(0,250)))
-print(value)
+
 
 random_values = [random.random() for ii in range(n_pixels)]
 try:
