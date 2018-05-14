@@ -20,7 +20,7 @@ def start():
                 for dweet in dweepy.listen_for_dweets_from('315novusledwall'):
                     
                     
-                    log.info(file,dweet)
+                    
                     try:
                         dweet = json.dumps(dweet["content"])
                     except:
@@ -32,7 +32,7 @@ def start():
                     if (run == False):
                         log.warning(file,"breaking")
                         break
-
+                    log.info(file,dweet)
             except:
                 log.warning(file,"Failed to get dweet")
     except KeyboardInterrupt:
