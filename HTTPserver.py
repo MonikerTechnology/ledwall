@@ -101,7 +101,7 @@ def start(server_class=HTTPServer, handler_class=S, port=321):
             H = postDic["HSV"]["H"]
             S = postDic["HSV"]["S"]
             V = postDic["HSV"]["V"]
-            redMultiplier, greenMultiplier, blueMultiplier = colorsys.hsv_to_rgb(H, S, V)
+            redMultiplier, greenMultiplier, blueMultiplier = colorsys.hsv_to_rgb(float(H), float(S), float(V))
             print(str(redMultiplier) + " " + str(greenMultiplier))
         #except:
         #    logging.info("Bad format, does not begin with 'type'")
