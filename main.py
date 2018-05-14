@@ -330,7 +330,7 @@ def startup(t, coord, ii, n_pixels):
         g = 0
         b = 0
     position += .05
-    if (position == 500):
+    if (position > 499):
         position = 0
 
     #padXData = touchOSC.padXData
