@@ -318,7 +318,7 @@ def startup(t, coord, ii, n_pixels):
     Returns an (r, g, b) tuple in the range 0-255
     """
     x,y,z = coord
-    if (ii === 0):
+    if (ii == 0):
         r = 100
         g = 100
         b = 100
