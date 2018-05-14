@@ -51,19 +51,20 @@ print("L::::::::::::::::::::::LE::::::::::::::::::::ED::::::::::::DDD           
 print("LLLLLLLLLLLLLLLLLLLLLLLLEEEEEEEEEEEEEEEEEEEEEEDDDDDDDDDDDDD                         WWW             WWW           aaaaaaaaaa  aaaallllllllllllllll ")
                                                                                                                                                   
                                                                                                                                                   
-print
-print 
+print()
+print ()
 log.header(file,"SETUP")
-print
+print()
 
 #-------------------------------------------------------------------------------
 # Try to start fadecandy server 
+
+log.header(file,"Trying to start FC server...")
 try:
-    print("Trying to start FC server...")
     os.system("sudo /home/pi/fadecandy/bin/fcserver-rpi /home/pi/fadecandy/bin/fcserver_config.json &")
-    print("\nBackgrounding FC server and continuing with python\n")
+    log.header(file,"\nBackgrounding FC server and continuing with python\n")
 except:
-    print("Maybe it is already running?\n")
+    log.warning(file,"Failed...Maybe it is already running?\n")
 
 
 #-------------------------------------------------------------------------------
@@ -97,8 +98,8 @@ def killSwitch():
     #sudo kill $(ps aux | grep 'fadecandy' | awk '{print $2}')
     #sudo kill $(ps aux | grep 'main.py' | awk '{print $2}')
 
-    print("killing HTTPserver")
-    print("Sending one last request to kill the HTTPserver")
+    log.info(file,"killing HTTPserver")
+    log.info(file,"Sending one last request to kill the HTTPserver")
     HTTPserver.run = False
     try: # try to send one last request to kill the server
         r = requests.get("http://localhost:321")
@@ -107,30 +108,30 @@ def killSwitch():
     time.sleep(.5)
 
 
-    print("killing googleAssistant")
+    log.info(file,"killing googleAssistant")
     googleAssistant.run = False
 
 
-    print
-    print
-    print("killing fadecandy server")
+    print()
+    print()
+    log.info(file,"killing fadecandy server")
     os.system("sudo kill $(ps aux | grep 'fadecandy' | awk '{print $2}')")
     time.sleep(.5)
 
 
 
-    print("Killing main")
+    log.info(file,"Killing main")
     run_main = False
 
-    print("Setting pixels to 0,0,0")
+    log.info(file,"Setting pixels to 0,0,0")
     pixels = [(0,0,0) for ii, coord in enumerate(coordinates)] #set all the pixels to off
     client.put_pixels(pixels, channel=0)
 
     print()
     print()
-    print("Is the HTTPserver thread running " + str(t_HTTPserver.is_alive()))
-    print("Is the googleAssistant thread running " + str(t_googleAssistant.is_alive()))
-    print
+    log.info(file,"Is the HTTPserver thread running " + str(t_HTTPserver.is_alive()))
+    log.info(file,"Is the googleAssistant thread running " + str(t_googleAssistant.is_alive()))
+    print()
     return ()
 
 def restartPi():
@@ -186,13 +187,13 @@ parser.add_option('-f', '--fps', dest='fps', default=30,
 options, args = parser.parse_args()
 
 if options.layout == 'supported_files/ledwall15x9.json':
-    print("\nNo layout selected, using default layout: " , options.layout , "\n")
+    log.info(file("\nNo layout selected, using default layout: " , options.layout , "\n")
 
 if not options.layout:
     parser.print_help()
-    print
-    print('ERROR: you must specify a layout file using --layout')
-    print
+    print()
+    log.warning(file,'ERROR: you must specify a layout file using --layout')
+    print()
     sys.exit(1)
 
 
@@ -201,7 +202,7 @@ if not options.layout:
 
 print
 print
-print('    parsing layout file')
+log.header(file,'    parsing layout file')
 print
 
 coordinates = []
@@ -215,11 +216,11 @@ for item in json.load(open(options.layout)):
 
 client = opc.Client(options.server)
 if client.can_connect():
-    print('    connected to %s' % options.server)
+    log.header(file,'    connected to %s' % options.server)
 else:
     # can't connect, but keep running in case the server appears later
-    print('    WARNING: could not connect to %s' % options.server)
-print
+    log.warning(file,'    WARNING: could not connect to %s' % options.server)
+print()
 
 #-------------------------------------------------------------------------------
 # Setup MQTT
@@ -454,8 +455,8 @@ def pixel_color(t, coord, ii, n_pixels):
 #-------------------------------------------------------------------------------
 # send pixels
 
-print('    sending pixels forever (control-c to exit)...')
-print
+log.info(file,'    sending pixels forever (control-c to exit)...')
+print()
 #-------------------------------------------------------------------------------
 
 
@@ -481,7 +482,7 @@ value.extend(reversed(range(0,250)))
 
 random_values = [random.random() for ii in range(n_pixels)]
 try:
-    print("about to start main loop")
+    log.info(file,"about to start main loop")
     while run_main == True:
         
 
@@ -535,7 +536,7 @@ try:
 
 except KeyboardInterrupt:
     print
-    print('\nInterrupt detected')
+    log.warning(file,'\nInterrupt detected')
     killSwitch() #shut down all the things as gracfully as possible
 
     try:
