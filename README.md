@@ -1,6 +1,8 @@
 # version_2.0 in progress (did it upload?)
 # 15 x 9 LED art
 
+![alt text](supporting_files/ledwall.gif "Description goes here")
+
 ## Goals for v2.0
 - Python3
 - Error handling
