@@ -10,8 +10,8 @@ import logging
 import time
 #import main
 
-power = 0
-mode = "startup"
+power = 1
+mode = "breathe"
 #mode = "rainbow"
 H = 100
 S = 100
