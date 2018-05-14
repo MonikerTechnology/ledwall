@@ -4,8 +4,8 @@
 ![alt text](supporting_files/ledwall.gif "ledwall in action")
 
 ## Goals for v2.0
-- Python3
-- Error handling
+- [] Python3
+- [x] Error handling
   - Auto restart of services
   - No audio - broken
    - Lack of sound then display something cool
