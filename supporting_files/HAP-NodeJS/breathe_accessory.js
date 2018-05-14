@@ -7,8 +7,8 @@ var http = require("http"); //Added for the http post requests
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
 var name = "breathe";                                       //Name to Show to IOS
-var UUID = "hap-nodejs:accessories:breath";     //Change the RGBLight to something unique for each light - this should be unique for each node on your system
-var USERNAME = "00:02:00:2C:5D:C1";              //This must also be unique for each node - make sure you change it!
+var UUID = "hap-nodejs:accessories:breathe";     //Change the RGBLight to something unique for each light - this should be unique for each node on your system
+var USERNAME = "01:02:00:2C:5D:C1";              //This must also be unique for each node - make sure you change it!
 
 
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
@@ -69,7 +69,7 @@ function unFlip() {
     .updateValue(state);
 }
 
-acc.username = "1A:AA:AA:AA:AA:AA";
+acc.username = "11:11:AA:AA:AA:AA";
 acc.pincode = "031-45-154";
 
 acc.on('identify', function(paired, callback) {
