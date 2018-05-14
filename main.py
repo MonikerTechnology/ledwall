@@ -319,6 +319,7 @@ def startup(t, coord, ii, n_pixels):
     """
     global position
     x,y,z = coord
+    print(coord)
     #print("position")
     #print(int(position))
     if (ii == 0):
@@ -326,9 +327,9 @@ def startup(t, coord, ii, n_pixels):
         g = value[int(position)]
         b = value[int(position)]
     elif (ii == 1 or ii == 29 or ii == 28):
-        r = value[int(position)] / 2
-        g = value[int(position)] / 2
-        b = value[int(position)] / 2
+        r = value[int(position)] * .7
+        g = value[int(position)] * .7
+        b = value[int(position)] * .7
     else: 
         r = 0
         g = 0
