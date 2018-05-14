@@ -46,15 +46,18 @@ class S(BaseHTTPRequestHandler):
         #        str(self.path), str(self.headers), post_data.decode('utf-8'))
         #print
 
-        #message = post_data.decode('utf-8')
-        #message = json.loads(message)
+        message = post_data.decode('utf-8')
+        message = json.loads(message)
         #message["state"]
 
         
 
         self._set_response()
-        self.wfile.write("POST request for {}".format(self.path).encode('utf-8'))
-
+        reply = {"state":"success"}
+        reply["data"] = message
+        reply = json.dumps(reply)
+        #self.wfile.write("POST request for {}".format(self.path).encode('utf-8'))
+        self.wfile.write(reply.encode('utf-8'))
 
 def start(server_class=HTTPServer, handler_class=S, port=321):
     global httpd
