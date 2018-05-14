@@ -309,7 +309,7 @@ power = 0
 # color modes function
 
 
-def startup(t, coord, ii, n_pixels, position):
+def startup(t, coord, ii, n_pixels):
     """Compute the color of a given pixel.
     t: time in seconds since the program started.
     ii: which pixel this is, starting at 0
@@ -486,7 +486,7 @@ try:
             pixels = [rainbow(t*scale(30,(1,100),(.05,2)), coord, ii, n_pixels, random_values) for ii, coord in enumerate(coordinates)]
             client.put_pixels(pixels, channel=0)
         if HTTPserver.mode == "startup":
-            pixels = [startup(t, coord, ii, n_pixels, position) for ii, coord in enumerate(coordinates)]
+            pixels = [startup(t, coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]
             client.put_pixels(pixels, channel=0)
         elif HTTPserver.mode == "off" or HTTPserver.power == 0:
             nothing = 0
