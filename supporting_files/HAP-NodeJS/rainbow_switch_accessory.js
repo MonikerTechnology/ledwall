@@ -39,28 +39,18 @@ var SWITCH = {
     }
 }
 
-// // MQTT Setup
-// var mqtt = require('mqtt');
-// var options = {
-//   port: 1883,
-//   host: MQTT_IP,
-//   clientId: 'FGAK35243'
-// };
-// var client = mqtt.connect(options);
-// client.on('message', function(topic, message) {
 
-// });
 
 // Generate a consistent UUID for our LEDswitch Accessory that will remain the same even when
 // restarting our server. We use the `uuid.generate` helper function to create a deterministic
 // UUID based on an arbitrary "namespace" and the accessory name.
-var switchUUID = uuid.generate('hap-nodejs:accessories:switch');
+var switchUUID = uuid.generate(UUID);
 
 // This is the Accessory that we'll return to HAP-NodeJS that represents our fake light.
 var LEDswitch = exports.accessory = new Accessory(name, switchUUID);
 
 // Add properties for publishing (in case we're using Core.js and not BridgedCore.js)
-LEDswitch.username = "1A:2B:3C:4D:5D:FE";
+LEDswitch.username = USERNAME;
 LEDswitch.pincode = "031-45-154";
 
 // set some basic properties (these values are arbitrary and setting them is optional)

@@ -6,9 +6,9 @@ var http = require("http"); //Added for the http post requests
 
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
-var name = "unflip";                                       //Name to Show to IOS
-var UUID = "hap-nodejs:accessories:HSVdata";     //Change the RGBLight to something unique for each light - this should be unique for each node on your system
-var USERNAME = "00:01:00:2C:5D:C1";              //This must also be unique for each node - make sure you change it!
+var name = "unFlip";                                       //Name to Show to IOS
+var UUID = "hap-nodejs:accessories:unFlip";     //Change the RGBLight to something unique for each light - this should be unique for each node on your system
+var USERNAME = "00:01:00:2C:5D:06";              //This must also be unique for each node - make sure you change it!
 
 
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
@@ -56,9 +56,13 @@ function post(data) {
 
 var state = false;
 
-var accUUID = uuid.generate('hap-nodejs:accessories:switch');
+// Generate a consistent UUID for our LEDWallPower Accessory that will remain the same even when
+// restarting our server. We use the `uuid.generate` helper function to create a deterministic
+// UUID based on an arbitrary "namespace" and the accessory name.
+var accUUID = uuid.generate(UUID);
 
-var acc = exports.accessory = new Accessory("Switch", accUUID);
+// This is the Accessory that we'll return to HAP-NodeJS that represents our fake light.
+var acc = exports.accessory = new Accessory(name, accUUID);
 
 function unFlip() {
   console.log("Unflipping...");

@@ -2,6 +2,7 @@ var Accessory = require('../').Accessory;
 var Service = require('../').Service;
 var Characteristic = require('../').Characteristic;
 var uuid = require('../').uuid;
+var http = require("http"); //Added for the http post requests
 var lightState = 0;
 
 
@@ -56,7 +57,12 @@ function post(data) {
 }
 
 //setup HK light object
+// Generate a consistent UUID for our LEDWallPower Accessory that will remain the same even when
+// restarting our server. We use the `uuid.generate` helper function to create a deterministic
+// UUID based on an arbitrary "namespace" and the accessory name.
 var lightUUID = uuid.generate(UUID);
+
+// This is the Accessory that we'll return to HAP-NodeJS that represents our fake light.
 var light = exports.accessory = new Accessory(name, lightUUID);
 
 // Add properties for publishing (in case we're using Core.js and not BridgedCore.js)
