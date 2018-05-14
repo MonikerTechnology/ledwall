@@ -22,10 +22,10 @@ def start():
                         dweet = json.dumps(dweet["content"])
                     except:
                         print("could not convert to JSON and extract contents")
-                    #try:
-                    r = requests.post("http://localhost:321", data=dweet)
-                    #except:
-                        #print("Could not post to HTTPserver")
+                    try:
+                        r = requests.post("http://localhost:321", data=dweet)
+                    except:
+                        print("Could not post to HTTPserver")
                     if (run == False):
                         print("breaking")
                         break

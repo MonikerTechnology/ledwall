@@ -103,6 +103,11 @@ def killSwitch():
         pass
     time.sleep(.5)
 
+
+    print("killing googleAssistant")
+    googleAssistant.run = False
+
+
     print
     print
     print("killing fadecandy server")
@@ -113,11 +118,15 @@ def killSwitch():
 
     print("Killing main")
     run_main = False
-    print()
-    print()
-    print("Is the server thread running " + str(t_HTTPserver.is_alive()))
+
+    print("Setting pixels to 0,0,0")
     pixels = [(0,0,0) for ii, coord in enumerate(coordinates)] #set all the pixels to off
     client.put_pixels(pixels, channel=0)
+
+    print()
+    print()
+    print("Is the HTTPserver thread running " + str(t_HTTPserver.is_alive()))
+    print("Is the googleAssistant thread running " + str(t_googleAssistant.is_alive()))
     print
     return ()
 
@@ -148,17 +157,20 @@ time.sleep(1)
 
 #add in a check to see if it stopped and restart it
 # also check fadecandy
-t_HTTPserver = threading.Thread(target=startHTTPserver, args=())
+#t_HTTPserver = threading.Thread(target=startHTTPserver, args=())
+t_HTTPserver = threading.Thread(target=HTTPserver.start, args=())
+t_googleAssistant = threading.Thread(target=googleAssistant.start)
 
 #start
 t_HTTPserver.start()
+t_googleAssistant.start()
     
 
 #-------------------------------------------------------------------------------
 # command line options for main
 
 parser = optparse.OptionParser()
-parser.add_option('-l', '--layout', dest='layout', default='ledwall15x9.json',
+parser.add_option('-l', '--layout', dest='layout', default='supporting_files/ledwall15x9.json',
                     action='store', type='string',
                     help='layout file')
 parser.add_option('-s', '--server', dest='server', default='ledwall:7890',
@@ -170,7 +182,7 @@ parser.add_option('-f', '--fps', dest='fps', default=30,
 
 options, args = parser.parse_args()
 
-if options.layout == 'ledwall15x9.json':
+if options.layout == 'supported_files/ledwall15x9.json':
     print("\nNo layout selected, using default layout: " , options.layout , "\n")
 
 if not options.layout:
