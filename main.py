@@ -319,8 +319,8 @@ def startup(t, coord, ii, n_pixels):
     """
     global position
     x,y,z = coord
-    print("position")
-    print(int(position))
+    #print("position")
+    #print(int(position))
     if (ii == 0):
         r = value[int(position)]
         g = value[int(position)]
@@ -329,7 +329,7 @@ def startup(t, coord, ii, n_pixels):
         r = 0
         g = 0
         b = 0
-    position += .05
+    position += .01
     if (position > 499):
         position = 0
 
