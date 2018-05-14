@@ -12,8 +12,10 @@
 - HTML wifi set up - auto scan then broadcast if not connected
   - Physica button??
 - Better start up pattern / test pattern
-- HomeKit- bridge to many local scripts
-  - MQTT --> Migrate to something more vanila...get and post with json?
+- Mirate to http post for control
+  - Add HTTPS
+  - Add sha256 auth key
+  - HomeKit- bridge to many local scripts
   - Secondary control….physical? (prolly naw)
     - Google Assistant
 - More/better audio effects
