@@ -17,9 +17,9 @@ mode = "breathe"
 H = 100
 S = 100
 V = 100
-redMultiplier = 1
-greenMultiplier = 1
-blueMultiplier = 1
+redMultiplier = 1.0
+greenMultiplier = 1.0
+blueMultiplier = 1.0
 postDic = ""
 
 
