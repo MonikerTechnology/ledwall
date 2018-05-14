@@ -15,6 +15,8 @@ import color_utils
 
 import HTTPserver
 import googleAssistant
+import log
+file = str(os.path.basename(__file__))
 import requests
 import threading
 
@@ -51,7 +53,7 @@ print("LLLLLLLLLLLLLLLLLLLLLLLLEEEEEEEEEEEEEEEEEEEEEEDDDDDDDDDDDDD              
                                                                                                                                                   
 print
 print 
-print("SETUP")
+header(file,"SETUP")
 print
 
 #-------------------------------------------------------------------------------
