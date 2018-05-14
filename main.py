@@ -455,6 +455,7 @@ position = 0
 value = [] # list from 0 - 250 - 0
 value.extend(range(250,0))
 value.extend(reversed(range(0,250)))
+print(value)
 
 random_values = [random.random() for ii in range(n_pixels)]
 try:
