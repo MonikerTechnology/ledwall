@@ -29,11 +29,11 @@
 
 ## Reminders:
 - [ ] Upload remote file from TouchOSC app!!
-- [ ] Add pictures and videos
+- [x] Add pictures and videos
 - [ ] Add type of LEDs
 - [ ] add power info 
 - [ ] Add links to all software
-- [ ] Upload FadeCandy config
+- [x] Upload FadeCandy config
 - [ ] Spell check this document
 
 ## Description:
