@@ -325,10 +325,16 @@ def startup(t, coord, ii, n_pixels):
         r = value[int(position)]
         g = value[int(position)]
         b = value[int(position)]
+    elif (ii == 1 or ii == 15 or ii == 16):
+        r = value[int(position)] / 3
+        g = value[int(position)] / 3
+        b = value[int(position)] / 3
     else: 
         r = 0
         g = 0
         b = 0
+
+    
     position += .01
     if (position > 499):
         position = 0
