@@ -91,20 +91,20 @@ def start(server_class=HTTPServer, handler_class=S, port=321):
             print(postDic)
         except:
             logging.info("Bad format, could not convert to JSON")
-        #try:
-        if (postDic["type"] == "power"):
-            power = postDic["power"]
-            print("power set to: " + str(power))
-        if (postDic["type"] == "mode"):
-            mode = postDic["mode"]
-        if (postDic["type"] == "HSV"):
-            H = postDic["HSV"]["H"]
-            S = postDic["HSV"]["S"]
-            V = postDic["HSV"]["V"]
-            redMultiplier, greenMultiplier, blueMultiplier = colorsys.hsv_to_rgb(float(H), float(S), float(V))
-            print(str(redMultiplier) + " " + str(greenMultiplier))
-        #except:
-        #    logging.info("Bad format, does not begin with 'type'")
+        try:
+            if (postDic["type"] == "power"):
+                power = postDic["power"]
+                print("power set to: " + str(power))
+            if (postDic["type"] == "mode"):
+                mode = postDic["mode"]
+            if (postDic["type"] == "HSV"):
+                H = postDic["HSV"]["H"]
+                S = postDic["HSV"]["S"]
+                V = postDic["HSV"]["V"]
+                redMultiplier, greenMultiplier, blueMultiplier = colorsys.hsv_to_rgb(float(H), float(S), float(V))
+                #print(str(redMultiplier) + " " + str(greenMultiplier))
+        except:
+            logging.info("Bad format, does not begin with 'type' or failed to convert HSV")
 
         #httpd.serve_forever()
     httpd.server_close()
