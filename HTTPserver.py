@@ -87,13 +87,11 @@ def start(server_class=HTTPServer, handler_class=S, port=321):
         #log.info(file,"HTTPD still running")
         httpd.handle_request()
         #data = post_data.decode('utf-8')
-        #try:
-        log.warning(file,"postDic")
-        print(postDic)
-        postDic = json.loads(post_data.decode('utf-8'))
-        log.info(file,postDic)
-        #except:
-            #log.warning(file,"Bad format, could not convert to JSON")
+        try:
+            postDic = json.loads(post_data.decode('utf-8'))
+            log.info(file,"See data: " + post_data.decode('utf-8'))
+        except:
+            log.warning(file,"Bad format, could not convert to JSON")
         try:
             if (postDic["type"] == "power"):
                 power = postDic["power"]

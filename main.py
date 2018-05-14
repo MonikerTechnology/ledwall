@@ -29,8 +29,8 @@ except ImportError:
     import simplejson as json
 
 
-print
-print
+print()
+print()
                                                                                                                                                   
                                                                                                                                                   
 print("LLLLLLLLLLL             EEEEEEEEEEEEEEEEEEEEEEDDDDDDDDDDDDD             WWWWWWWW                           WWWWWWWW               lllllll lllllll ")
