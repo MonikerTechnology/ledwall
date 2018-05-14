@@ -39,7 +39,7 @@ class S(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
-        logging.info("GET request,\nPath: %s\nHeaders:\n%s\n", str(self.path), str(self.headers))
+        log.info(file,"GET request,\nPath: %s\nHeaders:\n%s\n", str(self.path), str(self.headers))
         self._set_response()
         self.wfile.write("GET request for {}".format(self.path).encode('utf-8'))
         
@@ -81,7 +81,7 @@ def start(server_class=HTTPServer, handler_class=S, port=321):
     httpd = server_class(server_address, handler_class)
     time.sleep(.5)
 
-    log.header('Starting httpd...\n')
+    log.header(file,'Starting httpd...\n')
 
     while run:
         #log.info(file,"HTTPD still running")
@@ -91,7 +91,7 @@ def start(server_class=HTTPServer, handler_class=S, port=321):
             postDic = json.loads(post_data.decode('utf-8'))
             log.info(file,postDic)
         except:
-            logging.warning("Bad format, could not convert to JSON")
+            log.warning(file,"Bad format, could not convert to JSON")
         try:
             if (postDic["type"] == "power"):
                 power = postDic["power"]
@@ -105,11 +105,11 @@ def start(server_class=HTTPServer, handler_class=S, port=321):
                 redMultiplier, greenMultiplier, blueMultiplier = colorsys.hsv_to_rgb(float(H), float(S), float(V))
                 #print(str(redMultiplier) + " " + str(greenMultiplier))
         except:
-            logging.warning("Bad format, does not begin with 'type' or failed to convert HSV")
+            log.warning(file,"Bad format, does not begin with 'type' or failed to convert HSV")
 
         #httpd.serve_forever()
     httpd.server_close()
-    log.info('Stopping httpd...\n')
+    log.info(file,'Stopping httpd...\n')
 
 #start()
 
