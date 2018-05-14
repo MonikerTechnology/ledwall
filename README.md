@@ -4,7 +4,7 @@
 ![alt text](supporting_files/ledwall.gif "ledwall in action")
 
 ## Goals for v2.0
-- [ ] Python3
+- [x] Python3
 - [ ] Error handling
   - [ ] Auto restart of services
   - [ ] No audio - broken
@@ -14,27 +14,27 @@
 - [ ] HTML wifi set up - auto scan then broadcast if not connected
   - [ ] Physica button??
 - [ ] Better start up pattern / test pattern
-- [ ] Mirate to http post for control
+- [x] Mirate to http post for control
   - [ ] Add HTTPS
   - [ ] Add sha256 auth key
-  - [ ] HomeKit- bridge to many local scripts
+  - [x] HomeKit- HAP-Node.js to many local scripts
   - [ ] Secondary control….physical? (prolly naw)
     - [ ] Google Assistant
 - [ ] More/better audio effects
-- [ ] Update github
+- [x] Update github
 - [ ] Cool MOTD ssh banner
 - [ ] More secure?
 - [ ] HTML status page...mayble with controls
 
 
 ## Reminders:
-- Upload remote file from TouchOSC app!!
-- Add pictures and videos
-- Add type of LEDs
-- add power info 
-- Add links to all software
-- Upload FadeCandy config
-- Spell check this document
+- [ ] Upload remote file from TouchOSC app!!
+- [ ] Add pictures and videos
+- [ ] Add type of LEDs
+- [ ] add power info 
+- [ ] Add links to all software
+- [ ] Upload FadeCandy config
+- [ ] Spell check this document
 
 ## Description:
 ### Software:
