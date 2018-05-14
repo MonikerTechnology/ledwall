@@ -62,8 +62,11 @@ function post(data) {
 // UUID based on an arbitrary "namespace" and the accessory name.
 var lightUUID = uuid.generate(UUID);
 
+
+//DISPLAYNAME!!!
 // This is the Accessory that we'll return to HAP-NodeJS that represents our fake light.
 var light = exports.accessory = new Accessory(name, lightUUID);
+
 
 // Add properties for publishing (in case we're using Core.js and not BridgedCore.js)
 light.username = USERNAME;

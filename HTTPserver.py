@@ -8,6 +8,7 @@ Usage::
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import logging
 import time
+import colorsys
 #import main
 
 power = 1
@@ -16,6 +17,9 @@ mode = "breathe"
 H = 100
 S = 100
 V = 100
+redMultiplier
+greenMultiplier
+blueMultiplier
 postDic = ""
 
 
@@ -67,6 +71,9 @@ def start(server_class=HTTPServer, handler_class=S, port=321):
     global H
     global S
     global V
+    global redMultiplier
+    global greenMultiplier
+    global blueMultiplier
     logging.basicConfig(level=logging.INFO)
     server_address = ('', port)
     httpd = server_class(server_address, handler_class)
@@ -94,8 +101,9 @@ def start(server_class=HTTPServer, handler_class=S, port=321):
                 H = postDic["HSV"]["H"]
                 S = postDic["HSV"]["S"]
                 V = postDic["HSV"]["V"]
+                redMultiplier, greenMultiplier, blueMultiplier = colorsys.hsv_to_rgb(H, S, V)
         except:
-            logging.info("Bad format, does not begin with type")
+            logging.info("Bad format, does not begin with 'type'")
 
         #httpd.serve_forever()
     httpd.server_close()
