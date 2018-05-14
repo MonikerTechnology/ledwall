@@ -2,6 +2,7 @@ var Accessory = require('../').Accessory;
 var Service = require('../').Service;
 var Characteristic = require('../').Characteristic;
 var uuid = require('../').uuid;
+var http = require("http"); //Added for the http post requests
 
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
@@ -9,23 +10,48 @@ var name = "unflip";                                       //Name to Show to IOS
 var UUID = "hap-nodejs:accessories:HSVdata";     //Change the RGBLight to something unique for each light - this should be unique for each node on your system
 var USERNAME = "00:01:00:2C:5D:C1";              //This must also be unique for each node - make sure you change it!
 
-var MQTT_IP = '127.0.0.1'
-var lightTopic = '/LEDwall'
+
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
 
 
-// MQTT Setup
-// var mqtt = require('mqtt');
-// var options = {
-//   port: 1883,
-//   host: MQTT_IP,
-//   clientId: 'FGAK35243'
-// };
-// var client = mqtt.connect(options);
-// client.on('message', function(topic, message) {
+var postData; //This is where the post data gets stored for calling post(postdata);
 
-// });
+// This is how we will communicate with the LED wall
+function post(data) {
+  var reqBody = JSON.stringify(data); //Convert JSON to string so it can be measured and sent
+
+  var options = {
+    host: "localhost",
+    port: 321,
+    path: "/",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Content-Length": Buffer.byteLength(reqBody) //Gotcha!
+    }
+  };
+
+  var req = http.request(options, function (res) {
+    var responseString = "";
+
+    res.on("data", function (data) {
+        responseString += data;
+        // save all the data from response
+    });
+    res.on("end", function () {
+        console.log(responseString); 
+        // print to console when response ends
+    });
+  });
+
+  req.on('error', function(err) { //catch errors if the connection fails i.e. the server on the other end isn't running or maybe the adress is wrong
+    // Error handling here
+    console.log(err);
+  });
+  req.write(reqBody); //Send the data
+  req.end(); //Close the connection - change or add delay to recive
+}
 
 
 var state = false;
@@ -62,6 +88,8 @@ acc.addService(Service.Switch, "Switch")
     console.log("The switch has been flipped");
     //send message
     //client.publish(lightTopic, 'unflip');
+    postData = {"type":"mode","mode":"rainbow"}; //set power to on
+    post(postData); //call the function to send the data
     state = value;
     if(value) setTimeout(unFlip, 100);
     callback();
