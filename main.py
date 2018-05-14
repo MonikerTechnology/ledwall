@@ -451,6 +451,7 @@ try:
             #pixels = [pixel_color(t, coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]
             #client.put_pixels(pixels, channel=0)
 
+            #add fade out!!
             pixels = [(0,0,0) for ii, coord in enumerate(coordinates)] #set all the pixels to off
             client.put_pixels(pixels, channel=0)
         else: # catch all maybe do loading
