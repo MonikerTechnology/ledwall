@@ -110,7 +110,7 @@ def start(server_class=HTTPServer, handler_class=S, port=321):
     httpd.server_close()
     logging.info('Stopping httpd...\n')
 
-start()
+#start()
 
 # if __name__ == '__main__':
 #     from sys import argv
