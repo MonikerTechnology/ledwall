@@ -10,7 +10,7 @@ var err = null; // in case there were any problems
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
 var name = "LEDWallPower";                                       //Name to Show to IOS
 var UUID = "hap-nodejs:accessories:LEDWallPower";     //Change the RGBLight to something unique for each light - this should be unique for each node on your system - also find uuid.generate and change it to match
-var USERNAME = "BB:A6:AC:2C:5D:C1";              //This must also be unique for each node - make sure you change it!
+var USERNAME = "00:00:00:00:00:A1";              //This must also be unique for each node - make sure you change it!
 
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
@@ -110,7 +110,7 @@ LEDWallPower.on('identify', function(paired, callback) {
 // Add the actual LEDWallPower Service and listen for change events from iOS.
 // We can see the complete list of Services and Characteristics in `lib/gen/HomeKitTypes.js`
 LEDWallPower
-  .addService(Service.Switch, "LEDWallPower") // services exposed to the user should have "names" like "Fake Light" for us
+  .addService(Service.Switch, name) // services exposed to the user should have "names" like "Fake Light" for us
   .getCharacteristic(Characteristic.On)
   .on('set', function(value, callback) {
     SWITCH.setPowerOn(value);

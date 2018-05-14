@@ -9,8 +9,8 @@ var lightState = 0;
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
 var name = "HSVdataControl";                                       //Name to Show to IOS
-var UUID = "hap-nodejs:accessories:HSVdata";     //Change the RGBLight to something unique for each light - this should be unique for each node on your system
-var USERNAME = "00:00:00:0:00:05";              //This must also be unique for each node - make sure you change it!
+var UUID = "hap-nodejs:accessories:HSVdataControl";     //Change the RGBLight to something unique for each light - this should be unique for each node on your system
+var USERNAME = "00:00:00:00:00:A2";              //This must also be unique for each node - make sure you change it!
 
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////

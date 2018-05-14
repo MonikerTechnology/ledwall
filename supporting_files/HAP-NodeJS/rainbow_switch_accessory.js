@@ -7,9 +7,9 @@ var err = null; // in case there were any problems
 
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
-var name = "rainbow";                                       //Name to Show to IOS
+var name = "rainbow_switch";                                       //Name to Show to IOS
 var UUID = "hap-nodejs:accessories:rainbow";     //Change the RGBLight to something unique for each light - this should be unique for each node on your system
-var USERNAME = "AC:A6:AC:2C:5D:C1";              //This must also be unique for each node - make sure you change it!
+var USERNAME = "00:00:00:00:00:A9";              //This must also be unique for each node - make sure you change it!
 
 var MQTT_IP = 'localhost'
 var lightTopic = '/LEDwall'
@@ -69,7 +69,7 @@ LEDswitch.on('identify', function(paired, callback) {
 // Add the actual LEDswitch Service and listen for change events from iOS.
 // We can see the complete list of Services and Characteristics in `lib/gen/HomeKitTypes.js`
 LEDswitch
-  .addService(Service.Switch, "LEDswitch") // services exposed to the user should have "names" like "Fake Light" for us
+  .addService(Service.Switch, name) // services exposed to the user should have "names" like "Fake Light" for us
   .getCharacteristic(Characteristic.On)
   .on('set', function(value, callback) {
     SWITCH.setPowerOn(value);

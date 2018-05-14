@@ -8,7 +8,7 @@ var http = require("http"); //Added for the http post requests
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
 var name = "unFlip";                                       //Name to Show to IOS
 var UUID = "hap-nodejs:accessories:unFlip";     //Change the RGBLight to something unique for each light - this should be unique for each node on your system
-var USERNAME = "00:01:00:2C:5D:06";              //This must also be unique for each node - make sure you change it!
+var USERNAME = "00:00:00:00:00:AA";              //This must also be unique for each node - make sure you change it!
 
 
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////

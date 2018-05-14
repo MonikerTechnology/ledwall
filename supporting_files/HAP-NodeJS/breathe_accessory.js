@@ -9,7 +9,7 @@ var err = null; // in case there were any problemssts
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
 var name = "breathe";                                       //Name to Show to IOS
 var UUID = "hap-nodejs:accessories:breathe";     //Change the RGBLight to something unique for each light - this should be unique for each node on your system
-var USERNAME = "01:02:00:2C:5D:C1";              //This must also be unique for each node - make sure you change it!
+var USERNAME = "00:00:00:00:00:A4";              //This must also be unique for each node - make sure you change it!
 
 
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
@@ -83,7 +83,7 @@ acc.on('identify', function(paired, callback) {
   callback();
 });
 
-acc.addService(Service.Switch, "Switch")
+acc.addService(Service.Switch, name)
   .getCharacteristic(Characteristic.On)
   .on('get', function(callback) {
     console.log("The current state is %s", state ? "on" : "off");
