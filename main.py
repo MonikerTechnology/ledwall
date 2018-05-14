@@ -309,7 +309,38 @@ power = 0
 # color modes function
 
 
+def startup(t, coord, ii, n_pixels):
+    """Compute the color of a given pixel.
+    t: time in seconds since the program started.
+    ii: which pixel this is, starting at 0
+    coord: the (x, y, z) position of the pixel as a tuple
+    n_pixels: the total number of pixels
+    Returns an (r, g, b) tuple in the range 0-255
+    """
+    x,y,z = coord
+    if (ii = 0):
+        r = 100
+        g = 100
+        b = 100
+    else: 
+        r = 0
+        g = 0
+        b = 0
 
+    #padXData = touchOSC.padXData
+    #padYData = int(touchOSC.padYData * .65)
+    #print padYData
+    #print touchOSC.padYData
+
+
+    #r,g,b = colorOSC
+
+    #if x == padXData and z == padYData:
+    #r,g,b = draw.circle(padXData,padYData, x, z,colorOSC)
+    #draw.circle(5,5, x, z)
+
+
+    return (r, g, b)
 
 
 
@@ -446,6 +477,8 @@ try:
         #if HTTPserver.power == 1:
             pixels = [rainbow(t*scale(30,(1,100),(.05,2)), coord, ii, n_pixels, random_values) for ii, coord in enumerate(coordinates)]
             client.put_pixels(pixels, channel=0)
+        if HTTPserver.mode == "startup":
+            pixels = [startup(t, coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]
         elif HTTPserver.mode == "off" or HTTPserver.power == 0:
             nothing = 0
             #pixels = [pixel_color(t, coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]

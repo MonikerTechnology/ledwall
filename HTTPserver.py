@@ -12,7 +12,7 @@ import time
 
 power = 0
 mode = "startup"
-mode = "rainbow"
+#mode = "rainbow"
 H = 100
 S = 100
 V = 100
