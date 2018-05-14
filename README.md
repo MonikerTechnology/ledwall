@@ -174,6 +174,7 @@ Python3 - The way of the future
 sudo pip3 install aubio
 sudo python3 -m pip install numpy
 sudo apt-get install python3-pyaudio
+sudo pip3 install dweepy
 ```
     
 ```
