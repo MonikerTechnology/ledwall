@@ -92,6 +92,7 @@ Default pairing code: `031-45-154`
 Use `sudo DEBUG=* node BridgedCore.js` for detailed output when troubleshooting
 
 .service file for HAP-NodeJS
+Double check path for node `which node` as it can vary.
 ```
 #
 #Place this file in /etc/systemd/system/name_of_file.service
@@ -113,7 +114,7 @@ Type=simple
 #Everything must use absolute path
 WorkingDirectory=/home/pi/HAP-NodeJS 
 ExecStartPre=/bin/echo "hap-nodejs.service started" 
-ExecStart=/usr/bin/node /home/pi/HAP-NodeJS/BridgedCore.js 
+ExecStart=/usr/local/bin/node /home/pi/HAP-NodeJS/BridgedCore.js 
 ExecStop=/bin/echo "hap-nodejs.services stopped" 
 
 [Install]

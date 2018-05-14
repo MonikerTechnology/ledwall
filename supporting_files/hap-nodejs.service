@@ -18,7 +18,7 @@ Type=simple
 #Everything must use absolute path
 WorkingDirectory=/home/pi/HAP-NodeJS 
 ExecStartPre=/bin/echo "hap-nodejs.service started" 
-ExecStart=/usr/bin/node /home/pi/HAP-NodeJS/BridgedCore.js 
+ExecStart=/usr/local/bin/node /home/pi/HAP-NodeJS/BridgedCore.js 
 ExecStop=/bin/echo "hap-nodejs.services stopped" 
 
 [Install]
