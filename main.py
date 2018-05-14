@@ -317,15 +317,19 @@ def startup(t, coord, ii, n_pixels):
     n_pixels: the total number of pixels
     Returns an (r, g, b) tuple in the range 0-255
     """
+    global position
     x,y,z = coord
     if (ii == 0):
-        r = 100
-        g = 100
-        b = 100
+        r = value[int(position)]
+        g = value[int(position)]
+        b = value[int(position)]
     else: 
         r = 0
         g = 0
         b = 0
+    position += .5
+    if (position == 500):
+        position = 0
 
     #padXData = touchOSC.padXData
     #padYData = int(touchOSC.padYData * .65)
@@ -444,7 +448,11 @@ oneSec = 0 # moves every second
 sleepFPS = .03 # Guess!
 loopCount = 0 # to track FPS
 
-
+#counter for the startup
+position = 0
+value = [] # list from 0 - 250 - 0
+value.extend(range(250,0))
+value.extend(reversed(range(0,250)))
 
 random_values = [random.random() for ii in range(n_pixels)]
 try:
@@ -478,7 +486,7 @@ try:
             pixels = [rainbow(t*scale(30,(1,100),(.05,2)), coord, ii, n_pixels, random_values) for ii, coord in enumerate(coordinates)]
             client.put_pixels(pixels, channel=0)
         if HTTPserver.mode == "startup":
-            pixels = [startup(t, coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]
+            pixels = [startup(t, coord, ii, n_pixels, position) for ii, coord in enumerate(coordinates)]
             client.put_pixels(pixels, channel=0)
         elif HTTPserver.mode == "off" or HTTPserver.power == 0:
             nothing = 0
