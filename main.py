@@ -319,7 +319,7 @@ def startup(t, coord, ii, n_pixels):
     """
     global position
     x,y,z = coord
-    print(coord)
+    #print(coord)
     #print("position")
     #print(int(position))
     if (ii == 0):
@@ -330,6 +330,10 @@ def startup(t, coord, ii, n_pixels):
         r = value[int(position)] * .7
         g = value[int(position)] * .7
         b = value[int(position)] * .7
+    elif (x == 0 and z == 5):
+        r = 200
+        b = 0
+        g = 0
     else: 
         r = 0
         g = 0
