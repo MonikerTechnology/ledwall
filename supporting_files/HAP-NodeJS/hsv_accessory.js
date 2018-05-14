@@ -11,23 +11,49 @@ var name = "HSVdata";                                       //Name to Show to IO
 var UUID = "hap-nodejs:accessories:HSVdata";     //Change the RGBLight to something unique for each light - this should be unique for each node on your system
 var USERNAME = "00:00:00:2C:5D:C1";              //This must also be unique for each node - make sure you change it!
 
-var MQTT_IP = '127.0.0.1'
-var lightTopic = '/LEDwall'
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
 ////////////////CHANGE THESE SETTINGS TO MATCH YOUR SETUP BEFORE RUNNING!!!!!!!!!!!!!//////////////////////////
 
 
-// // MQTT Setup
-// var mqtt = require('mqtt');
-// var options = {
-//   port: 1883,
-//   host: MQTT_IP,
-//   clientId: 'FGAK35243'
-// };
-// var client = mqtt.connect(options);
-// client.on('message', function(topic, message) {
 
-// });
+
+var postData; //This is where the post data gets stored for calling post(postdata);
+
+// This is how we will communicate with the LED wall
+function post(data) {
+  var reqBody = JSON.stringify(data); //Convert JSON to string so it can be measured and sent
+
+  var options = {
+    host: "localhost",
+    port: 321,
+    path: "/",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Content-Length": Buffer.byteLength(reqBody) //Gotcha!
+    }
+  };
+
+  var req = http.request(options, function (res) {
+    var responseString = "";
+
+    res.on("data", function (data) {
+        responseString += data;
+        // save all the data from response
+    });
+    res.on("end", function () {
+        console.log(responseString); 
+        // print to console when response ends
+    });
+  });
+
+  req.on('error', function(err) { //catch errors if the connection fails i.e. the server on the other end isn't running or maybe the adress is wrong
+    // Error handling here
+    console.log(err);
+  });
+  req.write(reqBody); //Send the data
+  req.end(); //Close the connection - change or add delay to recive
+}
 
 //setup HK light object
 var lightUUID = uuid.generate(UUID);
@@ -125,10 +151,14 @@ var lightAction = {
       console.log("Setting new outlet state: " + newState.toString());
       if(newState == true){
         //client.publish(lightTopic, 'p1');
+        postData = {"type":"power","power":1}; //set power to on
+        post(postData); //call the function to send the data
         this.currentState = 1;
       }
       else{
         //client.publish(lightTopic, 'p0');
+        postData = {"type":"power","power":0}; //set power to on
+        post(postData); //call the function to send the data
         this.currentState = 0;
       }
     }
@@ -169,9 +199,10 @@ var lightAction = {
       pubBrightness = this.currentBrightness / 100;
       pubHue = this.currentHue / 360;
       pubSaturation = this.currentSaturation / 100;
-      toPublish = 'HSVXXXXX' + pubHue.toFixed(3).toString() + ',' + pubSaturation.toFixed(3).toString() + ',' + pubBrightness.toFixed(3).toString()
+      //toPublish = 'HSVXXXXX' + pubHue.toFixed(3).toString() + ',' + pubSaturation.toFixed(3).toString() + ',' + pubBrightness.toFixed(3).toString()
       //client.publish(lightTopic, toPublish);
-
+      postData = {"type":"HSV","HSV":{"H":pubHue.toFixed(3).toString(),"S":pubSaturation.toFixed(3).toString(),"V":pubBrightness.toFixed(3).toString()}}; //set power to on
+      post(postData); //call the function to send the data
       this.lastBrightness = this.currentBrightness;
       this.lastHue = this.currentHue;
       this.lastSaturation = this.currentSaturation;
