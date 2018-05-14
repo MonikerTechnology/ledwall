@@ -453,7 +453,7 @@ loopCount = 0 # to track FPS
 #counter for the startup
 position = 0
 value = [] # list from 0 - 250 - 0
-value.extend(range(250,0))
+value.extend(range(0,250))
 value.extend(reversed(range(0,250)))
 print(value)
 
