@@ -53,7 +53,7 @@ print("LLLLLLLLLLLLLLLLLLLLLLLLEEEEEEEEEEEEEEEEEEEEEEDDDDDDDDDDDDD              
                                                                                                                                                   
 print
 print 
-header(file,"SETUP")
+log.header(file,"SETUP")
 print
 
 #-------------------------------------------------------------------------------
