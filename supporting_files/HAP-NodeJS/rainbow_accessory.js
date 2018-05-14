@@ -59,7 +59,7 @@ var state = false;
 
 var accUUID = uuid.generate('hap-nodejs:accessories:rainbow');
 
-var acc = exports.accessory = new Accessory("Switch", accUUID);
+var acc = exports.accessory = new Accessory(name, accUUID);
 
 function unFlip() {
   console.log("Unflipping...");
