@@ -18,6 +18,8 @@
   - [ ] Add HTTPS
   - [ ] Add sha256 auth key
   - [x] HomeKit- HAP-Node.js to many local scripts
+    - [ ] Homekit QR code for pairing
+    - [ ] HAP-Node.js feedback so the buttons are active
   - [ ] Secondary control….physical? (prolly naw)
     - [ ] Google Assistant
 - [ ] More/better audio effects
@@ -25,6 +27,7 @@
 - [ ] Cool MOTD ssh banner
 - [ ] More secure?
 - [ ] HTML status page...mayble with controls
+- [ ] Linux auto updates (security)
 
 
 ## Reminders:
