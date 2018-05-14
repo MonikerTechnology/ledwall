@@ -8,12 +8,14 @@ Usage::
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import logging
 import time
+import os
 import colorsys
-#import main
+import log
+file = str(os.path.basename(__file__))
+
 
 power = 1
 mode = "breathe"
-#mode = "rainbow"
 H = 100
 S = 100
 V = 100
@@ -78,23 +80,22 @@ def start(server_class=HTTPServer, handler_class=S, port=321):
     server_address = ('', port)
     httpd = server_class(server_address, handler_class)
     time.sleep(.5)
-    print
-    print
-    logging.info('Starting httpd...\n')
+
+    log.header('Starting httpd...\n')
 
     while run:
-        print("HTTPD still running")
+        #log.info(file,"HTTPD still running")
         httpd.handle_request()
         #data = post_data.decode('utf-8')
         try:
             postDic = json.loads(post_data.decode('utf-8'))
-            print(postDic)
+            log.info(file,postDic)
         except:
-            logging.info("Bad format, could not convert to JSON")
+            logging.warning("Bad format, could not convert to JSON")
         try:
             if (postDic["type"] == "power"):
                 power = postDic["power"]
-                print("power set to: " + str(power))
+                #log.header(file,"power set to: " + str(power))
             if (postDic["type"] == "mode"):
                 mode = postDic["mode"]
             if (postDic["type"] == "HSV"):
@@ -104,11 +105,11 @@ def start(server_class=HTTPServer, handler_class=S, port=321):
                 redMultiplier, greenMultiplier, blueMultiplier = colorsys.hsv_to_rgb(float(H), float(S), float(V))
                 #print(str(redMultiplier) + " " + str(greenMultiplier))
         except:
-            logging.info("Bad format, does not begin with 'type' or failed to convert HSV")
+            logging.warning("Bad format, does not begin with 'type' or failed to convert HSV")
 
         #httpd.serve_forever()
     httpd.server_close()
-    logging.info('Stopping httpd...\n')
+    log.info('Stopping httpd...\n')
 
 #start()
 

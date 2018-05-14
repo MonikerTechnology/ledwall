@@ -6,6 +6,9 @@ This script gets dweets from dweet.io and forwards the "content" to the HTTPserv
 import dweepy
 import requests
 import json
+import os
+import log
+file = str(os.path.basename(__file__))
 
 
 
@@ -17,22 +20,22 @@ def start():
                 for dweet in dweepy.listen_for_dweets_from('315novusledwall'):
                     
                     
-                    print(dweet)
+                    log.info(file,dweet)
                     try:
                         dweet = json.dumps(dweet["content"])
                     except:
-                        print("could not convert to JSON and extract contents")
+                        log.warning(file,"could not convert to JSON and extract contents")
                     try:
                         r = requests.post("http://localhost:321", data=dweet)
                     except:
-                        print("Could not post to HTTPserver")
+                        log.warning(file,"Could not post to HTTPserver")
                     if (run == False):
-                        print("breaking")
+                        log.warning(file,"breaking")
                         break
 
             except:
-                print("Failed to get dweet")
+                log.warning(file,"Failed to get dweet")
     except KeyboardInterrupt:
-        print('\ngoogleAssistant: Interrupt detected')
+        log.warning(file,'\ngoogleAssistant: Interrupt detected')
         #print("")
     

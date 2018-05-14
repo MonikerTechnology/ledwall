@@ -62,9 +62,9 @@ print()
 log.header(file,"Trying to start FC server...")
 try:
     os.system("sudo /home/pi/fadecandy/bin/fcserver-rpi /home/pi/fadecandy/bin/fcserver_config.json &")
-    log.header(file,"\nBackgrounding FC server and continuing with python\n")
+    log.header(file,"Backgrounding FC server and continuing with python")
 except:
-    log.warning(file,"Failed...Maybe it is already running?\n")
+    log.warning(file,"Failed...Maybe it is already running?")
 
 
 #-------------------------------------------------------------------------------
@@ -82,10 +82,10 @@ def startListening():
     audio.startAudio()
     return ()
 
-#t_HTTPserver = threading.Thread()
-def startHTTPserver():
-    HTTPserver.start() #Port 321
-    return()
+# #t_HTTPserver = threading.Thread()
+# def startHTTPserver():
+#     HTTPserver.start() #Port 321
+#     return()
 
 # Main kill switch to stop the threads
 def killSwitch():
@@ -162,11 +162,15 @@ time.sleep(1)
 #add in a check to see if it stopped and restart it
 # also check fadecandy
 #t_HTTPserver = threading.Thread(target=startHTTPserver, args=())
+
 t_HTTPserver = threading.Thread(target=HTTPserver.start, args=())
+
 t_googleAssistant = threading.Thread(target=googleAssistant.start)
 
 #start
+log.header(file,"Starting HTTPserver")
 t_HTTPserver.start()
+log.header(file,"Starting googleAssistant server")
 t_googleAssistant.start()
     
 
