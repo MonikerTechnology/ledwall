@@ -94,10 +94,10 @@ def start(server_class=HTTPServer, handler_class=S, port=321):
             log.warning(file,"Bad format, could not convert to JSON")
         try:
             if (postDic["type"] == "power"):
-                power = postDic["power"]
+                power = postDic["power"] #int
                 #log.header(file,"power set to: " + str(power))
             if (postDic["type"] == "mode"):
-                mode = postDic["mode"]
+                mode = postDic["mode"].strip() #string
             if (postDic["type"] == "HSV"):
                 H = postDic["HSV"]["H"]
                 S = postDic["HSV"]["S"]
@@ -111,7 +111,7 @@ def start(server_class=HTTPServer, handler_class=S, port=321):
     httpd.server_close()
     log.info(file,'Stopping httpd...\n')
 
-#start()
+start()
 
 # if __name__ == '__main__':
 #     from sys import argv
