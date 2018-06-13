@@ -59,6 +59,7 @@ def getResults():
     positionVolume13,lastPositionVolume13 = getPositionVolume()
 
 def calcVolume(vList):
+    
     high = max(vList)
     global maxVolumeScale
     #if maxVolumeScale > 500: #if the volume is super low then don't go lower
@@ -113,6 +114,7 @@ def getPositionVolume():
     maxVolumeList.append(maxVolumeLoop)
     if len(maxVolumeList) > 50:
         maxVolumeScale = calcVolume(maxVolumeList)
+        print(maxVolumeScale)
         #maxVolumeScale = max(maxVolumeList)
         maxVolumeList[:] = []
 
