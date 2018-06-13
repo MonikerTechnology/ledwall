@@ -98,7 +98,6 @@ def start(server_class=HTTPServer, handler_class=S, port=321):
                 #log.header(file,"power set to: " + str(power))
             if (postDic["type"] == "mode"):
                 mode = postDic["mode"].strip().lower() #string
-                print(mode)
             if (postDic["type"] == "HSV"):
                 H = postDic["HSV"]["H"]
                 S = postDic["HSV"]["S"]

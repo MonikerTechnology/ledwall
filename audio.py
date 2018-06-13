@@ -272,6 +272,6 @@ def startAudio():
             
         #print "Volume: " , volumeUse , "Pitch: ", pitchUse
     return ()
-
-startAudio()
+if __name__ == "__main__":
+    startAudio()
 

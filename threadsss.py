@@ -3,7 +3,9 @@ import time
 import sys
 import os
 import HTTPserver
+import googleAssistant
 import requests
+#import main
 try:
     import json
 except ImportError:
@@ -13,20 +15,23 @@ run_one = True
 run_two = True
 
 print("Treasssss")
-print("Treasssss")
-print("Treasssss")
-print("Treasssss")
+
 
 
 def startHTTPserver():
     HTTPserver.start()
     return()
 
+def startGoogleAssistant():
+    googleAssistant.start()
+    return()
 
 
-t3 = threading.Thread(target=startHTTPserver)
+t4 = threading.Thread(target=startHTTPserver)
+t3 = threading.Thread(target=googleAssistant.start)
 
 t3.start()
+t4.start()
 
 
 try:
@@ -36,7 +41,7 @@ try:
         #time.sleep(5)
         #print(t3.is_alive())
         time.sleep(4)
-        print(HTTPserver.postDic["state"])
+        print(HTTPserver.postDic["type"])
         #message = json.load(HTTPserver.data)
         try:
             message = json.load(HTTPserver.data)
