@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-
-
 """
 
 main.py will import this module and run it in a seperate thread.
@@ -26,29 +24,78 @@ import os
 pitch = 0
 volume = 0
 run = True
+volumeList = []
+pitchList = []
+maxVolumeScale = 2000
+
+def scale(val, src, dst):
+    """
+    Scale the given value from the scale of src to the scale of dst.
+    """
+    return ((val - src[0]) / (src[1]-src[0])) * (dst[1]-dst[0]) + dst[0]
 
 
 def bar(label, value,last):
-    string = ""
-    count = 0
-    if value > 2000:
-        value = 2000
-    while value > 0:
-        count+=1
-        string+="-" 
-        value-=50        
-    while count < last - 1: #add space for the memory bar
-        string+=" "
-        count+=1
-    
-    string+="|"
-    print(label , string)
-    return count
+
+    if last >= value:
+        last = value
+    elif last < value:
+        if last < 14:
+            last+=.5
+
+    return last
 
 def between(pitch,low,high,maxValue,list):
     global position
     if pitch > low and pitch < high and pitch > maxValue:
         return list[position] 
+
+def getResults():
+    global positionVolume13
+    global lastPositionVolume13
+    positionVolume13,lastPositionVolume13 = getPositionVolume()
+
+def getPositionVolume():
+    
+    positionVolume13 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] #clear out the list for a new loop
+    position = 0 #keeps track of the position in the list to correlate volume
+    #global pitchList
+    #global volumeList
+
+            #print pitchList
+    for i in pitchList: # list of pitches found during the sample
+
+        #for range in ranges13:
+        for index, range in enumerate(ranges13):
+            #print(index)
+
+            if i < range: #if the pitch falls under the range
+                if positionVolume13[index] < volumeList[position]:  #if the new value is greater than the old value
+                    positionVolume13[index] = volumeList[position] #if so than save it
+                    break #so we dont save the value to every pitch level
+        position+=1
+    for index, i in enumerate(positionVolume13):
+        if i > maxVolumeScale:
+            i = maxVolumeScale
+        positionVolume13[index] = scale(i,(0,maxVolumeScale),(14,0))
+
+
+
+    #os.system('clear')
+    # print
+    # print("FPS: ", FPS)
+    # print
+    
+    #for i in positionVolume13:
+    for index, range in enumerate(positionVolume13):
+        lastPositionVolume13[index] = bar(str(ranges13[index]),range,lastPositionVolume13[index])
+    
+    volumeList[:] = [] #empty the list
+    pitchList[:] = [] #empty the list
+    return(positionVolume13,lastPositionVolume13)
+
+
+
 
 
 position = 0
@@ -76,14 +123,19 @@ p3 = 256
 p4 = 512
 p5 = 750
 p6 = 1000 
-p7 = 2000
-p8 = 3000
-p9 = 5000
-p10 = 7500
-p11 = 10000
-p12 = 20000
-p13 = 32768
-ranges = [p1, p2 , p3 , p4 , p5 , p6 , p7 , p8 , p9, p10, p11, p12 ,p13]
+p7 = 1500
+p8 = 2000
+p9 = 3000
+p10 = 5000
+p11 = 6500
+p12 = 8192
+p13 = 10000
+p14 = 20000
+p15 = 32768
+ranges13 = [p1, p2 , p3 , p4 , p5 , p6 , p7 , p8 , p9, p10, p11, p12 ,p13, p14, p15]
+lastVolume13 = []
+#positionVolume13 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+lastPositionVolume13 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 # 
 # 
 # 
@@ -96,7 +148,6 @@ def startAudio():
 
     # PyAudio object.
     p = pyaudio.PyAudio()
-
 
     # Open stream.
     stream = p.open(format=pyaudio.paFloat32,
@@ -119,22 +170,17 @@ def startAudio():
     tenthSec = 0.1
 
     #array for volume and pitch
-    volumeList = []
-    pitchList = []
-    maxPitch = 0
-    maxVolume = 0
-    volumePitch = {}
-    variablePitch = 1000 #wild guess!
-    variableVolume = 50
-    lowLast = 0
-    lowmidLast = 0
-    midLast = 0
-    midhighLast =0
-    highLast = 0
 
-
-
-
+    # maxPitch = 0
+    # maxVolume = 0
+    # volumePitch = {}
+    # variablePitch = 1000 #wild guess!
+    # variableVolume = 50
+    # lowLast = 0
+    # lowmidLast = 0
+    # midLast = 0
+    # midhighLast =0
+    # highLast = 0
 
 
     # This is the main loop
@@ -149,6 +195,13 @@ def startAudio():
         try:
             data = stream.read(CHUNK // 2)
         #except IOError as ex:
+        except KeyboardInterrupt:
+            print()
+            print("Interup detected")
+            try:
+                sys.exit(0)
+            except SystemExit:
+                os._exit(0)
         except:
             #if ex[1] != pyaudio.paInputOverflowed:
             #    raise
@@ -182,126 +235,23 @@ def startAudio():
             fiveSec += 5
             #going to use these to make a floating scale maybe
 
-
-            # print
-            # print ("Run time (m) %f ") % (runTime / 60)
-            # print ("Volume: %f") % volume
-            # print ("Pitch: %f") % pitch
-            # print
-
         if runTime + 1 > oneSec: #actions every second
             oneSec += 1
-            #print "Number of loops per second" , count
             FPS = count
             count = 0
-            
-            #print time.time()
-
-            #print volumeList
-            #print len(volumeList)
-
 
         if runTime + 0.1 > tenthSec: #actions every tenth of a second
+            
             tenthSec += 0.1
-           
-            # oldMaxPitch = maxPitch
-            # oldMaxVolume = maxVolume
-            # pitIndex, maxPitch = max(enumerate(pitchList), key=operator.itemgetter(1))
-            # volIndex, maxVolume = max(enumerate(volumeList), key=operator.itemgetter(1))
 
-            # if variablePitch > maxPitch * 2:
-            #     variablePitch*=0.99
-            # if variablePitch < maxPitch * 2:
-            #     variablePitch*=1.01
-            # if variableVolume > maxVolume * 2:
-            #     variableVolume*=0.99
-            # if variableVolume < maxVolume * 2:
-            #     variableVolume*=1.01
+            #getResults()
+            #positionVolume13,lastPositionVolume13 = getPositionVolume()
 
-            #print "Max volume: " , volValue , " Index: " , volIndex
-            #print "Max pitch: " , pitValue , " Index: " , pitIndex
-            #print "variable pitch" , variablePitch
-            position = 0 #keeps track of the position in the list to correlate volume
-            low = 0
-            lowcount = 0
-            lowmid = 0
-            lowmidcount = 0
-            mid = 0
-            midcount = 0
-            midhigh = 0
-            midhighcount = 0
-            high = 0
-            highcount = 0
-            #print pitchList
-            for i in pitchList:
-                # low =     between(i,   0,   32,    low,volumeList)
-                # lowmid =  between(i,  32,  512, lowmid,volumeList)
-                # mid =     between(i, 512, 2048,    mid,volumeList)
-                # midhigh = between(i,2048, 8192,midhigh,volumeList)
-                # high =    between(i,8192,99999,   high,volumeList)
 
-                if i > 0 and i < 32: #lows
-                #if i > 0 and i < 512: #lows
-                    #print "Low Pitch: " , pitchList[position], "Volume: " , volumeList[position]
-                    low+=volumeList[position]
-                    lowcount+=1
-                elif i > 32 and i < 512: #low-mid
-                #elif i > 512 and i < 1024: #low-mid
-                   #print "low-mid Pitch: " , pitchList[position], "Volume: " , volumeList[position]
-                   lowmid+=volumeList[position]
-                   lowmidcount+=1
-                elif i > 512 and i < 2048: #mid
-                    #print "mid Pitch: " , pitchList[position], "Volume: " , volumeList[position]
-                    mid+=volumeList[position]
-                    midcount+=1
-                elif i > 2048 and i < 8192:#mid-high
-                    #print "mid-high Pitch: " , pitchList[position], "Volume: " , volumeList[position]
-                    midhigh+=volumeList[position]
-                    midhighcount+=1
-                elif i > 8192: #high
-                    #print "high Pitch: " , pitchList[position], "Volume: " , volumeList[position]
-                    high+=volumeList[position]
-                    highcount+=1
-                position+=1 #keeps track of the position in the list to correlate volume
-            if lowcount > 0:
-                low = low / lowcount
-            if lowmidcount > 0:
-                lowmid = lowmid / lowmidcount
-            if midcount > 0:
-                mid = mid / midcount
-            if midhighcount > 0:
-                midhigh = midhigh / midhighcount
-            if highcount > 0:
-                high = high / highcount
-            os.system('clear')
-            print
-            print("FPS: ", FPS)
-            print
-            lowLast = bar("Low's Volume:      ",low,lowLast)
-            lowmidLast = bar("Low-Mid's Volume:  ",lowmid,lowmidLast)
-            midLast = bar("Mid's Volume:      ",mid,midLast)
-            midhighLast = bar("Mid-High's Volume: ",midhigh,midhighLast)
-            highLast = bar("High's Volume:     " ,high,highLast)
-            # print "max pitch          " , "{:.2f}".format(variablePitch)
-            # print "Low's Volume:      " , "{:.2f}".format(low)
-            # print "Low-Mid's Volume:  " , "{:.2f}".format(lowmid)
-            # print "Mid's Volume:      " , "{:.2f}".format(mid)
-            # print "Mid-High's Volume: " , "{:.2f}".format(midhigh)
-            # print "High's Volume:     " , "{:.2f}".format(high)
 
-            
-            
-            volumeList[:] = [] #empty the list
-            pitchList[:] = [] #empty the list
-            ##maxPitch = max(volumePitch.iteritems(), key=operator.itemgetter(1))[0]
-            #minPitch = min(volumePitch.iteritems(), key=operator.itemgetter(1))[0]
-            #print maxPitch, minPitch
-            #print volumePitch
-            #print "Length: " ,len(volumePitch)
-            #volumePitch.clear()
-            
-        #print "Volume: " , volumeUse , "Pitch: ", pitchUse
     return ()
+
+
 if __name__ == "__main__":
     startAudio()
 

@@ -12,7 +12,7 @@ import colorsys
 # My custom
 import opc
 import color_utils
-import audioWine.py
+import audio
 
 import HTTPserver
 import googleAssistant
@@ -165,14 +165,16 @@ time.sleep(1)
 #t_HTTPserver = threading.Thread(target=startHTTPserver, args=())
 
 t_HTTPserver = threading.Thread(target=HTTPserver.start, args=())
-
 t_googleAssistant = threading.Thread(target=googleAssistant.start)
+t_audio = threading.Thread(target=audio.startAudio)
 
 #start
 log.header(file,"Starting HTTPserver")
 t_HTTPserver.start()
 log.header(file,"Starting googleAssistant server")
 t_googleAssistant.start()
+log.header(file,"Starting audio loop")
+t_audio.start()
     
 
 #-------------------------------------------------------------------------------
@@ -376,7 +378,42 @@ def startup(t, coord, ii, n_pixels):
 
     return (r, g, b)
 
+def audioBars(t, coord, ii, n_pixels, random_values):
+    x, y, z = coord
 
+    h = int(audio.positionVolume13[x])
+    #print("h ", h)
+
+    l = int(audio.lastPositionVolume13[x])
+    #print("l ",l)
+
+
+
+    if z == l: #max volume falling
+        return (250,10,250)
+        #return (0,0,0)
+    elif z > h: everything below(above) the current volume
+        #return (0,0,0)
+        return (250,250,250)
+    else:
+        return (0,0,0)
+
+#def bar(label, value,last):
+    # string = ""
+    # count = 0
+    # if value > 2000:
+    #     value = 2000
+    # while value > 0:
+    #     count+=1
+    #     string+="-" 
+    #     value-=50        
+    # while count < last - 1: #add space for the memory bar
+    #     string+=" "
+    #     count+=1
+    
+    # string+="|"
+    # print(label , string)
+    # return count
 
 def rainbow(t, coord, ii, n_pixels, random_values):
 
@@ -511,7 +548,7 @@ try:
         time.sleep(sleepFPS)
         # End FPS tracker
         #----------------------------------------------
-        HTTPserver.mode = "rainbow"
+        HTTPserver.mode = "audio"
         HTTPserver.power = 1
         if HTTPserver.mode == "rainbow" and HTTPserver.power == 1:
         #if HTTPserver.power == 1:
@@ -528,6 +565,11 @@ try:
             #add fade out!!
             pixels = [(0,0,0) for ii, coord in enumerate(coordinates)] #set all the pixels to off
             client.put_pixels(pixels, channel=0)
+        elif HTTPserver.mode == "audio" and HTTPserver.power == 1:
+            audio.getResults()
+            pixels = [audioBars(t*scale(30,(1,100),(.05,2)), coord, ii, n_pixels, random_values) for ii, coord in enumerate(coordinates)]
+            client.put_pixels(pixels, channel=0)
+
         else: # catch all maybe do loading
             nothing = 0
 
