@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 
 
@@ -59,7 +59,35 @@ CHUNK = 256
 #CHANNELS = 1
 RATE = 44100 #44100 #sample rate i.e. number of frames per second
 
-
+    ####CODING AND WINE!!
+#     Frequency (Hz)	Octave	Description
+# 16 to 32	1st	The lower human threshold of hearing, and the lowest pedal notes of a pipe organ.
+# 32 to 512	2nd to 5th	Rhythm frequencies, where the lower and upper bass notes lie.
+# 512 to 2048	6th to 7th	Defines human speech intelligibility, gives a horn-like or tinny quality to sound.
+# 2048 to 8192	8th to 9th	Gives presence to speech, where labial and fricative sounds puss.
+# 8192 to 16384	10th	Brilliance, the sounds of bells and the ringing of cymbals and sibilance in speech.
+# 16384 to 32768	11th	Beyond brilliance, nebulous sounds approaching and just passing the upper human threshold of hearing
+#  
+# Map
+# Everything lower than the number is included
+p1 = 16
+p2 = 32
+p3 = 256
+p4 = 512
+p5 = 750
+p6 = 1000 
+p7 = 2000
+p8 = 3000
+p9 = 5000
+p10 = 7500
+p11 = 10000
+p12 = 20000
+p13 = 32768
+ranges = [p1, p2 , p3 , p4 , p5 , p6 , p7 , p8 , p9, p10, p11, p12 ,p13]
+# 
+# 
+# 
+#    
 
 
 
@@ -103,6 +131,11 @@ def startAudio():
     midLast = 0
     midhighLast =0
     highLast = 0
+
+
+
+
+
 
     # This is the main loop
     reset = 0
@@ -156,9 +189,6 @@ def startAudio():
             # print ("Pitch: %f") % pitch
             # print
 
-
-
-           
         if runTime + 1 > oneSec: #actions every second
             oneSec += 1
             #print "Number of loops per second" , count
