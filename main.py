@@ -392,7 +392,7 @@ def audioBars(t, coord, ii, n_pixels, random_values):
     if z == l: #max volume falling
         return (250,10,250)
         #return (0,0,0)
-    elif z > h: everything below(above) the current volume
+    elif z > h: #everything below(above) the current volume
         #return (0,0,0)
         return (250,250,250)
     else:
