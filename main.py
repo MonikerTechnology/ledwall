@@ -566,6 +566,7 @@ try:
             pixels = [(0,0,0) for ii, coord in enumerate(coordinates)] #set all the pixels to off
             client.put_pixels(pixels, channel=0)
         elif HTTPserver.mode == "audio" and HTTPserver.power == 1:
+            options.fps = 10
             audio.getResults()
             pixels = [audioBars(t*scale(30,(1,100),(.05,2)), coord, ii, n_pixels, random_values) for ii, coord in enumerate(coordinates)]
             client.put_pixels(pixels, channel=0)
