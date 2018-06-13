@@ -30,37 +30,37 @@ print
 print
                                                                                                                                                   
                                                                                                                                                   
-print("LLLLLLLLLLL             EEEEEEEEEEEEEEEEEEEEEEDDDDDDDDDDDDD             WWWWWWWW                           WWWWWWWW               lllllll lllllll ")
-print("L:::::::::L             E::::::::::::::::::::ED::::::::::::DDD          W::::::W                           W::::::W               l:::::l l:::::l ")
-print("L:::::::::L             E::::::::::::::::::::ED:::::::::::::::DD        W::::::W                           W::::::W               l:::::l l:::::l ")
-print("LL:::::::LL             EE::::::EEEEEEEEE::::EDDD:::::DDDDD:::::D       W::::::W                           W::::::W               l:::::l l:::::l ")
-print("  L:::::L                 E:::::E       EEEEEE  D:::::D    D:::::D       W:::::W           WWWWW           W:::::Waaaaaaaaaaaaa    l::::l  l::::l ")
-print("  L:::::L                 E:::::E               D:::::D     D:::::D       W:::::W         W:::::W         W:::::W a::::::::::::a   l::::l  l::::l ")
-print("  L:::::L                 E::::::EEEEEEEEEE     D:::::D     D:::::D        W:::::W       W:::::::W       W:::::W  aaaaaaaaa:::::a  l::::l  l::::l ")
-print("  L:::::L                 E:::::::::::::::E     D:::::D     D:::::D         W:::::W     W:::::::::W     W:::::W            a::::a  l::::l  l::::l ")
-print("  L:::::L                 E:::::::::::::::E     D:::::D     D:::::D          W:::::W   W:::::W:::::W   W:::::W      aaaaaaa:::::a  l::::l  l::::l ")
-print("  L:::::L                 E::::::EEEEEEEEEE     D:::::D     D:::::D           W:::::W W:::::W W:::::W W:::::W     aa::::::::::::a  l::::l  l::::l ")
-print("  L:::::L                 E:::::E               D:::::D     D:::::D            W:::::W:::::W   W:::::W:::::W     a::::aaaa::::::a  l::::l  l::::l ")
-print("  L:::::L         LLLLLL  E:::::E       EEEEEE  D:::::D    D:::::D              W:::::::::W     W:::::::::W     a::::a    a:::::a  l::::l  l::::l ")
-print("LL:::::::LLLLLLLLL:::::LEE::::::EEEEEEEE:::::EDDD:::::DDDDD:::::D                W:::::::W       W:::::::W      a::::a    a:::::a l::::::ll::::::l ")
-print("L::::::::::::::::::::::LE::::::::::::::::::::ED:::::::::::::::DD                  W:::::W         W:::::W       a:::::aaaa::::::a l::::::ll::::::l ")
-print("L::::::::::::::::::::::LE::::::::::::::::::::ED::::::::::::DDD                     W:::W           W:::W         a::::::::::aa:::al::::::ll::::::l ")
-print("LLLLLLLLLLLLLLLLLLLLLLLLEEEEEEEEEEEEEEEEEEEEEEDDDDDDDDDDDDD                         WWW             WWW           aaaaaaaaaa  aaaallllllllllllllll ")
+# print("LLLLLLLLLLL             EEEEEEEEEEEEEEEEEEEEEEDDDDDDDDDDDDD             WWWWWWWW                           WWWWWWWW               lllllll lllllll ")
+# print("L:::::::::L             E::::::::::::::::::::ED::::::::::::DDD          W::::::W                           W::::::W               l:::::l l:::::l ")
+# print("L:::::::::L             E::::::::::::::::::::ED:::::::::::::::DD        W::::::W                           W::::::W               l:::::l l:::::l ")
+# print("LL:::::::LL             EE::::::EEEEEEEEE::::EDDD:::::DDDDD:::::D       W::::::W                           W::::::W               l:::::l l:::::l ")
+# print("  L:::::L                 E:::::E       EEEEEE  D:::::D    D:::::D       W:::::W           WWWWW           W:::::Waaaaaaaaaaaaa    l::::l  l::::l ")
+# print("  L:::::L                 E:::::E               D:::::D     D:::::D       W:::::W         W:::::W         W:::::W a::::::::::::a   l::::l  l::::l ")
+# print("  L:::::L                 E::::::EEEEEEEEEE     D:::::D     D:::::D        W:::::W       W:::::::W       W:::::W  aaaaaaaaa:::::a  l::::l  l::::l ")
+# print("  L:::::L                 E:::::::::::::::E     D:::::D     D:::::D         W:::::W     W:::::::::W     W:::::W            a::::a  l::::l  l::::l ")
+# print("  L:::::L                 E:::::::::::::::E     D:::::D     D:::::D          W:::::W   W:::::W:::::W   W:::::W      aaaaaaa:::::a  l::::l  l::::l ")
+# print("  L:::::L                 E::::::EEEEEEEEEE     D:::::D     D:::::D           W:::::W W:::::W W:::::W W:::::W     aa::::::::::::a  l::::l  l::::l ")
+# print("  L:::::L                 E:::::E               D:::::D     D:::::D            W:::::W:::::W   W:::::W:::::W     a::::aaaa::::::a  l::::l  l::::l ")
+# print("  L:::::L         LLLLLL  E:::::E       EEEEEE  D:::::D    D:::::D              W:::::::::W     W:::::::::W     a::::a    a:::::a  l::::l  l::::l ")
+# print("LL:::::::LLLLLLLLL:::::LEE::::::EEEEEEEE:::::EDDD:::::DDDDD:::::D                W:::::::W       W:::::::W      a::::a    a:::::a l::::::ll::::::l ")
+# print("L::::::::::::::::::::::LE::::::::::::::::::::ED:::::::::::::::DD                  W:::::W         W:::::W       a:::::aaaa::::::a l::::::ll::::::l ")
+# print("L::::::::::::::::::::::LE::::::::::::::::::::ED::::::::::::DDD                     W:::W           W:::W         a::::::::::aa:::al::::::ll::::::l ")
+# print("LLLLLLLLLLLLLLLLLLLLLLLLEEEEEEEEEEEEEEEEEEEEEEDDDDDDDDDDDDD                         WWW             WWW           aaaaaaaaaa  aaaallllllllllllllll ")
                                                                                                                                                   
                                                                                                                                                   
-print
-print 
+print()
+print() 
 print("SETUP")
-print
+print()
 
 #-------------------------------------------------------------------------------
 # Try to start fadecandy server 
-try:
-    print("Trying to start FC server...")
-    os.system("sudo /home/pi/fadecandy/bin/fcserver-rpi /home/pi/fadecandy/bin/fcserver_config.json &")
-    print("\nBackgrounding FC server and continuing with python\n")
-except:
-    print("Maybe it is already running?\n")
+# try:
+#     print("Trying to start FC server...")
+#     os.system("sudo /home/pi/fadecandy/bin/fcserver-rpi /home/pi/fadecandy/bin/fcserver_config.json &")
+#     print("\nBackgrounding FC server and continuing with python\n")
+# except:
+#     print("Maybe it is already running?\n")
 
 
 #-------------------------------------------------------------------------------
@@ -439,7 +439,8 @@ try:
         time.sleep(sleepFPS)
         # End FPS tracker
         #----------------------------------------------
-        
+        mode = "rainbow"
+        power = 1
         if mode == "rainbow" and power == 1:
             pixels = [rainbow(t*scale(30,(1,100),(.05,2)), coord, ii, n_pixels, random_values) for ii, coord in enumerate(coordinates)]
             client.put_pixels(pixels, channel=0)

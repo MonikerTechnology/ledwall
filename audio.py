@@ -27,6 +27,7 @@ run = True
 volumeList = []
 pitchList = []
 maxVolumeScale = 2000
+
 maxVolumeLoop = 0
 maxVolumeList = []
 
@@ -76,6 +77,7 @@ def calcVolume(vList):
 def getPositionVolume():
     global maxVolumeLoop
     global maxVolumeList
+    global maxVolumeScale
     maxVolumeLoop = 0
     positionVolume13 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] #clear out the list for a new loop
     position = 0 #keeps track of the position in the list to correlate volume
