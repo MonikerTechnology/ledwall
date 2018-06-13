@@ -27,6 +27,8 @@ run = True
 volumeList = []
 pitchList = []
 maxVolumeScale = 2000
+maxVolumeLoop = 0
+maxVolumeList = []
 
 def scale(val, src, dst):
     """
@@ -55,8 +57,26 @@ def getResults():
     global lastPositionVolume13
     positionVolume13,lastPositionVolume13 = getPositionVolume()
 
-def getPositionVolume():
+def calcVolume(vList):
+    high = max(vList)
+    #if maxVolumeScale > 500: #if the volume is super low then don't go lower
+    if high > maxVolumeScale and maxVolumeScale > 500:
+        maxVolumeScale *= 1.1
+    if high < maxVolumeScale and maxVolumeScale > 500:
+        maxVolumeScale *= .9
+
+
+    return maxVolumeScale #assign this to maxVolumeScale
+
     
+
+
+
+
+def getPositionVolume():
+    global maxVolumeLoop
+    global maxVolumeList
+    maxVolumeLoop = 0
     positionVolume13 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] #clear out the list for a new loop
     position = 0 #keeps track of the position in the list to correlate volume
     #global pitchList
@@ -72,6 +92,8 @@ def getPositionVolume():
             if i < range: #if the pitch falls under the range
                 if positionVolume13[index] < volumeList[position]:  #if the new value is greater than the old value
                     positionVolume13[index] = volumeList[position] #if so than save it
+                    if volumeList[position] > maxVolumeLoop: #if the current volume is larger, add it to the recorded volume for the loop
+                        maxVolumeLoop = volumeList[position]
                     break #so we dont save the value to every pitch level
         position+=1
     for index, i in enumerate(positionVolume13):
@@ -80,16 +102,17 @@ def getPositionVolume():
         positionVolume13[index] = scale(i,(0,maxVolumeScale),(14,0))
 
 
-
-    #os.system('clear')
-    # print
-    # print("FPS: ", FPS)
-    # print
-    
     #for i in positionVolume13:
     for index, range in enumerate(positionVolume13):
         lastPositionVolume13[index] = bar(str(ranges13[index]),range,lastPositionVolume13[index])
-    
+
+    #Dynamic volume adjustments
+    maxVolumeList.append(maxVolumeLoop)
+    if len(maxVolumeList) > 50:
+        maxVolumeScale = calcVolume(maxVolumeList)
+        #maxVolumeScale = max(maxVolumeList)
+        maxVolumeList[:] = []
+
     volumeList[:] = [] #empty the list
     pitchList[:] = [] #empty the list
     return(positionVolume13,lastPositionVolume13)
@@ -106,7 +129,7 @@ CHUNK = 256
 #CHANNELS = 1
 RATE = 44100 #44100 #sample rate i.e. number of frames per second
 
-    ####CODING AND WINE!!
+   
 #     Frequency (Hz)	Octave	Description
 # 16 to 32	1st	The lower human threshold of hearing, and the lowest pedal notes of a pipe organ.
 # 32 to 512	2nd to 5th	Rhythm frequencies, where the lower and upper bass notes lie.
@@ -169,18 +192,6 @@ def startAudio():
     oneSec = 0
     tenthSec = 0.1
 
-    #array for volume and pitch
-
-    # maxPitch = 0
-    # maxVolume = 0
-    # volumePitch = {}
-    # variablePitch = 1000 #wild guess!
-    # variableVolume = 50
-    # lowLast = 0
-    # lowmidLast = 0
-    # midLast = 0
-    # midhighLast =0
-    # highLast = 0
 
 
     # This is the main loop
