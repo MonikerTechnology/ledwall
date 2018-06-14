@@ -65,18 +65,18 @@ def getResults():
     global lastPositionVolume13
     positionVolume13,lastPositionVolume13 = getPositionVolume()
 
-# def calcVolume(vList):
+def calcVolume(vList):
     
-#     high = max(vList)
-#     global maxVolumeScale
-#     #if maxVolumeScale > 500: #if the volume is super low then don't go lower
-#     if high > maxVolumeScale and maxVolumeScale > 500:
-#         maxVolumeScale *= 1.1
-#     if high < maxVolumeScale and maxVolumeScale > 500:
-#         maxVolumeScale *= .9
+    high = max(vList)
+    global maxVolumeScale
+    #if maxVolumeScale > 500: #if the volume is super low then don't go lower
+    if high > maxVolumeScale and maxVolumeScale > 500:
+        maxVolumeScale *= 1.1
+    if high < maxVolumeScale and maxVolumeScale > 500:
+        maxVolumeScale *= .9
 
 
-#     return int(maxVolumeScale) #assign this to maxVolumeScale
+    return int(maxVolumeScale) #assign this to maxVolumeScale
 
     
 
@@ -104,10 +104,10 @@ def getPositionVolume():
                         maxVolumeLoop = volumeList[position]
                     break #so we dont save the value to every pitch level
         position+=1
-    # for index, i in enumerate(positionVolume13):
-    #     if i > maxVolumeScale:
-    #         i = maxVolumeScale
-    #     positionVolume13[index] = scale(i,(0,maxVolumeScale),(14,0))
+    for index, i in enumerate(positionVolume13):
+        if i > maxVolumeScale:
+            i = maxVolumeScale
+        positionVolume13[index] = scale(i,(0,maxVolumeScale),(14,0))
 
 
     #for i in positionVolume13:
@@ -115,12 +115,12 @@ def getPositionVolume():
         lastPositionVolume13[index] = bar(str(ranges13[index]),range,lastPositionVolume13[index])
 
     #Dynamic volume adjustments
-    #maxVolumeList.append(maxVolumeLoop)
-    #if len(maxVolumeList) > 50:
-        #maxVolumeScale = calcVolume(maxVolumeList)
-        #print(maxVolumeScale)
-        #maxVolumeScale = max(maxVolumeList)
-        #maxVolumeList[:] = []
+    maxVolumeList.append(maxVolumeLoop)
+    if len(maxVolumeList) > 50:
+        maxVolumeScale = calcVolume(maxVolumeList)
+        print(maxVolumeScale)
+        maxVolumeScale = max(maxVolumeList)
+        maxVolumeList[:] = []
 
     volumeList[:] = [] #empty the list
     pitchList[:] = [] #empty the list
