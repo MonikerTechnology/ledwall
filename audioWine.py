@@ -42,28 +42,36 @@ def scale(val, src, dst):
 
 
 
-
-
-
-
-
-
 def bar(label, value,last):
-    string = ""
-    count = 0
-    if value > 2000:
-        value = 2000
-    while value > 0:
-        count+=1
-        string+="-" 
-        value-=50        
-    while count < last - 1: #add space for the memory bar
-        string+=" "
-        count+=1
+
+    if last >= value:
+        last = value
+    elif last < value:
+        if last < 14:
+            last+=.5
+
+    return last
+
+
+
+
+
+# def bar(label, value,last):
+#     string = ""
+#     count = 0
+#     if value > 2000:
+#         value = 2000
+#     while value > 0:
+#         count+=1
+#         string+="-" 
+#         value-=50        
+#     while count < last - 1: #add space for the memory bar
+#         string+=" "
+#         count+=1
     
-    string+="|"
-    print(label , string)
-    return count
+#     string+="|"
+#     print(label , string)
+#     return count
 
 def between(pitch,low,high,maxValue,list):
     global position
