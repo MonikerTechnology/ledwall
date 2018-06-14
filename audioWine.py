@@ -26,6 +26,18 @@ volume = 0
 run = True
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 def bar(label, value,last):
     string = ""
     count = 0
