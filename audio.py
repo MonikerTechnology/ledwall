@@ -73,7 +73,7 @@ def calcVolume(vList):
     if high + (high*.3) > maxVolumeScale and high > 0:
         maxVolumeScale *= 1.1
     if high + (high*.3) < maxVolumeScale and high > 0:
-        maxVolumeScale *= .9
+        maxVolumeScale *= .75
 
 
     return int(maxVolumeScale) #assign this to maxVolumeScale
