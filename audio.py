@@ -70,9 +70,9 @@ def calcVolume(vList):
     high = max(vList)
     global maxVolumeScale
     #if maxVolumeScale > 500: #if the volume is super low then don't go lower
-    if high > maxVolumeScale and high > 500:
+    if high > maxVolumeScale and high > 100:
         maxVolumeScale *= 1.1
-    if high < maxVolumeScale and high > 500:
+    if high < maxVolumeScale and high > 100:
         maxVolumeScale *= .9
 
 
