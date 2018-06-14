@@ -53,7 +53,7 @@ print()
                                                                                                                                                   
                                                                                                                                                   
 print()
-print ()
+print()
 log.header(file,"SETUP")
 print()
 
@@ -548,7 +548,7 @@ try:
         time.sleep(sleepFPS)
         # End FPS tracker
         #----------------------------------------------
-        HTTPserver.mode = "audio"
+        #HTTPserver.mode = "audio"
         HTTPserver.power = 1
         if HTTPserver.mode == "rainbow" and HTTPserver.power == 1:
         #if HTTPserver.power == 1:
