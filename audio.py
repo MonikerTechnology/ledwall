@@ -31,23 +31,38 @@ maxVolumeScale = 2000
 maxVolumeLoop = 0
 maxVolumeList = []
 
-# def scale(val, src, dst):
-#     """
-#     Scale the given value from the scale of src to the scale of dst.
-#     """
-#     return ((val - src[0]) / (src[1]-src[0])) * (dst[1]-dst[0]) + dst[0]
+def scale(val, src, dst):
+    """
+    Scale the given value from the scale of src to the scale of dst.
+    """
+    return ((val - src[0]) / (src[1]-src[0])) * (dst[1]-dst[0]) + dst[0]
 
 
+# def bar(label, value,last):
+
+#     if last >= value:
+#         last = value
+#     elif last < value:
+#         if last < 14:
+#             last+=.5
+
+#     return last
 def bar(label, value,last):
-
-    if last >= value:
-        last = value
-    elif last < value:
-        if last < 14:
-            last+=.5
-
-    return last
-
+    string = ""
+    count = 0
+    if value > 2000:
+        value = 2000
+    while value > 0:
+        count+=1
+        string+="-" 
+        value-=50        
+    while count < last - 1: #add space for the memory bar
+        string+=" "
+        count+=1
+    
+    string+="|"
+    print(label , string)
+    return count
 
 
 
