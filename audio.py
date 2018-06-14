@@ -65,18 +65,18 @@ def getResults():
     global lastPositionVolume13
     positionVolume13,lastPositionVolume13 = getPositionVolume()
 
-def calcVolume(vList):
+# def calcVolume(vList):
     
-    high = max(vList)
-    global maxVolumeScale
-    #if maxVolumeScale > 500: #if the volume is super low then don't go lower
-    if high > maxVolumeScale and maxVolumeScale > 500:
-        maxVolumeScale *= 1.1
-    if high < maxVolumeScale and maxVolumeScale > 500:
-        maxVolumeScale *= .9
+#     high = max(vList)
+#     global maxVolumeScale
+#     #if maxVolumeScale > 500: #if the volume is super low then don't go lower
+#     if high > maxVolumeScale and maxVolumeScale > 500:
+#         maxVolumeScale *= 1.1
+#     if high < maxVolumeScale and maxVolumeScale > 500:
+#         maxVolumeScale *= .9
 
 
-    return int(maxVolumeScale) #assign this to maxVolumeScale
+#     return int(maxVolumeScale) #assign this to maxVolumeScale
 
     
 
