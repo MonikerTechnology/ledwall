@@ -69,7 +69,7 @@ def calcVolume(vList):
         maxVolumeScale *= .9
 
 
-    return maxVolumeScale #assign this to maxVolumeScale
+    return int(maxVolumeScale) #assign this to maxVolumeScale
 
     
 
