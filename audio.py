@@ -48,6 +48,13 @@ def bar(label, value,last):
 
     return last
 
+
+
+
+
+
+
+
 def between(pitch,low,high,maxValue,list):
     global position
     if pitch > low and pitch < high and pitch > maxValue:
@@ -72,9 +79,6 @@ def calcVolume(vList):
     return int(maxVolumeScale) #assign this to maxVolumeScale
 
     
-
-
-
 
 def getPositionVolume():
     global maxVolumeLoop
@@ -111,12 +115,12 @@ def getPositionVolume():
         lastPositionVolume13[index] = bar(str(ranges13[index]),range,lastPositionVolume13[index])
 
     #Dynamic volume adjustments
-    maxVolumeList.append(maxVolumeLoop)
-    if len(maxVolumeList) > 50:
-        maxVolumeScale = calcVolume(maxVolumeList)
-        print(maxVolumeScale)
+    #maxVolumeList.append(maxVolumeLoop)
+    #if len(maxVolumeList) > 50:
+        #maxVolumeScale = calcVolume(maxVolumeList)
+        #print(maxVolumeScale)
         #maxVolumeScale = max(maxVolumeList)
-        maxVolumeList[:] = []
+        #maxVolumeList[:] = []
 
     volumeList[:] = [] #empty the list
     pitchList[:] = [] #empty the list
@@ -162,7 +166,7 @@ p14 = 20000
 p15 = 32768
 ranges13 = [p1, p2 , p3 , p4 , p5 , p6 , p7 , p8 , p9, p10, p11, p12 ,p13, p14, p15]
 lastVolume13 = []
-#positionVolume13 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+positionVolume13 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 lastPositionVolume13 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 # 
 # 
