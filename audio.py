@@ -118,7 +118,7 @@ def getPositionVolume():
     maxVolumeList.append(maxVolumeLoop)
     if len(maxVolumeList) > 10:
         maxVolumeScale = calcVolume(maxVolumeList)
-        print("Scale: ",maxVolumeScale, " maxLoop: " max(maxVolumeList))
+        print("Scale: ",maxVolumeScale, " maxLoop: " ,max(maxVolumeList))
         maxVolumeScale = max(maxVolumeList)
         maxVolumeList[:] = []
 
