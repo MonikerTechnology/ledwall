@@ -554,8 +554,8 @@ try:
         time.sleep(sleepFPS)
         # End FPS tracker
         #----------------------------------------------
-        HTTPserver.mode = "audio"
-        HTTPserver.power = 1
+        #HTTPserver.mode = "audio"
+        #HTTPserver.power = 1
         if HTTPserver.mode == "rainbow" and HTTPserver.power == 1:
         #if HTTPserver.power == 1:
             pixels = [rainbow(t*scale(30,(1,100),(.05,2)), coord, ii, n_pixels, random_values) for ii, coord in enumerate(coordinates)]
