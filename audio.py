@@ -120,7 +120,7 @@ def getPositionVolume():
     if len(maxVolumeList) > 10:
         maxVolumeScale = calcVolume(maxVolumeList)
         print("Scale: ",maxVolumeScale, " maxLoop: " ,max(maxVolumeList))
-        maxVolumeScale = max(maxVolumeList)
+        ###########maxVolumeScale = max(maxVolumeList)
         maxVolumeList[:] = []
 
     volumeList[:] = [] #empty the list
