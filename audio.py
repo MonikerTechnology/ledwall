@@ -107,7 +107,8 @@ def getPositionVolume():
     for index, i in enumerate(positionVolume13):
         if i > maxVolumeScale:
             i = maxVolumeScale
-        positionVolume13[index] = scale(i,(0,maxVolumeScale),(14,0))
+        if maxVolumeScale > 0: #Avoid division by zero error
+            positionVolume13[index] = scale(i,(0,maxVolumeScale),(14,0))
 
 
     #for i in positionVolume13:
