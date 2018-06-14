@@ -234,7 +234,7 @@ def startAudio():
                             positionVolume13[index] = volumeList[position] #if so than save it
                             break #so we dont save the value to every pitch level
                 position+=1
-            #os.system('clear')
+            os.system('clear')
             print
             print("FPS: ", FPS)
             print
