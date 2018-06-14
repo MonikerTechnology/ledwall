@@ -117,7 +117,7 @@ def getPositionVolume():
 
     #Dynamic volume adjustments
     maxVolumeList.append(maxVolumeLoop)
-    if len(maxVolumeList) > 10:
+    if len(maxVolumeList) > 5:
         maxVolumeScale = calcVolume(maxVolumeList)
         print("Scale: ",maxVolumeScale, " maxLoop: " ,max(maxVolumeList))
         ###########maxVolumeScale = max(maxVolumeList)
