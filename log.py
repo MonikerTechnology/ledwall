@@ -16,13 +16,22 @@ class bcolors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
-def warning(file,message):
-    print(bcolors.WARNING + file +  " WARNING: " + bcolors.ENDC + message)
+def warning(file,*args):
+    print(bcolors.WARNING , file ,  " WARNING: " , bcolors.ENDC , end='')
+    for i in args:
+        print(i,end=' ')
+    print()
 
-def info(file,message):
-    print(bcolors.UNDERLINE + file + " INFO:" + bcolors.ENDC + " " + message)
+def info(file,*args):
+    print(bcolors.UNDERLINE , file, " INFO:" , bcolors.ENDC , end='') 
+    for i in args:
+        print(i,end=' ')
+    print()
+  
 
-def header(file, message):
-    print(bcolors.HEADER + file + " MESSAGE:" + bcolors.ENDC + " " + message)
-
+def header(file, *args):
+    print(bcolors.HEADER , file , " MESSAGE:" , bcolors.ENDC , " " , end='')
+    for i in args:
+        print(i,end=' ')
+    print()
  

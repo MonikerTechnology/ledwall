@@ -381,10 +381,10 @@ def startup(t, coord, ii, n_pixels):
 def audioBars(t, coord, ii, n_pixels, random_values):
     x, y, z = coord
 
-    h = int(audio.positionVolume13[x])
+    h = int(audio.positionVolume15[x])
     #print("h ", h)
 
-    l = int(audio.lastPositionVolume13[x])
+    l = int(audio.lastpositionVolume15[x])
     #print("l ",l)
 
 
@@ -394,11 +394,11 @@ def audioBars(t, coord, ii, n_pixels, random_values):
         #return (0,0,0)
     elif z > h and x < 3: #everything below(above) the current volume
         #return (0,0,0)
-        return (250,25,25)
+        return (250,250,250)
     elif z > h and x < 6:
-        return (25,250,25)
+        return (250,250,250)
     elif z > h and x < 9:
-        return (25,25,250)
+        return (250,250,250)
     elif z > h:
         return (250,250,250)
     else:
@@ -554,8 +554,8 @@ try:
         time.sleep(sleepFPS)
         # End FPS tracker
         #----------------------------------------------
-        #HTTPserver.mode = "audio"
-        #HTTPserver.power = 1
+        HTTPserver.mode = "audio"
+        HTTPserver.power = 1
         if HTTPserver.mode == "rainbow" and HTTPserver.power == 1:
         #if HTTPserver.power == 1:
             pixels = [rainbow(t*scale(30,(1,100),(.05,2)), coord, ii, n_pixels, random_values) for ii, coord in enumerate(coordinates)]

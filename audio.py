@@ -21,6 +21,9 @@ import time
 import operator
 import os
 
+import log
+file = str(os.path.basename(__file__))
+
 pitch = 0
 volume = 0
 run = True
@@ -50,33 +53,31 @@ def bar(label, value,last):
 
 
 
-
-
-
-
-
 def between(pitch,low,high,maxValue,list):
     global position
     if pitch > low and pitch < high and pitch > maxValue:
         return list[position] 
 
 def getResults():
-    global positionVolume13
-    global lastPositionVolume13
-    positionVolume13,lastPositionVolume13 = getPositionVolume()
+    global positionVolume15
+    global lastpositionVolume15
+    positionVolume15,lastpositionVolume15 = getPositionVolume()
 
-def calcVolume(vList):
+def calcVolume(maxLoopList):
     
-    high = max(vList)
+    loopMax = max(maxLoopList)
     global maxVolumeScale
+    if loopMax > maxVolumeScale * 2: #if the max is way off, help it get there faster
+        maxVolumeScale *= 1.9
+    if loopMax > maxVolumeScale * 2: #if the max is way off, help it get there faster
+        maxVolumeScale *= 1.9
     #Aim to be about a third higher than the average max
-    if high + (high*.3) > maxVolumeScale and high > 0:
+    if loopMax + (loopMax*.3) > maxVolumeScale and loopMax > 2:
         maxVolumeScale *= 1.1
-    if high + (high*.3) < maxVolumeScale and high > 0:
+    if loopMax + (loopMax*.3) < maxVolumeScale and loopMax > 2:
         maxVolumeScale *= .75
 
-
-    return int(maxVolumeScale) #assign this to maxVolumeScale
+    return maxVolumeScale #assign this to maxVolumeScale
 
     
 
@@ -85,47 +86,47 @@ def getPositionVolume():
     global maxVolumeList
     global maxVolumeScale
     maxVolumeLoop = 0
-    positionVolume13 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] #clear out the list for a new loop
+    positionVolume15 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] #clear out the list for a new loop
     position = 0 #keeps track of the position in the list to correlate volume
-    #global pitchList
-    #global volumeList
+
 
             #print pitchList
     for i in pitchList: # list of pitches found during the sample
 
-        #for range in ranges13:
-        for index, range in enumerate(ranges13):
+        #for range in ranges15:
+        for index, range in enumerate(ranges15):
             #print(index)
 
             if i < range: #if the pitch falls under the range
-                if positionVolume13[index] < volumeList[position]:  #if the new value is greater than the old value
-                    positionVolume13[index] = volumeList[position] #if so than save it
+                if positionVolume15[index] < volumeList[position]:  #if the new value is greater than the old value
+                    positionVolume15[index] = volumeList[position] #if so than save it
                     if volumeList[position] > maxVolumeLoop: #if the current volume is larger, add it to the recorded volume for the loop
                         maxVolumeLoop = volumeList[position]
                     break #so we dont save the value to every pitch level
         position+=1
-    for index, i in enumerate(positionVolume13):
+    for index, i in enumerate(positionVolume15):
         if i > maxVolumeScale:
             i = maxVolumeScale
         if maxVolumeScale > 0: #Avoid division by zero error
-            positionVolume13[index] = scale(i,(0,maxVolumeScale),(14,0))
+            positionVolume15[index] = scale(i,(0,maxVolumeScale),(14,0))
 
 
-    #for i in positionVolume13:
-    for index, range in enumerate(positionVolume13):
-        lastPositionVolume13[index] = bar(str(ranges13[index]),range,lastPositionVolume13[index])
+    #for i in positionVolume15:
+    for index, range in enumerate(positionVolume15):
+        lastpositionVolume15[index] = bar(str(ranges15[index]),range,lastpositionVolume15[index])
 
     #Dynamic volume adjustments
     maxVolumeList.append(maxVolumeLoop)
     if len(maxVolumeList) > 5:
         maxVolumeScale = calcVolume(maxVolumeList)
-        print("Scale: ",maxVolumeScale, " maxLoop: " ,max(maxVolumeList))
-        ###########maxVolumeScale = max(maxVolumeList)
+        
+        log.info(file,"maxScale: ",int(maxVolumeScale), " maxLoop: " ,max(maxVolumeList))
+        
         maxVolumeList[:] = []
 
     volumeList[:] = [] #empty the list
     pitchList[:] = [] #empty the list
-    return(positionVolume13,lastPositionVolume13)
+    return(positionVolume15,lastpositionVolume15)
 
 
 
@@ -165,15 +166,11 @@ p12 = 8192
 p13 = 10000
 p14 = 20000
 p15 = 32768
-ranges13 = [p1, p2 , p3 , p4 , p5 , p6 , p7 , p8 , p9, p10, p11, p12 ,p13, p14, p15]
-lastVolume13 = []
-positionVolume13 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-lastPositionVolume13 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-# 
-# 
-# 
-#    
-
+ranges15 = [p1, p2 , p3 , p4 , p5 , p6 , p7 , p8 , p9, p10, p11, p12 ,p13, p14, p15]
+lastVolume15 = []
+positionVolume15 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+lastpositionVolume15 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+ 
 
 
 def startAudio():
@@ -227,7 +224,7 @@ def startAudio():
             #if ex[1] != pyaudio.paInputOverflowed:
             #    raise
             #data = '\x00' *  (CHUNK  * 2)  # or however you choose to handle it, e.g. return None
-            print("Errrrrrrror Overload, skipping...but it's okay")
+            log.warning(file,"Errrrrrrror Overload, skipping...but it's okay")
 
        
 
@@ -264,12 +261,7 @@ def startAudio():
         if runTime + 0.1 > tenthSec: #actions every tenth of a second
             
             tenthSec += 0.1
-
-            #getResults()
-            #positionVolume13,lastPositionVolume13 = getPositionVolume()
-
-
-
+    
     return ()
 
 
