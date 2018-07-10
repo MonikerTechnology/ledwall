@@ -166,7 +166,7 @@ time.sleep(1)
 
 t_HTTPserver = threading.Thread(target=HTTPserver.start, args=())
 t_googleAssistant = threading.Thread(target=googleAssistant.start)
-t_audio = threading.Thread(target=audio.startAudio)
+t_audio = threading.Thread(target=audio.start)
 
 #start
 log.header(file,"Starting HTTPserver")
@@ -554,29 +554,30 @@ try:
         time.sleep(sleepFPS)
         # End FPS tracker
         #----------------------------------------------
-        HTTPserver.mode = "audio"
-        HTTPserver.power = 1
+
+
+        lastMode = HTTPserver.mode
+        if lastMode != HTTPserver.mode: #clean up when mode changes
+            audio.on = False
+
+        #HTTPserver.mode = "audio"
+        #HTTPserver.power = 1
         if HTTPserver.mode == "rainbow" and HTTPserver.power == 1:
-        #if HTTPserver.power == 1:
             pixels = [rainbow(t*scale(30,(1,100),(.05,2)), coord, ii, n_pixels, random_values) for ii, coord in enumerate(coordinates)]
             client.put_pixels(pixels, channel=0)
-        if HTTPserver.mode == "breathe" and HTTPserver.power == 1:
+        elif HTTPserver.mode == "breathe" and HTTPserver.power == 1:
             pixels = [startup(t, coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]
             client.put_pixels(pixels, channel=0)
         elif HTTPserver.mode == "off" or HTTPserver.power == 0:
-            nothing = 0
-            #pixels = [pixel_color(t, coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]
-            #client.put_pixels(pixels, channel=0)
-
             #add fade out!!
             pixels = [(0,0,0) for ii, coord in enumerate(coordinates)] #set all the pixels to off
             client.put_pixels(pixels, channel=0)
         elif HTTPserver.mode == "audio" and HTTPserver.power == 1:
+            audio.on = True
             options.fps = 10
             audio.getResults()
             pixels = [audioBars(t*scale(30,(1,100),(.05,2)), coord, ii, n_pixels, random_values) for ii, coord in enumerate(coordinates)]
             client.put_pixels(pixels, channel=0)
-
         else: # catch all maybe do loading
             nothing = 0
 

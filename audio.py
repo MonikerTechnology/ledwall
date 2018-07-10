@@ -26,7 +26,8 @@ file = str(os.path.basename(__file__))
 
 pitch = 0
 volume = 0
-run = True
+run = True #this is for the external kill switch
+on = False #this is for whether to currently calculate audio
 volumeList = []
 pitchList = []
 maxVolumeScale = 2000
@@ -173,7 +174,7 @@ lastpositionVolume15 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
  
 
 
-def startAudio():
+def start():
     global pitch, volume
 
     # PyAudio object.
@@ -202,67 +203,69 @@ def startAudio():
 
 
     # This is the main loop
+
     reset = 0
     while run == True:
-        global position
-        # Keep track of time
-        runTime = time.time() - start_time
-        runTime = float(runTime)
+        while on == True:
+            global position
+            # Keep track of time
+            runTime = time.time() - start_time
+            runTime = float(runTime)
 
-        # if there is an io overflow this handles it
-        try:
-            data = stream.read(CHUNK // 2)
-        #except IOError as ex:
-        except KeyboardInterrupt:
-            print()
-            print("Interup detected")
+            # if there is an io overflow this handles it
             try:
-                sys.exit(0)
-            except SystemExit:
-                os._exit(0)
-        except:
-            #if ex[1] != pyaudio.paInputOverflowed:
-            #    raise
-            #data = '\x00' *  (CHUNK  * 2)  # or however you choose to handle it, e.g. return None
-            log.warning(file,"Errrrrrrror Overload, skipping...but it's okay")
+                data = stream.read(CHUNK // 2)
+            #except IOError as ex:
+            except KeyboardInterrupt:
+                print()
+                print("Interup detected")
+                try:
+                    sys.exit(0)
+                except SystemExit:
+                    os._exit(0)
+            except:
+                #if ex[1] != pyaudio.paInputOverflowed:
+                #    raise
+                #data = '\x00' *  (CHUNK  * 2)  # or however you choose to handle it, e.g. return None
+                log.warning(file,"Errrrrrrror Overload, skipping...but it's okay")
 
-       
-
-        samples = num.fromstring(data,
-            dtype=aubio.float_type)
-        pitch = pDetection(samples)[0]
-        pitchUse = pitch 
-
-        # Compute the energy (volume) of the
-        # current frame.
-        volume = num.sum(samples**2)/len(samples)
-
-        # Format the volume output so that at most
-        # it has six decimal numbers.
-        volume = "{:.6f}".format(volume)
-        volume = float(volume)
-        volumeUse = volume * 1000000
-
-        # save the volume and pitch to a list    
-        pitchList.append(pitchUse)
-        volumeList.append(volumeUse)
-        #volumePitch[volumeUse] = pitchUse
-        count+=1 
         
-        if runTime + 5 > fiveSec:
-            fiveSec += 5
-            #going to use these to make a floating scale maybe
 
-        if runTime + 1 > oneSec: #actions every second
-            oneSec += 1
-            FPS = count
-            count = 0
+            samples = num.fromstring(data,
+                dtype=aubio.float_type)
+            pitch = pDetection(samples)[0]
+            pitchUse = pitch 
 
-        if runTime + 0.1 > tenthSec: #actions every tenth of a second
+            # Compute the energy (volume) of the
+            # current frame.
+            volume = num.sum(samples**2)/len(samples)
+
+            # Format the volume output so that at most
+            # it has six decimal numbers.
+            volume = "{:.6f}".format(volume)
+            volume = float(volume)
+            volumeUse = volume * 1000000
+
+            # save the volume and pitch to a list    
+            pitchList.append(pitchUse)
+            volumeList.append(volumeUse)
+            #volumePitch[volumeUse] = pitchUse
+            count+=1 
             
-            tenthSec += 0.1
-    
-    return ()
+            if runTime + 5 > fiveSec:
+                fiveSec += 5
+                #going to use these to make a floating scale maybe
+
+            if runTime + 1 > oneSec: #actions every second
+                oneSec += 1
+                FPS = count
+                count = 0
+
+            if runTime + 0.1 > tenthSec: #actions every tenth of a second
+                
+                tenthSec += 0.1
+        
+    #return ()
 
 
 if __name__ == "__main__":
