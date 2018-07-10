@@ -7,16 +7,18 @@ import optparse
 from random import randint
 import random
 import os
+import colorsys
 
 # My custom
-from func import draw
-import touchOSC
-import audio
 import opc
 import color_utils
+import audio
 
-#
-import thread
+import HTTPserver
+import googleAssistant
+import log
+file = str(os.path.basename(__file__))
+import requests
 import threading
 
 import sys
@@ -28,51 +30,109 @@ except ImportError:
     import simplejson as json
 
 
+print()
+print()
+                                                                                                                                                  
+                                                                                                                                                  
+# print("LLLLLLLLLLL             EEEEEEEEEEEEEEEEEEEEEEDDDDDDDDDDDDD             WWWWWWWW                           WWWWWWWW               lllllll lllllll ")
+# print("L:::::::::L             E::::::::::::::::::::ED::::::::::::DDD          W::::::W                           W::::::W               l:::::l l:::::l ")
+# print("L:::::::::L             E::::::::::::::::::::ED:::::::::::::::DD        W::::::W                           W::::::W               l:::::l l:::::l ")
+# print("LL:::::::LL             EE::::::EEEEEEEEE::::EDDD:::::DDDDD:::::D       W::::::W                           W::::::W               l:::::l l:::::l ")
+# print("  L:::::L                 E:::::E       EEEEEE  D:::::D    D:::::D       W:::::W           WWWWW           W:::::Waaaaaaaaaaaaa    l::::l  l::::l ")
+# print("  L:::::L                 E:::::E               D:::::D     D:::::D       W:::::W         W:::::W         W:::::W a::::::::::::a   l::::l  l::::l ")
+# print("  L:::::L                 E::::::EEEEEEEEEE     D:::::D     D:::::D        W:::::W       W:::::::W       W:::::W  aaaaaaaaa:::::a  l::::l  l::::l ")
+# print("  L:::::L                 E:::::::::::::::E     D:::::D     D:::::D         W:::::W     W:::::::::W     W:::::W            a::::a  l::::l  l::::l ")
+# print("  L:::::L                 E:::::::::::::::E     D:::::D     D:::::D          W:::::W   W:::::W:::::W   W:::::W      aaaaaaa:::::a  l::::l  l::::l ")
+# print("  L:::::L                 E::::::EEEEEEEEEE     D:::::D     D:::::D           W:::::W W:::::W W:::::W W:::::W     aa::::::::::::a  l::::l  l::::l ")
+# print("  L:::::L                 E:::::E               D:::::D     D:::::D            W:::::W:::::W   W:::::W:::::W     a::::aaaa::::::a  l::::l  l::::l ")
+# print("  L:::::L         LLLLLL  E:::::E       EEEEEE  D:::::D    D:::::D              W:::::::::W     W:::::::::W     a::::a    a:::::a  l::::l  l::::l ")
+# print("LL:::::::LLLLLLLLL:::::LEE::::::EEEEEEEE:::::EDDD:::::DDDDD:::::D                W:::::::W       W:::::::W      a::::a    a:::::a l::::::ll::::::l ")
+# print("L::::::::::::::::::::::LE::::::::::::::::::::ED:::::::::::::::DD                  W:::::W         W:::::W       a:::::aaaa::::::a l::::::ll::::::l ")
+# print("L::::::::::::::::::::::LE::::::::::::::::::::ED::::::::::::DDD                     W:::W           W:::W         a::::::::::aa:::al::::::ll::::::l ")
+# print("LLLLLLLLLLLLLLLLLLLLLLLLEEEEEEEEEEEEEEEEEEEEEEDDDDDDDDDDDDD                         WWW             WWW           aaaaaaaaaa  aaaallllllllllllllll ")
+                                                                                                                                                  
+                                                                                                                                                  
+print()
+print()
+log.header(file,"SETUP")
+print()
 
-#for the live audio
-#import aubio
-#import numpy as num
-#import pyaudio
-import time
+#-------------------------------------------------------------------------------
+# Try to start fadecandy server 
+
+log.header(file,"Trying to start FC server...")
+try:
+    os.system("sudo /home/pi/fadecandy/bin/fcserver-rpi /home/pi/fadecandy/bin/fcserver_config.json &")
+    log.header(file,"Backgrounding FC server and continuing with python")
+except:
+    log.warning(file,"Failed...Maybe it is already running?")
 
 
 #-------------------------------------------------------------------------------
-# Threads for audio input and touchOSC
+# Threads for audio input and the threading all kill switch stuff
 
 # Kill switches
 run_audio = True
-run_touchOSC = True
-run_check_touchOSC = True
 run_main = True
+run_HTTPserver = True
 
-# Checks the touchOSC server for input, launch via thread
-def check_touchOSC():
-    global run_check_touchOSC
-    while run_check_touchOSC == True:
-        touchOSC.server.handle_request()
-    touchOSC.server.close()
-    return ()
+
 
 # Starts listening, launch via thread
 def startListening():
     audio.startAudio()
     return ()
 
+# #t_HTTPserver = threading.Thread()
+# def startHTTPserver():
+#     HTTPserver.start() #Port 321
+#     return()
+
 # Main kill switch to stop the threads
 def killSwitch():
     end = "run"
     global run_audio
-    global run_check_touchOSC
     global run_main
+    global run_HTTPserver
     run_audio = False
-    run_check_touchOSC = False
+    
     #sudo kill $(ps aux | grep 'fadecandy' | awk '{print $2}')
     #sudo kill $(ps aux | grep 'main.py' | awk '{print $2}')
+
+    log.info(file,"killing HTTPserver")
+    log.info(file,"Sending one last request to kill the HTTPserver")
+    HTTPserver.run = False
+    try: # try to send one last request to kill the server
+        r = requests.get("http://localhost:321")
+    except:
+        pass
     time.sleep(.5)
+
+
+    log.info(file,"killing googleAssistant")
+    googleAssistant.run = False
+
+
+    print()
+    print()
+    log.info(file,"killing fadecandy server")
+    os.system("sudo kill $(ps aux | grep 'fadecandy' | awk '{print $2}')")
+    time.sleep(.5)
+
+
+
+    log.info(file,"Killing main")
     run_main = False
-    pixels = [(0,0,0) for ii, coord in enumerate(coordinates)]
+
+    log.info(file,"Setting pixels to 0,0,0")
+    pixels = [(0,0,0) for ii, coord in enumerate(coordinates)] #set all the pixels to off
     client.put_pixels(pixels, channel=0)
-    print
+
+    print()
+    print()
+    log.info(file,"Is the HTTPserver thread running " + str(t_HTTPserver.is_alive()))
+    log.info(file,"Is the googleAssistant thread running " + str(t_googleAssistant.is_alive()))
+    print()
     return ()
 
 def restartPi():
@@ -95,30 +155,36 @@ def scale(val, src, dst):
     return ((val - src[0]) / (src[1]-src[0])) * (dst[1]-dst[0]) + dst[0]
 
 
-#t1 = thread.start_new_thread(checkServer, ())
-    #print t1.isAlive()
-
-# Set up
-t_check_touchOSC = threading.Thread(target=check_touchOSC, args=())
-t_startListening = threading.Thread(target=startListening, args=())
-
-# start
-t_check_touchOSC.start()
-t_startListening.start()
-
-
 time.sleep(1)
+#-------------------------------------------------------------------------------
+# Threading
 
 
+#add in a check to see if it stopped and restart it
+# also check fadecandy
+#t_HTTPserver = threading.Thread(target=startHTTPserver, args=())
+
+t_HTTPserver = threading.Thread(target=HTTPserver.start, args=())
+t_googleAssistant = threading.Thread(target=googleAssistant.start)
+t_audio = threading.Thread(target=audio.start)
+
+#start
+log.header(file,"Starting HTTPserver")
+t_HTTPserver.start()
+log.header(file,"Starting googleAssistant server")
+t_googleAssistant.start()
+log.header(file,"Starting audio loop")
+t_audio.start()
+    
 
 #-------------------------------------------------------------------------------
-# command line
+# command line options for main
 
 parser = optparse.OptionParser()
-parser.add_option('-l', '--layout', dest='layout', default='ledwall15x9.json',
+parser.add_option('-l', '--layout', dest='layout', default='supporting_files/ledwall15x9.json',
                     action='store', type='string',
                     help='layout file')
-parser.add_option('-s', '--server', dest='server', default='piledwall:7890',
+parser.add_option('-s', '--server', dest='server', default='ledwall:7890',
                     action='store', type='string',
                     help='ip and port of server')
 parser.add_option('-f', '--fps', dest='fps', default=30,
@@ -127,11 +193,14 @@ parser.add_option('-f', '--fps', dest='fps', default=30,
 
 options, args = parser.parse_args()
 
+if options.layout == 'supported_files/ledwall15x9.json':
+    log.info(file,"\nNo layout selected, using default layout: " + str(options.layout) + "\n")
+
 if not options.layout:
     parser.print_help()
-    print
-    print 'ERROR: you must specify a layout file using --layout'
-    print
+    print()
+    log.warning(file,'ERROR: you must specify a layout file using --layout')
+    print()
     sys.exit(1)
 
 
@@ -140,7 +209,7 @@ if not options.layout:
 
 print
 print
-print '    parsing layout file'
+log.header(file,'    parsing FC layout file')
 print
 
 coordinates = []
@@ -154,148 +223,203 @@ for item in json.load(open(options.layout)):
 
 client = opc.Client(options.server)
 if client.can_connect():
-    print '    connected to %s' % options.server
+    log.header(file,'    OPC connected to %s' % options.server)
 else:
     # can't connect, but keep running in case the server appears later
-    print '    WARNING: could not connect to %s' % options.server
-print
+    log.warning(file,'    WARNING: could not connect to %s' % options.server)
+print()
 
 #-------------------------------------------------------------------------------
+# Setup MQTT
 
+mode = "default" #global
+lastMode = ""
+redMultiplier = 1
+greenMultiplier = 1
+blueMultiplier = 1
+
+"""
+print
+print(" __  __  _____  ____  ____ ")
+print("(  \/  )(  _  )(_  _)(_  _)")
+print(" )    (  )(_)(   )(    )(  ")
+print("(_/\/\_)(___/\\\ (__)  (__) ") #double \\ to escape
+
+
+broker_address="localhost" #Controled locally
+topic = "/LEDwall"
+
+#def on_message(client, userdata, message):
+def on_message(MQTTclient, userdata, message):
+    global mode
+    global lastMode
+    global redMultiplier
+    global greenMultiplier
+    global blueMultiplier
+    #print("message received " ,str(message.payload.decode("utf-8")))
+    #print("message topic=",message.topic)
+    MQTTMessage = str(message.payload.decode("utf-8"))
+    print("MQTT message recived: " + MQTTMessage)
+    #print("message qos=",message.qos)
+    #print("message retain flag=",message.retain)
+
+    #lastMode = mode
+    #mode = MQTTMessage[0:8] # first 8 char is mode
+    # Mode      Data
+    # rainbowX  None
+    # HSVXXXXX  0.000,0.850,0.960
+    # loadingX  None
+    # musicXXX  None
+    # offXXXXX  None
+
+    # Maybe use this for initial set up?
+    if "HSVXXXXX" == MQTTMessage[0:8]: 
+        print("New HSV data")
+        #print MQTTMessage[8:13]
+        #print MQTTMessage[14:19]
+        #print MQTTMessage[20:24]
+      
+        redMultiplier, greenMultiplier, blueMultiplier = colorsys.hsv_to_rgb(float(MQTTMessage[8:13]), float(MQTTMessage[14:19]), float(MQTTMessage[20:24]))
+
+    elif "offXXXXX" == MQTTMessage[0:8]:
+        print("Empty mode")
+        mode = MQTTMessage[0:8]
+        #make blank???
+    elif "rainbowX" == MQTTMessage[0:8]:
+        print("rainbowX mode")
+        mode = MQTTMessage[0:8]
+
+    else: # Catch all - maybe loading pattern?
+        print("Empty mode - catch all")
+
+
+print
+print("MQTT initializing...")
+print("creating new instance")
+MQTTclient = mqtt.Client("P1") #create new instance
+MQTTclient.on_message=on_message #attach function to callback
+print("connecting to broker")
+MQTTclient.connect(broker_address) #connect to broker
+MQTTclient.loop_start() #start the loop
+print("Subscribing to topic: " + topic)
+print
+print
+MQTTclient.subscribe(topic)
+
+#print("Publishing message to topic","/test")
+#client.publish("/test","OFF")
+
+#client.loop_stop() #stop the loop
+
+"""
+
+
+message = HTTPserver.postDic
+mode = "rainbow"
+power = 0
+
+#power message
+#{"type":"power","power":1}
+#{"power":1,"type":"power"}
+
+#HSV message
+#{"type":"HSV","HSV":{"H":123,"S":123,"V":123}}
+
+#mode message
+#{"type":"mode","mode":"rainbow"}
 
 #-------------------------------------------------------------------------------
 # color modes function
 
 
-
-def music(t, coord, ii, n_pixels):
-
-    # this was inside the color finciton
-    x, y, z = coord
-    r,g,b = 0,0,0
-
-    #Z line
-    if (r,g,b) == (0,0,0):
-        r,g,b = draw.lineX(linePos,x,z,(x*17,pitchColor,150),mod)
-    #Z line
-    if (r,g,b) == (0,0,0):
-        r,g,b = draw.lineX(linePos+4,x,z,(0,pitchColor*.6,0),mod)
-        if (r,g,b) != (0,0,0):
-            b = color_utils.cos(1, offset=t / 10, period=10, minn=0, maxx=1)
-            r = color_utils.cos(5, offset=t / 4, period=2, minn=0, maxx=1)
-            b = 150
-            r = (x * 15) * r
-
-    #Bass booms
-    count = 0
-    while count < 8:
-        if (r,g,b) == (0,0,0):
-            r,g,b = draw.boom(centerX[count],centerZ[count], x, z,color[count],pos[count],6)
-        count += 1
-
-    #color the rest
-    if (r,g,b) == (0,0,0):
-        b = color_utils.cos(1, offset=t / 10, period=10, minn=0, maxx=1)
-        b = b * pitchColor / 7
-
-
-
-    r = int(r)
-    g = int(g)
-    b = int(b)
-    r /= 256
-    g /= 256
-    b /= 256
-
-
-    return (r*redOSC, g*greenOSC, b*blueOSC)
-
-def musicv2(t, coord, ii, n_pixels):
-
-    # this was inside the color finciton
-    x, y, z = coord
-    r,g,b = 0,0,0
-
-
-
-    #Bass booms
-    count = 0
-    while count < 8:
-        if (r,g,b) == (0,0,0):
-            r,g,b = draw.boom(centerX[count],centerZ[count], x, z,color[count],pos[count],3)
-        count += 1
-
-    pitchScale = scale (pitch,(pitchMin,pitchMax),(0,1))
-    pitchColorR = int(scale(pitch,(0,pitchMax+1),(100,256)))
-    pitchColorG = int(scale(pitch,(0,pitchMax+1),(50,256)))
-    pitchColorB = int(scale(pitch,(pitchMin,pitchMax+1),(256,50)))
-    pitchColor = pitchColorR, pitchColorG, pitchColorB
-
-    #Z line
-    waveSpeed = scale(touchOSC.speedData,(1,100),(1000,1))
-    if (r,g,b) == (0,0,0):
-        r,g,b = draw.volumeWave(9,x,z,pitchColor,volume,volumeMin,volumeMax)
-        b *= color_utils.cos(x, offset=t / waveSpeed * 3, period=20, minn=0, maxx=1)
-        r *= color_utils.cos(x, offset=t / waveSpeed * 7, period=30, minn=0, maxx=1)
-        #g *= color_utils.cos(x, offset=t / waveSpeed, period=25, minn=0, maxx=1)
-
-    if (r,g,b) == (0,0,0):
-        # Scale the x and z to match the original map file wall.json
-        x = scale(x, (0,14), (-0.7,0.7))
-        z = scale(z, (0,8), (-0.4,0.4))
-        # make x, y, z -> r, g, b sine waves
-        r = color_utils.cos(x, offset=t / 4, period=2, minn=0, maxx=1) * 25
-        g = color_utils.cos(y, offset=t / 4, period=2, minn=0, maxx=1) * 25
-        b = color_utils.cos(z, offset=t / 4, period=2, minn=0, maxx=1) * 25
-        r, g, b = color_utils.contrast((r, g, b), 0.5, 1.5)
-
-
-    #color the rest
-    # if (r,g,b) == (0,0,0):
-    #     b = color_utils.cos(1, offset=t / 10, period=10, minn=0, maxx=1)
-    #     b = b * pitchColor / 7
-
-
-
-    r = int(r)
-    g = int(g)
-    b = int(b)
-    r /= 256
-    g /= 256
-    b /= 256
-
-
-    return (r*redOSC, g*greenOSC, b*blueOSC)
-
-
-def control_circle(t, coord, ii, n_pixels):
+def startup(t, coord, ii, n_pixels):
     """Compute the color of a given pixel.
-
     t: time in seconds since the program started.
     ii: which pixel this is, starting at 0
     coord: the (x, y, z) position of the pixel as a tuple
     n_pixels: the total number of pixels
-
     Returns an (r, g, b) tuple in the range 0-255
-
     """
+    global position
     x,y,z = coord
+    #print(coord)
+    #print("position")
+    #print(int(position))
+    if (ii == 0):
+        r = value[int(position)]
+        g = value[int(position)]
+        b = value[int(position)]
+    elif (ii == 1 or ii == 29 or ii == 28):
+        r = value[int(position)] * .7
+        g = value[int(position)] * .5
+        b = value[int(position)] * .5
+    else: 
+        r = 0
+        g = 0
+        b = 0
 
-    padXData = touchOSC.padXData
-    padYData = int(touchOSC.padYData * .65)
+    
+    position += .01
+    if (position > 499):
+        position = 0
+
+    #padXData = touchOSC.padXData
+    #padYData = int(touchOSC.padYData * .65)
     #print padYData
     #print touchOSC.padYData
 
 
-    r,g,b = colorOSC
+    #r,g,b = colorOSC
 
     #if x == padXData and z == padYData:
-    r,g,b = draw.circle(padXData,padYData, x, z,colorOSC)
+    #r,g,b = draw.circle(padXData,padYData, x, z,colorOSC)
     #draw.circle(5,5, x, z)
 
 
     return (r, g, b)
 
+def audioBars(t, coord, ii, n_pixels, random_values):
+    x, y, z = coord
+
+    h = int(audio.positionVolume15[x])
+    #print("h ", h)
+
+    l = int(audio.lastpositionVolume15[x])
+    #print("l ",l)
+
+
+
+    if z == l: #max volume falling
+        return (250,10,250)
+        #return (0,0,0)
+    elif z > h and x < 3: #everything below(above) the current volume
+        #return (0,0,0)
+        return (250,250,250)
+    elif z > h and x < 6:
+        return (250,250,250)
+    elif z > h and x < 9:
+        return (250,250,250)
+    elif z > h:
+        return (250,250,250)
+    else:
+        return (0,0,0)
+
+#def bar(label, value,last):
+    # string = ""
+    # count = 0
+    # if value > 2000:
+    #     value = 2000
+    # while value > 0:
+    #     count+=1
+    #     string+="-" 
+    #     value-=50        
+    # while count < last - 1: #add space for the memory bar
+    #     string+=" "
+    #     count+=1
+    
+    # string+="|"
+    # print(label , string)
+    # return count
 
 def rainbow(t, coord, ii, n_pixels, random_values):
 
@@ -364,383 +488,109 @@ def rainbow(t, coord, ii, n_pixels, random_values):
     # only do this on live leds, not in the simulator
     r, g, b = color_utils.gamma((r, g, b), 2.2)
 
-    return (r*redOSC, g*greenOSC, b*blueOSC)
-
-def spatial_stripes(t, coord, ii, n_pixels):
-    """Compute the color of a given pixel.
-
-    t: time in seconds since the program started.
-    ii: which pixel this is, starting at 0
-    coord: the (x, y, z) position of the pixel as a tuple
-    n_pixels: the total number of pixels
-
-    Returns an (r, g, b) tuple in the range 0-255
-
-    """
-
-    x, y, z = coord
-
-    # Scale the x and z to match the original map file wall.json
-    x = scale(x, (0,14), (-0.7,0.7))
-    z = scale(z, (0,8), (-0.4,0.4))
-
-    # make moving stripes for x, y, and z
-    r = color_utils.cos(x, offset=t / 4, period=1, minn=0, maxx=0.7)
-    g = color_utils.cos(y, offset=t / 4, period=1, minn=0, maxx=0.7)
-    b = color_utils.cos(z, offset=t / 4, period=1, minn=0, maxx=0.7)
-    r, g, b = color_utils.contrast((r, g, b), 0.5, 2)
-
-    # make a moving white dot showing the order of the pixels in the layout file
-    spark_ii = (t*80) % n_pixels
-    spark_rad = 8
-    spark_val = max(0, (spark_rad - color_utils.mod_dist(ii, spark_ii, n_pixels)) / spark_rad)
-    spark_val = min(1, spark_val*2)
-    r += spark_val
-    g += spark_val
-    b += spark_val
-
-    # apply gamma curve
-    # only do this on live leds, not in the simulator
-    #r, g, b = color_utils.gamma((r, g, b), 2.2)
-
-    return (r*redOSC, g*greenOSC, b*blueOSC)
+    return (r*250*HTTPserver.redMultiplier, g*250*HTTPserver.greenMultiplier, b*250*HTTPserver.blueMultiplier)
 
 
 def pixel_color(t, coord, ii, n_pixels):
-    r,g,b = colorOSC
+    #r,g,b = colorOSC
+    r,g,b = 50,50,50
     r *= .95
     g *= .95
     b *= .95
     return (r,g,b)
 
-def blank(t, coord, ii, n_pixels):
-    r,g,b = 0,0,0
-    return (r,g,b)
-
-
 
 #-------------------------------------------------------------------------------
 # send pixels
 
-print '    sending pixels forever (control-c to exit)...'
-print
+log.info(file,'    sending pixels forever (control-c to exit)...')
+print()
 #-------------------------------------------------------------------------------
 
 
 n_pixels = len(coordinates)
 start_time = time.time()
 
-
-
 #This is the main loop
 delay = 0
-
-
-
-#define variables for music
-
-# Bass booms
-i = 0
-doBoom = [0,0,0,0,0,0,0,0] #for if conditions have been meet to do a boom
-centerX = [0,0,0,0,0,0,0,0] #for each boom
-centerZ = [0,0,0,0,0,0,0,0] #for each boom
-pos = [1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0] #the step each boom is at
-color = [(0,0,0),(0,0,0),(0,0,0),(0,0,0),(0,0,0),(0,0,0),(0,0,0),(0,0,0)] #the color for each boom
-delay = 0 #keeps from doing too many booms on the same note
-
-
-# config
-# Larger is faster max = 1
-speed = .001 #bass booms
-
-# Keep track of vol and pitch
-pitchMax = 1000
-pitchMin = 50
-volumeMax = 50
-volumeMin = 10
-
-countByTwo = 0
-pitchDelay = 1 #sets a delay so the pitch color doesnt flicker
-pitchColor = 1
-count = 0
+mode = "default"
+#
 
 # fps counter
 oneSec = 0 # moves every second
 sleepFPS = .03 # Guess!
 loopCount = 0 # to track FPS
 
+#counter for the startup
+position = 0
+value = [] # list from 0 - 250 - 0
+value.extend(range(0,250))
+value.extend(reversed(range(0,250)))
 
 
 random_values = [random.random() for ii in range(n_pixels)]
-while run_main == True:
+try:
+    log.info(file,"about to start main loop")
+    while run_main == True:
+        
 
-    # set looping variables
-    t = time.time() - start_time # keep track of how long the program has been running
-    colorOSC = touchOSC.faderRedData*touchOSC.brightnessData, touchOSC.faderGreenData*touchOSC.brightnessData, touchOSC.faderBlueData*touchOSC.brightnessData # RGB tuple 0-256
-    redOSC,greenOSC,blueOSC = colorOSC # RGB 0-256
+        # set looping variables
+        t = time.time() - start_time # keep track of how long the program has been running
 
-    print
-    print
-    print "offset"
-    print t / 10
-    print
-    print
-
-    #----------------------------------------------
-    # this tracks the FPS and adjusts the delay to keep it consistant.
-    loopCount += 1
-    if oneSec < t:
-        oneSec += 1
-        trueFPS = loopCount
-        # print options.fps
-        # print ("Loops per sec: %i") % loopCount
-        # print
-        if trueFPS < options.fps - 1:
-            sleepFPS *= .95
-        elif trueFPS > options.fps + 1:
-            sleepFPS *= 1.05
-        loopCount = 0
-    time.sleep(sleepFPS)
-    # End FPS tracker
-    #----------------------------------------------
-
-
-
-
-
-
-
-    # call the function and draw the pixels
-    if touchOSC.mode11 == 1: # React to music
-
-        # pull the values in
-        pitch = audio.pitch
-        volume = float(audio.volume) * 50000
-
-
-        #count += 1
-
-        # this is for the bass booms
-        speed = .005 * touchOSC.speedData
-        if doBoom[i] == 1:
-            i += 1
-            if i == 8:
-                i = 0
-
-        delay += 1 #keeps from doing too many booms on the same note
-
-        tolerance = pitchMin * 4
-        # if (pitch < tolerance and volume > volumeMin * 1.00) and pitch > 0 and doBoom[i] == 0 and delay > 50:
-        if pitch < tolerance and pitch > 0 and doBoom[i] == 0 and volume > (volumeMin * 1.5) and delay > 5:
-            delay = 0
-            doBoom[i] = 1 # sets this as an active boom
-            centerX[i] = randint(0, 14)
-            centerZ[i] =  draw.inverse(int(scale(pitch,(10,int(tolerance)),(0,3))))
-            color[i] = randint(50, 250),randint(50, 250),randint(100, 256)
-        count = 0
-        while count < 8: # rotats through all active booms and increases the step
-            if pos[count] <= 6.0 and doBoom[count] == 1:
-                pos[count] += scale(touchOSC.speedData,(1,100),(.005,.5))
-            else:
-                pos[count] = 0
-                doBoom[count] = 0
-            count += 1 # keep track of the
-
-
-
-        # pitch color and Z axis line
-        pitchDelay -= 1 # sets a delay so the pitch color doesnt flicker
-        if pitchDelay == 0:
-            pitchColor = int(draw.scale(pitch,(pitchMin,pitchMax+1),(50,225)))
-            if volume > volumeMax * .8:
-                linePos = 0
-                mod = 0
-            elif volume > volumeMax * .7:
-                linePos = 0
-                mod = 1
-            elif volume > volumeMax * .6:
-                linePos = 1
-                mod = 0
-            elif volume > volumeMax * .5:
-                linePos = 1
-                mod = 1
-            elif volume > volumeMax * .3:
-                linePos = 2
-                mod = 1
-            elif volume > volumeMax * .2:
-                linePos = 3
-                mod = 0
-            elif volume > volumeMax * .1:
-                linePos = 3
-                mod = 1
-            else:
-                linePos = 4
-                mod = 0
-            pitchDelay = 2
-
-        # print ("volume: %f") % volume
-        # print ("pitch %f ")% pitch
-
-
-
-
-        #Dynamically keep track of the min and max pitch
-        if pitch > pitchMax:
-            pitchMax = pitch
-        if pitch < pitchMin and pitch > 20:
-            pitchMin = pitch
-        #Dynamically keep track of the min and max volume
-        if volume > volumeMax:
-            volumeMax = volume
-        if volume < volumeMin and volume > 2.5:
-            volumeMin = volume
-        #every 2 seconds move the pitch and volume in
-        if countByTwo < t:
-            countByTwo += 2
-            pitchMax *= .9
-            pitchMin *= 1.1
-            volumeMax *= .9
-            volumeMin *= 1.1
+        #----------------------------------------------
+        # this tracks the FPS and adjusts the delay to keep it consistant.
+        loopCount += 1
+        if oneSec < t:
+            oneSec += 1
+            trueFPS = loopCount
+            # print options.fps
+            # print ("Loops per sec: %i") % loopCount
             # print
-            # print ("pitchMax: %f ")% pitchMax
-            # print ("pitchMin: %f ")% pitchMin
-            # print ("volumeMax: %f ")% volumeMax
-            # print ("volumeMin: %f ")% volumeMin
-            # print
-
-        #print volume
-        # print "pitch color: %i" % pitchColor
-        # print ("pitch: %f ")% pitch
-        # print ("pitchMax: %f ")% pitchMax
-        # print ("pitchMin: %f ")% pitchMin
-        # print tolerance
-        # print ("volumeMax: %f ")% volumeMax
-        # print ("volumeMin: %f ")% volumeMin
-        # print ("volume %f") % volume
-        # print delay
-        # print
-        # print ("time: %f") % t
-        # print ("count by two: %i") % countByTwo
-        # print loopCount
-        # print ("Loops per sec: %i ") % int(loopCount / t)
-        # print
+            if trueFPS < options.fps - 1:
+                sleepFPS *= .95
+            elif trueFPS > options.fps + 1:
+                sleepFPS *= 1.05
+            loopCount = 0
+        time.sleep(sleepFPS)
+        # End FPS tracker
+        #----------------------------------------------
 
 
+        lastMode = HTTPserver.mode
+        if lastMode != HTTPserver.mode: #clean up when mode changes
+            audio.on = False
 
-        pixels = [music(t, coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]
-        client.put_pixels(pixels, channel=0)
-    elif touchOSC.mode21 == 1:
-        padXData = touchOSC.padXData
-        touchOSC.padYData
-        padYData = scale(touchOSC.padYData,(0,14),(0,8))
-        pixels = [control_circle(t, coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]
-        client.put_pixels(pixels, channel=0) # Draw circle
-    elif touchOSC.mode31 == 1:
-        pixels = [rainbow(t*scale(touchOSC.speedData,(1,100),(.05,2)), coord, ii, n_pixels, random_values) for ii, coord in enumerate(coordinates)]
-        client.put_pixels(pixels, channel=0)
-        # time.sleep(1 / options.fps) # ranbow (lava lamp)
-    elif touchOSC.mode41 == 1:
-        pixels = [spatial_stripes(t*scale(touchOSC.speedData,(1,100),(.05,2)), coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]
-        client.put_pixels(pixels, channel=0)
-        # time.sleep(1 / options.fps) # spatial_stripes
-    elif touchOSC.mode71 == 1:
-        doNothing = 0
-    elif touchOSC.mode51 == 1: # React to musicv2
+        #HTTPserver.mode = "audio"
+        #HTTPserver.power = 1
+        if HTTPserver.mode == "rainbow" and HTTPserver.power == 1:
+            pixels = [rainbow(t*scale(30,(1,100),(.05,2)), coord, ii, n_pixels, random_values) for ii, coord in enumerate(coordinates)]
+            client.put_pixels(pixels, channel=0)
+        elif HTTPserver.mode == "breathe" and HTTPserver.power == 1:
+            pixels = [startup(t, coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]
+            client.put_pixels(pixels, channel=0)
+        elif HTTPserver.mode == "off" or HTTPserver.power == 0:
+            #add fade out!!
+            pixels = [(0,0,0) for ii, coord in enumerate(coordinates)] #set all the pixels to off
+            client.put_pixels(pixels, channel=0)
+        elif HTTPserver.mode == "audio" and HTTPserver.power == 1:
+            audio.on = True
+            options.fps = 10
+            audio.getResults()
+            pixels = [audioBars(t*scale(30,(1,100),(.05,2)), coord, ii, n_pixels, random_values) for ii, coord in enumerate(coordinates)]
+            client.put_pixels(pixels, channel=0)
+        else: # catch all maybe do loading
+            nothing = 0
 
-        # pull the values in
-        pitch = audio.pitch
-        volume = float(audio.volume) * 50000
+      
 
+       
 
-        #count += 1
+except KeyboardInterrupt:
+    print
+    log.warning(file,'\nInterrupt detected')
+    killSwitch() #shut down all the things as gracfully as possible
 
-        # this is for the bass booms
-        speed = touchOSC.speedData
-        if doBoom[i] == 1:
-            i += 1
-            if i == 8:
-                i = 0
-
-        delay += 1 #keeps from doing too many booms on the same note
-
-        #tolerance = pitchMin * 4 # this was decent
-        tolerance = 150
-        # if (pitch < tolerance and volume > volumeMin * 1.00) and pitch > 0 and doBoom[i] == 0 and delay > 50:
-        if pitch < tolerance and pitch > 0 and doBoom[i] == 0 and volume > (volumeMin * 1.5) and delay > 5:
-            delay = 0
-            doBoom[i] = 1 # sets this as an active boom
-            centerX[i] = randint(0, 14)
-            centerZ[i] =  int(scale(pitch,(10,int(tolerance)),(0,3)))
-            color[i] = randint(50, 250),randint(50, 250),randint(100, 256)
-        count = 0
-        while count < 8: # rotats through all active booms and increases the step
-            if pos[count] <= 3.9 and doBoom[count] == 1:
-                pos[count] += scale(touchOSC.speedData,(1,100),(.1,1))
-            else:
-                pos[count] = 0
-                doBoom[count] = 0
-            count += 1 # keep track of the
-
-
-
-
-        #Dynamically keep track of the min and max pitch
-        if pitch > pitchMax:
-            pitchMax = pitch
-        if pitch < pitchMin and pitch > 20:
-            pitchMin = pitch
-        #Dynamically keep track of the min and max volume
-        if volume > volumeMax:
-            volumeMax = volume
-        if volume < volumeMin and volume > 2.5:
-            volumeMin = volume
-
-        #every 2 seconds try to move the pitch and volume in
-        if countByTwo < t and volumeMin * 1.5 < volumeMax:
-            volumeMax *= .9
-            volumeMin *= 1.1
-        if countByTwo < t and pitchMin * 1.5 < pitchMax:
-            pitchMax *= .9
-            pitchMin *= 1.1
-        if countByTwo < t:
-            countByTwo += 2
-
-
-        #print volume
-        # print "pitch color: %i" % pitchColor
-        print ("pitch: %f ")% pitch
-        print ("pitchMax: %f ")% pitchMax
-        print ("pitchMin: %f ")% pitchMin
-        print tolerance
-        print ("volumeMax: %f ")% volumeMax
-        print ("volumeMin: %f ")% volumeMin
-        print ("volume %f") % volume
-        print delay
-        print
-        # print ("time: %f") % t
-        # print ("count by two: %i") % countByTwo
-        # print loopCount
-        # print ("Loops per sec: %i ") % int(loopCount / t)
-        # print
-        print
-        print scale(volume, (volumeMin,volumeMax), (9,0))
-        print
-        pixels = [musicv2(t, coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]
-        client.put_pixels(pixels, channel=0)
-    else:
-        pixels = [pixel_color(t, coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]
-        client.put_pixels(pixels, channel=0)
-
-
-    if touchOSC.kill == 1:
-        killSwitch()
-    if touchOSC.system11 == 1:
-        restartPython()
-    elif touchOSC.system21 == 1:
-        killSwitch()
-    elif touchOSC.system31 == 1:
-        restartPi()
-    elif touchOSC.system41 == 1:
-        shutdownPi()
-    audio.run = run_audio
-    touchOSC.run = run_touchOSC
+    try:
+        sys.exit(0)
+    except SystemExit:
+        os._exit(0)

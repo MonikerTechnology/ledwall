@@ -1,13 +1,43 @@
+# version_2.0 in progress
 # 15 x 9 LED art
 
+![alt text](supporting_files/ledwall.gif "ledwall in action")
+
+## Goals for v2.0
+- [x] Python3
+- [ ] Error handling
+  - [ ] Auto restart of services
+  - [ ] No audio - broken
+   - [ ] Lack of sound then display something cool
+  -  [ ] No wifi - loading pattern
+  - [ ] No OSC
+- [ ] HTML wifi set up - auto scan then broadcast if not connected
+  - [ ] Physica button??
+- [ ] Better start up pattern / test pattern
+- [x] Mirate to http post for control
+  - [ ] Add HTTPS
+  - [ ] Add sha256 auth key
+  - [x] HomeKit- HAP-Node.js to many local scripts
+    - [ ] Homekit QR code for pairing
+    - [ ] HAP-Node.js feedback so the buttons are active
+  - [ ] Secondary control….physical? (prolly naw)
+    - [ ] Google Assistant
+- [ ] More/better audio effects
+- [x] Update github
+- [ ] Cool MOTD ssh banner
+- [ ] More secure?
+- [ ] HTML status page...mayble with controls
+- [ ] Linux auto updates (security)
+
+
 ## Reminders:
-- Upload remote file from TouchOSC app!!
-- Add pictures and videos
-- Add type of LEDs
-- add power info 
-- Add links to all software
-- Upload FadeCandy config
-- Spell check this document
+- [ ] Upload remote file from TouchOSC app!!
+- [x] Add pictures and videos
+- [ ] Add type of LEDs
+- [ ] add power info 
+- [ ] Add links to all software
+- [x] Upload FadeCandy config
+- [ ] Spell check this document
 
 ## Description:
 ### Software:
@@ -40,7 +70,7 @@ Ctrl + t to check the status
 `sudo raspi-config`
 - Enable autologin
 - Change password
-- Change hostname (piledwall)
+- Change hostname (ledwall)
 - Enable SSH (if you don't know how to secure SSH, you should google a tutorial)
 
 ### Set up wifi via command line:
@@ -59,6 +89,60 @@ Then `sudo reboot`
 - `sudo apt-get install git`
 - `sudo apt-get install Pure-FTPd` (This will work as is, but you probably should google how to secure it)
 
+
+### Install Everything for HomeKit
+
+#### HAP-nodeJS
+- https://github.com/KhaosT/HAP-NodeJS
+
+Default pairing code: `031-45-154`
+Use `sudo DEBUG=* node BridgedCore.js` for detailed output when troubleshooting
+
+.service file for HAP-NodeJS
+Double check path for node `which node` as it can vary.
+```
+#
+#Place this file in /etc/systemd/system/name_of_file.service
+#
+#
+#Here are some example commands 
+#	sudo systemctl status -l name_of_file.service
+#	sudo systemctl enable name_of_file.service
+#	sudo systemctl stop name_of_file.service
+#   	sudo systemctl start name_of_file.service
+#   	journalctl -u name_of_file.service
+
+[Unit] 
+Description=HAP-NodejS 
+
+[Service] 
+Type=simple
+
+#Everything must use absolute path
+WorkingDirectory=/home/pi/HAP-NodeJS 
+ExecStartPre=/bin/echo "hap-nodejs.service started" 
+ExecStart=/usr/local/bin/node /home/pi/HAP-NodeJS/BridgedCore.js 
+ExecStop=/bin/echo "hap-nodejs.services stopped" 
+
+[Install]
+WantedBy=multi-user.target
+```
+
+#### MQTT
+- Mosquitto (maybe not needed? def good for testing)
+  - https://mosquitto.org/2013/01/mosquitto-debian-repository/
+  - if you need an updated repo
+    - 	sudo wget http://repo.mosquitto.org/debian/mosquitto-stretch.list
+- MQTT for node or npm or something? Needed for HAP-NodeJS
+  - sudo npm install node
+- Local client for testing
+  - apt-get install mosquitto mosquitto-clients 
+- To test open two terminals and enter the following:
+  - mosquitto_sub -t "/test/topic"
+  - mosquitto_pub -t "/test/topic" -m "HELLO"
+
+
+
 ### Install FadeCandy server:
 `git clone https://github.com/scanlime/fadecandy.git`
 - We should put this into the same folder as the rest of our project so that it will work with the launch scripts later
@@ -71,6 +155,12 @@ sudo apt-get install python-setuptools
 sudo apt-get install python-pip
 sudo apt-get install python-dev
 ```
+
+Fory python3
+```
+sudo apt-get install python3-pip
+```
+
 #### Modules:
 ```
 sudo apt-get install python-pyaudio
@@ -81,7 +171,14 @@ sudo apt-get install aubio-tools libaubio-dev libaubio-doc
 ```
 python -m pip install aubio
 ```
-    
+
+Python3 - The way of the future
+```
+sudo pip3 install aubio
+sudo python3 -m pip install numpy
+sudo apt-get install python3-pyaudio
+sudo pip3 install dweepy
+```
     
 ```
 git clone https://github.com/ptone/pyosc.git
