@@ -57,7 +57,7 @@ function post(data) {
 
 var state = false;
 
-var accUUID = uuid.generate('hap-nodejs:accessories:audio');
+var accUUID = uuid.generate(UUID);
 
 var acc = exports.accessory = new Accessory(name, accUUID);
 
