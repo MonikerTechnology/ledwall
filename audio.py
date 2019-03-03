@@ -4,6 +4,7 @@
 
 main.py will import this module and run it in a seperate thread.
 run = True will serve as the kill switch.
+W
 
 """
 
