@@ -3,17 +3,20 @@
 
 ![alt text](supporting_files/ledwall.gif "ledwall in action")
 
+
+This project is no longer under development. I no longer have a place to hang the LED board.
+
 ## Goals for v2.0
 - [x] Python3
 - [ ] Error handling
-  - [ ] Auto restart of services
+  - [x] Auto restart of services
   - [ ] No audio - broken
    - [ ] Lack of sound then display something cool
   -  [ ] No wifi - loading pattern
-  - [ ] No OSC
+  - [x] No OSC
 - [ ] HTML wifi set up - auto scan then broadcast if not connected
   - [ ] Physica button??
-- [ ] Better start up pattern / test pattern
+- [x] Better start up pattern / test pattern
 - [x] Mirate to http post for control
   - [ ] Add HTTPS
   - [ ] Add sha256 auth key
@@ -21,7 +24,7 @@
     - [ ] Homekit QR code for pairing
     - [ ] HAP-Node.js feedback so the buttons are active
   - [ ] Secondary control….physical? (prolly naw)
-    - [ ] Google Assistant
+    - [x] Google Assistant
 - [ ] More/better audio effects
 - [x] Update github
 - [ ] Cool MOTD ssh banner
@@ -31,7 +34,6 @@
 
 
 ## Reminders:
-- [ ] Upload remote file from TouchOSC app!!
 - [x] Add pictures and videos
 - [ ] Add type of LEDs
 - [ ] add power info 
