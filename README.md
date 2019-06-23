@@ -1,7 +1,7 @@
 # version_3.0 in progress
 # 15 x 9 LED art
 
-![alt text](supporting_files/ledwall.gif "ledwall in action")
+![alt text](v2/supporting_files/ledwall.gif "ledwall in action")
 
 
 This project is no longer under development. I no longer have a place to hang the LED board.
