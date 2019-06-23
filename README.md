@@ -1,4 +1,4 @@
-# version_2.0 in progress
+# version_3.0 in progress
 # 15 x 9 LED art
 
 ![alt text](supporting_files/ledwall.gif "ledwall in action")
