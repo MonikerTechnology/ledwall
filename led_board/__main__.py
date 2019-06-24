@@ -2,10 +2,12 @@
 
 from __future__ import division
 # import colorsys
+import argparse
 import json
 import logging
-import optparse
+
 import os
+import platform
 import random
 # import requests
 import time
@@ -14,38 +16,59 @@ import sys
 
 # My custom
 import animation
-import AudioProcessor
+from audio_processing import *
 from led_board import http_server, opc
 
 # import googleAssistant
+logger = logging.getLogger(f'ledwall.{__name__}')
+debug = logging.WARNING
 
-file = str(os.path.basename(__file__))
+logging.basicConfig(level=debug, format=f'%(asctime)s %(levelname)s %(name)s %(lineno)s %(message)s')
+# format='%(asctime)s %levelname)s: %(message)s',
+#                         datefmt='%m/%d/%Y %I:%M:%S %p'
+logging.info(f"Logging level: {str(debug)}")
+
+
 run_main = True
 
-logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.DEBUG)
-logging.info(f'{file} setup')
 
+def get_args():
+    global debug
 
-# -------------------------------------------------------------------------------
-# Try to start fadecandy server
+    parser = argparse.ArgumentParser(description="Interactive Programming Game")
 
-logging.info(f'{file} Trying to start FC server...')
-# try:
-os.system("sudo /home/pi/fadecandy/bin/fcserver-rpi /home/pi/fadecandy/bin/fcserver_config.json &")
-logging.info(f'{file} Backgrounding FC server and continuing with python')
-# except:
-# logging.warning(f'{file} Failed to start FC server Maybe it is already running?')
+    parser.add_argument('-d', '--debug', action='count', help='Increase debug level for each -d')
 
+    parser.add_argument('-l', '--layout', dest='layout', default='../v2/supporting_files/ledwall15x9.json',
+                        action='store', type=str, required=False,
+                        help='layout file')
+    parser.add_argument('-s', '--server', dest='server', default='localhost:7890',
+                        action='store', type=str,
+                        help='ip and port of server')
+    parser.add_argument('-f', '--fps', dest='fps', default=30,
+                        action='store', type=int,
+                        help='frames per second')
+    arguments = parser.parse_args()
+
+    if arguments.debug:
+        # Turn up the logging level
+        debug -= arguments.debug * 10
+        if debug < 0:
+            debug = 0
+        logging.getLogger().setLevel(debug)
+        logging.warning(f'Updated log level to: {logging.getLevelName(debug)}({debug})')
+
+    return arguments
 
 # Main kill switch to stop the threads
 def kill_switch():
     global run_main
     run_main = False
 
-    logging.info(f'{file} Stopping audio loop')
+    logger.info(f'Stopping audio loop')
     audio_obj.run = False
 
-    logging.info(f'{file} Stopping http_server')
+    logger.info(f'Stopping http_server')
     http_server.httpd.server_close()
 
     # sudo kill $(ps aux | grep 'fadecandy' | awk '{print $2}')
@@ -54,17 +77,18 @@ def kill_switch():
     # log.info(file, "killing googleAssistant")
     # googleAssistant.run = False
 
-    logging.info(f"{file} killing fadecandy server")
-    os.system("sudo kill $(ps aux | grep 'fadecandy' | awk '{print $2}')")
+    logger.info(f"killing fadecandy server")
+    # os.system("sudo kill $(ps aux | grep 'fadecandy' | awk '{print $2}')")
+    os.system("killall fcserver")
     time.sleep(.5)
 
-    logging.info(f"{file} Killing main")
+    logger.info(f"Killing main")
 
-    logging.info(f"{file} Setting pixels to 0,0,0")
+    logger.info(f"Setting pixels to 0,0,0")
     pixels = [(0, 0, 0) for ii, coord in enumerate(coordinates)]  # set all the pixels to off
     client.put_pixels(pixels, channel=0)
 
-    logging.info(f"{file} Is the HTTPserver thread running " + str(http_server.server_thread.is_alive()))
+    logger.info(f"Is the HTTPserver thread running " + str(http_server.server_thread.is_alive()))
     # logging.info(f"{file} Is the googleAssistant thread running " + str(t_googleAssistant.is_alive()))
 
     return None
@@ -95,6 +119,36 @@ def scale(val, src, dst):
     return ((val - src[0]) / (src[1] - src[0])) * (dst[1] - dst[0]) + dst[0]
 
 
+print('about to get args')
+args = get_args()
+logger.info('got args')
+
+if args.layout == 'supported_files/ledwall15x9.json':
+    logger.info(f"No layout selected, using default layout: {str(args.layout)}")
+
+logger.info(f'setup')
+
+
+# -------------------------------------------------------------------------------
+# Try to start fadecandy server
+
+logger.info(f'Trying to start FC server...')
+
+
+if platform.system() == "Darwin":
+    logger.info(f'Backgrounding FC server for Mac and continuing with python')
+    os.system("./fcserver-osx ./../v2/supporting_files/fcserver_config.json &")
+if platform.system() == "Linux":
+    logger.info(f'Backgrounding FC server for Linux and continuing with python')
+    os.system("sudo /home/pi/fadecandy/bin/fcserver-rpi /home/pi/fadecandy/bin/fcserver_config.json &")
+
+
+# logging.warning(f'{file} Failed to start FC server Maybe it is already running?')
+
+
+
+
+
 time.sleep(1)
 # -------------------------------------------------------------------------------
 # Threading
@@ -102,10 +156,11 @@ time.sleep(1)
 # Threads for audio input and the threading all kill switch stuff
 
 # Starts listening and server, launch via threading
-logging.info(f"{file} Starting audio loop")
-audio_obj = AudioProcessor()
+logger.info(f"Starting audio loop")
+audio_obj = AudioProcessor(num_pitch_ranges=15)
 
-logging.info(f"{file} Starting http_server")
+
+logger.info(f"Starting http_server")
 http_server.start_server()
 
 # add in a check to see if it stopped and restart it
@@ -117,41 +172,31 @@ http_server.start_server()
 # -------------------------------------------------------------------------------
 # command line options for main
 
-parser = optparse.OptionParser()
-parser.add_option('-l', '--layout', dest='layout', default='supporting_files/ledwall15x9.json',
-                  action='store', type='string', required=True,
-                  help='layout file')
-parser.add_option('-s', '--server', dest='server', default='ledwall:7890',
-                  action='store', type='string',
-                  help='ip and port of server')
-parser.add_option('-f', '--fps', dest='fps', default=30,
-                  action='store', type='int',
-                  help='frames per second')
 
-options, args = parser.parse_args()
 
-if options.layout == 'supported_files/ledwall15x9.json':
-    logging.info(f"{file} No layout selected, using default layout: {str(options.layout)}")
+
+
+
 
 # -------------------------------------------------------------------------------
 # parse layout file
 
-logging.info(f'{file} parsing FC layout file')
+logger.info(f'parsing FC layout file')
 
 coordinates = []
-for item in json.load(open(options.layout)):
+for item in json.load(open(args.layout)):
     if 'point' in item:
         coordinates.append(tuple(item['point']))
 
 # -------------------------------------------------------------------------------
 # connect OPC to server
 
-client = opc.Client(options.server)
+client = opc.Client(args.server)
 if client.can_connect():
-    logging.info(f'{file} OPC connected to {options.server}')
+    logger.info(f'OPC connected to {args.server}')
 else:
     # can't connect, but keep running in case the server appears later
-    logging.warning(f'{file} could not connect to {options.server}')
+    logger.warning(f'could not connect to {args.server}')
 
 # -------------------------------------------------------------------------------
 # Setup MQTT
@@ -268,7 +313,7 @@ def pixel_color(t, coord, ii, n_pixels):
 # -------------------------------------------------------------------------------
 # send pixels
 
-logging.info(f'{file} sending pixels forever (control-c to exit)...')
+logger.info(f'sending pixels forever (control-c to exit)...')
 
 # -------------------------------------------------------------------------------
 
@@ -276,11 +321,12 @@ n_pixels = len(coordinates)
 
 
 # fps counter
-fps = AudioProcessor.FPS(options.fps)
+fps = FPS(args.fps)
+
 
 random_values = [random.random() for ii in range(n_pixels)]
 try:
-    logging.info(f"{file} about to start main loop")
+    logger.info(f"about to start main loop")
     while run_main:
 
         # set looping variables
@@ -292,6 +338,7 @@ try:
 
         if not http_server.http_data.power or http_server.http_data.mode != 'audio_bars':
             audio_obj.run = False
+            pass
 
         if http_server.http_data.power:
 
@@ -303,10 +350,12 @@ try:
                 pixels = [animation.start_up(t, coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]
                 client.put_pixels(pixels, channel=0)
 
-            elif http_server.http_data..mode == "audio_bars":
+            elif http_server.http_data.mode == "audio_bars":
                 audio_obj.capture = True
-                pixels = [animation.audio_bars(t * scale(30, (1, 100), (.05, 2)), coord, ii, n_pixels, random_values) for ii, coord in
-                          enumerate(coordinates)]
+                audio_obj.update()
+                pixels = animation.audio_bars(t, random_values, audio_obj, coordinates)
+                # pixels = [animation.audio_bars(t * scale(30, (1, 100), (.05, 2)), coord, ii, n_pixels, random_values) for ii, coord in
+                #          enumerate(coordinates)]
                 client.put_pixels(pixels, channel=0)
             else:  # catch all maybe do loading
                 nothing = 0
@@ -318,6 +367,6 @@ try:
             client.put_pixels(pixels, channel=0)
 
 except KeyboardInterrupt:
-    logging.warning(f'{file} Interrupt detected')
+    logger.warning(f'Interrupt detected')
     kill_switch()  # shut down all the things as gracefully as possible
     sys.exit()

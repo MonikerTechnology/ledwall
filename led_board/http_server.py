@@ -6,6 +6,7 @@ Usage::
 """
 
 # curl -X GET 'http://localhost:8080/?id=3&hsv=1,2,3&mode=pizza'
+# curl -X GET 'http://localhost:8080/?id=3&power=1&mode=audio_bars'
 
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import logging
@@ -36,9 +37,15 @@ class Data:
 
         for k, v in kwargs.items():
             if k in allowed_keys:
-                if k.lower() == 'mode':
-                    self.last_mode = self.mode
-                self.__dict__.update(k, v)
+                if k.lower() == 'mode':  # Then save to last_mode
+                    if len(v) == 1 and isinstance(v, list):
+                        self.last_mode = self.mode[0]
+                    else:
+                        self.last_mode = self.mode[0]
+                if len(v) == 1 and isinstance(v, list):
+                    self.__dict__.update({k: v[0]})
+                else:
+                    self.__dict__.update({k: v})
 
     def print_all(self):
         for key in self.__dict__.keys():
@@ -69,6 +76,7 @@ class S(BaseHTTPRequestHandler):
         params = urlparse.parse_qs(parsed.query)
         print(params)
         http_data.update_values(**params)
+        http_data.print_all()
 
     def do_POST(self):
         content_length = int(self.headers['Content-Length']) # <--- Gets the size of data
