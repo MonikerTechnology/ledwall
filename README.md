@@ -3,8 +3,12 @@
 
 ![alt text](v2/supporting_files/ledwall.gif "ledwall in action")
 
+This project is under a major redevelopment. I no longer have a space for the LED board so I am donating it to a friend. The main goals for this version are to streamline and simplify. The main interface for changing patterns and settings will be the http server. Decisions need to be made regarding how this device can be controlled and maintained from a non-technical person. Physical controls are being considered. 
 
-This project is no longer under development. I no longer have a place to hang the LED board.
+## Goals for v3
+- [ ] Simplify 
+- [ ]
+
 
 ## Goals for v2.0
 - [x] Python3
@@ -28,7 +32,6 @@ This project is no longer under development. I no longer have a place to hang th
 - [ ] More/better audio effects
 - [x] Update github
 - [ ] Cool MOTD ssh banner
-- [ ] More secure?
 - [ ] HTML status page...mayble with controls
 - [ ] Linux auto updates (security)
 

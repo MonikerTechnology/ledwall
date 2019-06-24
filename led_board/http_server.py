@@ -74,11 +74,11 @@ class S(BaseHTTPRequestHandler):
         # get the parameters
         parsed = urlparse.urlparse(self.path)
         params = urlparse.parse_qs(parsed.query)
-        print(params)
+
         http_data.update_values(**params)
-        http_data.print_all()
 
     def do_POST(self):
+        # TODO: confugure post to update http_data
         content_length = int(self.headers['Content-Length']) # <--- Gets the size of data
         post_data = self.rfile.read(content_length) # <--- Gets the data itself
         logging.info("POST request,\nPath: %s\nHeaders:\n%s\n\nBody:\n%s\n",
@@ -101,9 +101,10 @@ def _run(server_class=HTTPServer, handler_class=S, port=8080):
     httpd = server_class(server_address, handler_class)
     logging.info('Starting httpd...\n')
     try:
-        # httpd.serve_forever()
-        httpd.handle_request()
-        print('handled request')
+        httpd.serve_forever()
+        print('server closed')
+        # httpd.handle_request()
+        # print('handled request')
     except KeyboardInterrupt:
         pass
     httpd.server_close()

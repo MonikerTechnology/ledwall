@@ -20,17 +20,6 @@ from audio_processing import *
 from led_board import http_server, opc
 
 # import googleAssistant
-logger = logging.getLogger(f'ledwall.{__name__}')
-debug = logging.WARNING
-
-logging.basicConfig(level=debug, format=f'%(asctime)s %(levelname)s %(name)s %(lineno)s %(message)s')
-# format='%(asctime)s %levelname)s: %(message)s',
-#                         datefmt='%m/%d/%Y %I:%M:%S %p'
-logging.info(f"Logging level: {str(debug)}")
-
-
-run_main = True
-
 
 def get_args():
     global debug
@@ -60,13 +49,16 @@ def get_args():
 
     return arguments
 
+
 # Main kill switch to stop the threads
 def kill_switch():
     global run_main
+
+    logger.info('Killing main loop')
     run_main = False
 
     logger.info(f'Stopping audio loop')
-    audio_obj.run = False
+    audio_obj.start_capturing()
 
     logger.info(f'Stopping http_server')
     http_server.httpd.server_close()
@@ -78,11 +70,9 @@ def kill_switch():
     # googleAssistant.run = False
 
     logger.info(f"killing fadecandy server")
-    # os.system("sudo kill $(ps aux | grep 'fadecandy' | awk '{print $2}')")
-    os.system("killall fcserver")
+    os.system("kill $(ps aux | grep 'fcserver' | grep -v grep | awk '{print $2}')")
+    # os.system("killall fcserver")
     time.sleep(.5)
-
-    logger.info(f"Killing main")
 
     logger.info(f"Setting pixels to 0,0,0")
     pixels = [(0, 0, 0) for ii, coord in enumerate(coordinates)]  # set all the pixels to off
@@ -119,15 +109,29 @@ def scale(val, src, dst):
     return ((val - src[0]) / (src[1] - src[0])) * (dst[1] - dst[0]) + dst[0]
 
 
-print('about to get args')
+# -------------------------------------------------------------------------------
+# logging setup
+
+logger = logging.getLogger(f'ledwall.{__name__}')
+debug = logging.WARNING
+
+logging.basicConfig(level=debug, format=f'%(asctime)s %(levelname)s %(name)s Line:%(lineno)s %(message)s')
+# format='%(asctime)s %levelname)s: %(message)s',
+#                         datefmt='%m/%d/%Y %I:%M:%S %p'
+logging.info(f"Logging level: {str(debug)}")
+
+
+run_main = True
+
+# -------------------------------------------------------------------------------
+# args
+
 args = get_args()
-logger.info('got args')
 
 if args.layout == 'supported_files/ledwall15x9.json':
     logger.info(f"No layout selected, using default layout: {str(args.layout)}")
 
 logger.info(f'setup')
-
 
 # -------------------------------------------------------------------------------
 # Try to start fadecandy server
@@ -199,105 +203,6 @@ else:
     logger.warning(f'could not connect to {args.server}')
 
 # -------------------------------------------------------------------------------
-# Setup MQTT
-
-# mode = "default"  # global
-# lastMode = ""
-# redMultiplier = 1
-# greenMultiplier = 1
-# blueMultiplier = 1
-
-"""
-print
-print(" __  __  _____  ____  ____ ")
-print("(  \/  )(  _  )(_  _)(_  _)")
-print(" )    (  )(_)(   )(    )(  ")
-print("(_/\/\_)(___/\\\ (__)  (__) ") #double \\ to escape
-
-
-broker_address="localhost" #Controled locally
-topic = "/LEDwall"
-
-#def on_message(client, userdata, message):
-def on_message(MQTTclient, userdata, message):
-    global mode
-    global lastMode
-    global redMultiplier
-    global greenMultiplier
-    global blueMultiplier
-    #print("message received " ,str(message.payload.decode("utf-8")))
-    #print("message topic=",message.topic)
-    MQTTMessage = str(message.payload.decode("utf-8"))
-    print("MQTT message recived: " + MQTTMessage)
-    #print("message qos=",message.qos)
-    #print("message retain flag=",message.retain)
-
-    #lastMode = mode
-    #mode = MQTTMessage[0:8] # first 8 char is mode
-    # Mode      Data
-    # rainbowX  None
-    # HSVXXXXX  0.000,0.850,0.960
-    # loadingX  None
-    # musicXXX  None
-    # offXXXXX  None
-
-    # Maybe use this for initial set up?
-    if "HSVXXXXX" == MQTTMessage[0:8]: 
-        print("New HSV data")
-        #print MQTTMessage[8:13]
-        #print MQTTMessage[14:19]
-        #print MQTTMessage[20:24]
-
-        redMultiplier, greenMultiplier, blueMultiplier = colorsys.hsv_to_rgb(float(MQTTMessage[8:13]), float(MQTTMessage[14:19]), float(MQTTMessage[20:24]))
-
-    elif "offXXXXX" == MQTTMessage[0:8]:
-        print("Empty mode")
-        mode = MQTTMessage[0:8]
-        #make blank???
-    elif "rainbowX" == MQTTMessage[0:8]:
-        print("rainbowX mode")
-        mode = MQTTMessage[0:8]
-
-    else: # Catch all - maybe loading pattern?
-        print("Empty mode - catch all")
-
-
-print
-print("MQTT initializing...")
-print("creating new instance")
-MQTTclient = mqtt.Client("P1") #create new instance
-MQTTclient.on_message=on_message #attach function to callback
-print("connecting to broker")
-MQTTclient.connect(broker_address) #connect to broker
-MQTTclient.loop_start() #start the loop
-print("Subscribing to topic: " + topic)
-print
-print
-MQTTclient.subscribe(topic)
-
-#print("Publishing message to topic","/test")
-#client.publish("/test","OFF")
-
-#client.loop_stop() #stop the loop
-
-"""
-
-# message = HTTPserver.postDic
-# mode = "rainbow"
-# power = 0
-
-
-# power message
-# {"type":"power","power":1}
-# {"power":1,"type":"power"}
-
-# HSV message
-# {"type":"HSV","HSV":{"H":123,"S":123,"V":123}}
-
-# mode message
-# {"type":"mode","mode":"rainbow"}
-
-# -------------------------------------------------------------------------------
 # color modes function
 
 
@@ -322,7 +227,7 @@ n_pixels = len(coordinates)
 
 # fps counter
 fps = FPS(args.fps)
-
+# TODO: Keep track of pixels last position to add in an optional fade
 
 random_values = [random.random() for ii in range(n_pixels)]
 try:
@@ -338,7 +243,6 @@ try:
 
         if not http_server.http_data.power or http_server.http_data.mode != 'audio_bars':
             audio_obj.run = False
-            pass
 
         if http_server.http_data.power:
 
@@ -351,7 +255,6 @@ try:
                 client.put_pixels(pixels, channel=0)
 
             elif http_server.http_data.mode == "audio_bars":
-                audio_obj.capture = True
                 audio_obj.update()
                 pixels = animation.audio_bars(t, random_values, audio_obj, coordinates)
                 # pixels = [animation.audio_bars(t * scale(30, (1, 100), (.05, 2)), coord, ii, n_pixels, random_values) for ii, coord in
