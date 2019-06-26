@@ -7,7 +7,8 @@ This project is under a major redevelopment. I no longer have a space for the LE
 
 ## Goals for v3
 - [ ] Simplify 
-- [ ]
+- [ ] Increased error handling 
+- [ ] Better maintenance of wifi
 
 
 ## Goals for v2.0
