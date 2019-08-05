@@ -13,6 +13,7 @@ This project is under a major redevelopment. I no longer have a space for the LE
   - [ ] Wifi good
   - [ ] Wifi issue
   - [ ] Test all LEDs and Colors on boot
+  - [ ] All LEDs on
 
 
 ## Goals for v2.0
