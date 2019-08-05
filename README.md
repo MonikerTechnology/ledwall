@@ -9,6 +9,10 @@ This project is under a major redevelopment. I no longer have a space for the LE
 - [ ] Simplify 
 - [ ] Increased error handling 
 - [ ] Better maintenance of wifi
+- [ ] Indicators
+  - [ ] Wifi good
+  - [ ] Wifi issue
+  - [ ] Test all LEDs and Colors on boot
 
 
 ## Goals for v2.0
