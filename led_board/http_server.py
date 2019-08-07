@@ -13,47 +13,10 @@ import logging
 import threading
 import time
 import urllib.parse as urlparse
+from led_board.settings import Settings
 
 httpd = None
 server_thread = None
-
-
-class Data:
-    def __init__(self):
-        self.test_data = [1]
-        self.mode = ['start_up']
-        self.last_mode = ['']
-        self.power = [1]
-
-    def __getitem__(self, key):
-        return self.__dict__[key]
-
-    def __setitem__(self, key, value):
-        self.__dict__[key] = value
-
-    def update_values(self, **kwargs):
-        allowed_keys = {'mode', 'power', 'test_data'}
-        # self.__dict__.update((k, v) for k, v in kwargs.items() if k in allowed_keys)
-
-        for k, v in kwargs.items():
-            if k in allowed_keys:
-                if k.lower() == 'mode':  # Then save to last_mode
-                    if len(v) == 1 and isinstance(v, list):
-                        self.last_mode = self.mode[0]
-                    else:
-                        self.last_mode = self.mode[0]
-                if len(v) == 1 and isinstance(v, list):
-                    self.__dict__.update({k: v[0]})
-                else:
-                    self.__dict__.update({k: v})
-
-    def print_all(self):
-        for key in self.__dict__.keys():
-            print(f'{key}: {self.__dict__[key]}')
-        print()
-
-
-http_data = Data()
 
 
 class S(BaseHTTPRequestHandler):
@@ -75,7 +38,7 @@ class S(BaseHTTPRequestHandler):
         parsed = urlparse.urlparse(self.path)
         params = urlparse.parse_qs(parsed.query)
 
-        http_data.update_values(**params)
+        Settings.update_values(**params)
 
     def do_POST(self):
         # TODO: confugure post to update http_data

@@ -18,6 +18,7 @@ import sys
 import animation
 from audio_processing import *
 from led_board import http_server, opc
+from led_board.settings import Settings
 
 # import googleAssistant
 
@@ -241,20 +242,20 @@ try:
         # this tracks the FPS and adjusts the delay to keep it consistent.
         fps.maintain()
 
-        if not http_server.http_data.power or http_server.http_data.mode != 'audio_bars':
+        if not Settings.power or Settings.mode != 'audio_bars':
             audio_obj.run = False
 
-        if http_server.http_data.power:
+        if Settings.power:
 
-            if http_server.http_data.mode == "rainbow":
+            if Settings.mode == "rainbow":
                 pixels = [animation.rainbow(t * scale(30, (1, 100), (.05, 2)), coord, ii, n_pixels, random_values) for ii, coord in
                           enumerate(coordinates)]
                 client.put_pixels(pixels, channel=0)
-            elif http_server.http_data.mode == "breathe":
+            elif Settings.mode == "breathe":
                 pixels = [animation.start_up(t, coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]
                 client.put_pixels(pixels, channel=0)
 
-            elif http_server.http_data.mode == "audio_bars":
+            elif Settings.mode == "audio_bars":
                 audio_obj.update()
                 pixels = animation.audio_bars(t, random_values, audio_obj, coordinates)
                 # pixels = [animation.audio_bars(t * scale(30, (1, 100), (.05, 2)), coord, ii, n_pixels, random_values) for ii, coord in
@@ -263,7 +264,7 @@ try:
             else:  # catch all maybe do loading
                 nothing = 0
 
-        if http_server.http_data.mode == "off" or http_server.http_data.power == 0:
+        if Settings.mode == "off" or Settings.power == 0:
         # add fade out!!
 
             pixels = [(0, 0, 0) for ii, coord in enumerate(coordinates)]  # set all the pixels to off
