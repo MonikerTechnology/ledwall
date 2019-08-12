@@ -247,6 +247,8 @@ try:
 
         if Settings.power:
 
+            # Force for testing
+            Settings.mode = "solid"
             if Settings.mode == "rainbow":
                 pixels = [animation.rainbow(t * scale(30, (1, 100), (.05, 2)), coord, ii, n_pixels, random_values) for ii, coord in
                           enumerate(coordinates)]
@@ -261,6 +263,9 @@ try:
                 # pixels = [animation.audio_bars(t * scale(30, (1, 100), (.05, 2)), coord, ii, n_pixels, random_values) for ii, coord in
                 #          enumerate(coordinates)]
                 client.put_pixels(pixels, channel=0)
+            elif Settings.mode == "solid":
+                pixels = [animation.solid(t * scale(30, (1, 100), (.05, 2)), coord, ii, n_pixels, random_values) for ii, coord in
+                          enumerate(coordinates)]
             else:  # catch all maybe do loading
                 nothing = 0
 
