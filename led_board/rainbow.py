@@ -1,10 +1,10 @@
 from led_board import color_utils
 from led_board.__main__ import scale
 
-__all__ = ['rainbow']
+__all__ = ['rainbows']
 
 
-def rainbow(t, coord, ii, n_pixels, random_values):
+def rainbows(t, coord, ii, n_pixels, random_values):
     """Compute the color of a given pixel.
 
     t: time in seconds since the program started.
