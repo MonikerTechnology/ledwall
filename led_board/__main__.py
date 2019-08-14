@@ -140,7 +140,7 @@ logger.info(f'setup')
 
 logger.info(f'Trying to start FC server...')
 
-
+os.system('sudo ls')
 if platform.system() == "Darwin":
     logger.info(f'Backgrounding FC server for Mac and continuing with python')
     os.system(f"./supporting_files/fcserver-osx ./supporting_files/fcserver_config.json &")
