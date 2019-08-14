@@ -152,10 +152,10 @@ print()
 
 if platform.system() == "Darwin":
     logger.info(f'Backgrounding FC server for Mac and continuing with python')
-    os.system(f"./supporting_files/fcserver-osx ./supporting_files/fcserver_config.json &")
+    os.system(f"led_board/supporting_files/fcserver-osx led_board/supporting_files/fcserver_config.json &")
 if platform.system() == "Linux":
     logger.info(f'Backgrounding FC server for Linux and continuing with python')
-    os.system(f"sudo led_wall/supporting_files/fcserver-rpi led_wall/supporting_files/fcserver_config.json &")
+    os.system(f"sudo led_board/supporting_files/fcserver-rpi led_board/supporting_files/fcserver_config.json &")
 
 
 # logging.warning(f'{file} Failed to start FC server Maybe it is already running?')
