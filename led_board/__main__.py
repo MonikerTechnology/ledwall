@@ -160,10 +160,6 @@ if platform.system() == "Linux":
 
 # logging.warning(f'{file} Failed to start FC server Maybe it is already running?')
 
-
-
-
-
 time.sleep(1)
 # -------------------------------------------------------------------------------
 # Threading
@@ -172,7 +168,7 @@ time.sleep(1)
 
 # Starts listening and server, launch via threading
 logger.info(f"Starting audio loop")
-audio_obj = AudioProcessor(num_pitch_ranges=15)
+audio_obj = AudioProcessor(num_pitch_ranges=15, start=False)
 
 
 logger.info(f"Starting http_server")
@@ -199,6 +195,8 @@ http_server.start_server()
 logger.info(f'parsing FC layout file')
 
 coordinates = []
+print('l\ns')
+os.system('ls')
 for item in json.load(open(args.layout)):
     if 'point' in item:
         coordinates.append(tuple(item['point']))
