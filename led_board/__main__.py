@@ -259,7 +259,7 @@ try:
             Settings.mode = "rainbow"
             if Settings.mode == "rainbow":
 
-                pixels = [rainbow.rainbows(t * scale(30, (1, 100), (.05, 2)), coord, ii, n_pixels,
+                pixels = [animation.rainbow(t * scale(30, (1, 100), (.05, 2)), coord, ii, n_pixels,
                                            random_values) for ii, coord in
                           enumerate(coordinates)]
 
