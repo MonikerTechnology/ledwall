@@ -254,20 +254,11 @@ try:
             # Force for testing
             Settings.mode = "rainbow"
             if Settings.mode == "rainbow":
-                try:
-                    pixels = [animation.rainbow(t * scale(30, (1, 100), (.05, 2)), coord, ii, n_pixels,
+
+                pixels = [animation.rainbow(t * scale(30, (1, 100), (.05, 2)), coord, ii, n_pixels,
                                                           random_values) for ii, coord in
                                                           enumerate(coordinates)]
-                    print('animation.rainbow')
-                except:
-                    pass
-                try:
-                    pixels = [animation.a_rainbow.rainbow(t * scale(30, (1, 100), (.05, 2)), coord, ii, n_pixels,
-                                                random_values) for ii, coord in
-                              enumerate(coordinates)]
-                    print('animation.a_rainbow.rainbow')
-                except:
-                    pass
+
 
 
                 client.put_pixels(pixels, channel=0)

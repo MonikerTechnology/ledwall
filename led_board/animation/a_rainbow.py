@@ -1,6 +1,7 @@
 from led_board import color_utils
 from led_board.__main__ import scale
 
+
 def rainbow(t, coord, ii, n_pixels, random_values):
     """Compute the color of a given pixel.
 
@@ -64,5 +65,4 @@ def rainbow(t, coord, ii, n_pixels, random_values):
     # only do this on live leds, not in the simulator
     r, g, b = color_utils.gamma((r, g, b), 2.2)
 
-    return (
-    r * 250 * HTTPserver.redMultiplier, g * 250 * HTTPserver.greenMultiplier, b * 250 * HTTPserver.blueMultiplier)
+    return r, g, b
