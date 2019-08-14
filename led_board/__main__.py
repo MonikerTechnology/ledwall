@@ -26,11 +26,11 @@ from led_board.settings import Settings
 def get_args():
     global debug
 
-    parser = argparse.ArgumentParser(description="Interactive Programming Game")
+    parser = argparse.ArgumentParser(description="LED Board Controller")
 
     parser.add_argument('-d', '--debug', action='count', help='Increase debug level for each -d')
 
-    parser.add_argument('-l', '--layout', dest='layout', default='supporting_files/ledwall15x9.json',
+    parser.add_argument('-l', '--layout', dest='layout', default='led_board/supporting_files/ledwall15x9.json',
                         action='store', type=str, required=False,
                         help='layout file')
     parser.add_argument('-s', '--server', dest='server', default='localhost:7890',
