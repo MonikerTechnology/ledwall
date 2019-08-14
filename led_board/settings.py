@@ -2,6 +2,9 @@
 # TODO: add option to pickle this??
 
 
+def test():
+    print('pizza Test is good\n\n')
+
 class Settings:
 
     @classmethod

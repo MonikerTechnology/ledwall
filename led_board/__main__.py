@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 
-import sys
-print(sys.path)
+
 
 # import colorsys
 import argparse
@@ -19,10 +18,7 @@ import sys
 # My custom
 from audio_processing import *
 from led_board import http_server, opc, animation
-# from led_board.animation.a_rainbow import *
-from led_board import rainbow
 from led_board.settings import Settings
-rainbow.rainbows()
 
 
 
@@ -265,7 +261,7 @@ try:
 
                 pixels = [rainbow.rainbows(t * scale(30, (1, 100), (.05, 2)), coord, ii, n_pixels,
                                            random_values) for ii, coord in
-                                                          enumerate(coordinates)]
+                          enumerate(coordinates)]
 
 
 

@@ -1,10 +1,7 @@
 from led_board import color_utils
-from led_board.__main__ import scale
-
-__all__ = ['rainbows']
 
 
-def rainbows(t, coord, ii, n_pixels, random_values):
+def rainbow(t, coord, ii, n_pixels, random_values):
     """Compute the color of a given pixel.
 
     t: time in seconds since the program started.
@@ -17,12 +14,14 @@ def rainbows(t, coord, ii, n_pixels, random_values):
 
     """
 
+
+
     # make moving stripes for x, y, and z
     x, y, z = coord
 
     # Scale the x and z to match the original map file wall.json
-    x = scale(x, (0, 14), (-0.7, 0.7))
-    z = scale(z, (0, 8), (-0.4, 0.4))
+    x = color_utils.remap(x, (0, 14), (-0.7, 0.7))
+    z = color_utils.remap(z, (0, 8), (-0.4, 0.4))
 
     y += color_utils.cos(x + 0.2 * z, offset=0, period=1, minn=0, maxx=0.6)
     z += color_utils.cos(x, offset=0, period=1, minn=0, maxx=0.3)
