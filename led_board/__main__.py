@@ -140,9 +140,16 @@ logger.info(f'setup')
 
 logger.info(f'Trying to start FC server...')
 
+print('\nls of .')
 os.system('sudo ls')
+
+print('\nls of supporting_files')
 os.system('sudo  ls supporting_files')
+
+print('\nls of ledwall')
 os.system('sudo ls led_wall')
+print()
+
 if platform.system() == "Darwin":
     logger.info(f'Backgrounding FC server for Mac and continuing with python')
     os.system(f"./supporting_files/fcserver-osx ./supporting_files/fcserver_config.json &")
