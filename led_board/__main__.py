@@ -263,8 +263,9 @@ try:
             Settings.mode = "rainbow"
             if Settings.mode == "rainbow":
 
-                pixels = [animation.rainbow(t * scale(30, (1, 100), (.05, 2)), coord, ii, n_pixels, random_values) for ii, coord in
-                          enumerate(coordinates)]
+                pixels = [animation.a_rainbow.rainbow(t * scale(30, (1, 100), (.05, 2)), coord, ii, n_pixels,
+                                                      random_values) for ii, coord in
+                                                      enumerate(coordinates)]
                 client.put_pixels(pixels, channel=0)
             elif Settings.mode == "breathe":
                 pixels = [animation.start_up(t, coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]
