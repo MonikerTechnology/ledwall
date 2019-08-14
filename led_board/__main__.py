@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 
-from __future__ import division
+import sys
+print(sys.path)
+
 # import colorsys
 import argparse
 import json
