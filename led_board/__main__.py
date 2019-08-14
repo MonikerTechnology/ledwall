@@ -78,14 +78,15 @@ def kill_switch():
     # log.info(file, "killing googleAssistant")
     # googleAssistant.run = False
 
+    logger.info(f"Setting pixels to 0,0,0")
+    pixels = [(0, 0, 0) for ii, coord in enumerate(coordinates)]  # set all the pixels to off
+    client.put_pixels(pixels, channel=0)
+
     logger.info(f"killing fadecandy server")
     # os.system("sudo kill $(ps aux | grep 'fcserver' | grep -v grep | awk '{print $2}')")
     os.system("sudo killall fcserver-rpi")
     time.sleep(.5)
 
-    logger.info(f"Setting pixels to 0,0,0")
-    pixels = [(0, 0, 0) for ii, coord in enumerate(coordinates)]  # set all the pixels to off
-    client.put_pixels(pixels, channel=0)
 
     logger.info(f"Is the HTTPserver thread running " + str(http_server.server_thread.is_alive()))
     # logging.info(f"{file} Is the googleAssistant thread running " + str(t_googleAssistant.is_alive()))
@@ -247,7 +248,7 @@ value.extend(reversed(range(0,250)))
 try:
     logger.info(f"about to start main loop")
     Settings.mode = 1
-    Settings.mode = "rainbow"
+    Settings.mode = "audio_bars"
     while run_main:
 
         # set looping variables
@@ -276,8 +277,10 @@ try:
                 client.put_pixels(pixels, channel=0)
 
             elif Settings.mode == "audio_bars":
+                audio_obj.run = True
                 audio_obj.update()
                 pixels = animation.audio_bars(t, random_values, audio_obj, coordinates)
+
                 # pixels = [animation.audio_bars(t * scale(30, (1, 100), (.05, 2)), coord, ii, n_pixels, random_values) for ii, coord in
                 #          enumerate(coordinates)]
                 client.put_pixels(pixels, channel=0)
