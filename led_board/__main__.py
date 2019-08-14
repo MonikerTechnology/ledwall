@@ -262,7 +262,7 @@ try:
         if Settings.power:
 
             # Force for testing
-            Settings.mode = "breathe"
+            Settings.mode = "rainbow"
             if Settings.mode == "rainbow":
 
                 pixels = [animation.rainbow(t * scale(30, (1, 100), (.05, 2)), coord, ii, n_pixels,
@@ -271,8 +271,9 @@ try:
 
                 client.put_pixels(pixels, channel=0)
             elif Settings.mode == "breathe":
-                print('should be sending pixles')
+
                 pixels = [animation.start_up(t, coord, ii, n_pixels, value) for ii, coord in enumerate(coordinates)]
+                print(pixels)
                 client.put_pixels(pixels, channel=0)
 
             elif Settings.mode == "audio_bars":
@@ -281,13 +282,15 @@ try:
                 # pixels = [animation.audio_bars(t * scale(30, (1, 100), (.05, 2)), coord, ii, n_pixels, random_values) for ii, coord in
                 #          enumerate(coordinates)]
                 client.put_pixels(pixels, channel=0)
+
             elif Settings.mode == "solid":
                 pixels = [animation.solid(t * scale(30, (1, 100), (.05, 2)), coord, ii, n_pixels, random_values) for ii, coord in
                           enumerate(coordinates)]
+
             else:  # catch all maybe do loading
                 nothing = 0
 
-        if Settings.mode == "off" or Settings.power == 0:
+        if Settings.power == 0:
         # add fade out!!
 
             pixels = [(0, 0, 0) for ii, coord in enumerate(coordinates)]  # set all the pixels to off
