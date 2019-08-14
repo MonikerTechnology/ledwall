@@ -22,6 +22,8 @@ from led_board import http_server, opc, animation
 from led_board.settings import Settings
 
 
+
+
 # import googleAssistant
 
 def get_args():
@@ -263,7 +265,7 @@ try:
             Settings.mode = "rainbow"
             if Settings.mode == "rainbow":
 
-                pixels = [animation.a_rainbow.rainbow(t * scale(30, (1, 100), (.05, 2)), coord, ii, n_pixels,
+                pixels = [animation.rainbow(t * scale(30, (1, 100), (.05, 2)), coord, ii, n_pixels,
                                                       random_values) for ii, coord in
                                                       enumerate(coordinates)]
                 client.put_pixels(pixels, channel=0)
