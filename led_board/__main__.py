@@ -30,7 +30,7 @@ def get_args():
 
     parser.add_argument('-d', '--debug', action='count', help='Increase debug level for each -d')
 
-    parser.add_argument('-l', '--layout', dest='layout', default='../v2/supporting_files/ledwall15x9.json',
+    parser.add_argument('-l', '--layout', dest='layout', default='supporting_files/ledwall15x9.json',
                         action='store', type=str, required=False,
                         help='layout file')
     parser.add_argument('-s', '--server', dest='server', default='localhost:7890',
@@ -143,10 +143,10 @@ logger.info(f'Trying to start FC server...')
 
 if platform.system() == "Darwin":
     logger.info(f'Backgrounding FC server for Mac and continuing with python')
-    os.system("./fcserver-osx ./../v2/supporting_files/fcserver_config.json &")
+    os.system(f"./supporting_files/fcserver-osx ./supporting_files/fcserver_config.json &")
 if platform.system() == "Linux":
     logger.info(f'Backgrounding FC server for Linux and continuing with python')
-    os.system("sudo /home/pi/fadecandy/bin/fcserver-rpi /home/pi/fadecandy/bin/fcserver_config.json &")
+    os.system(f"sudo ./supporting_files/fcserver-rpi ./supporting_files/fcserver_config.json &")
 
 
 # logging.warning(f'{file} Failed to start FC server Maybe it is already running?')
