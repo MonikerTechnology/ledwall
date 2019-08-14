@@ -19,7 +19,7 @@ import sys
 # My custom
 from audio_processing import *
 from led_board import http_server, opc, animation
-from led_board.animation import a_rainbow
+from led_board.animation.a_rainbow import rainbow
 from led_board.settings import Settings
 
 
@@ -256,7 +256,7 @@ try:
             Settings.mode = "rainbow"
             if Settings.mode == "rainbow":
 
-                pixels = [a_rainbow.rainbow(t * scale(30, (1, 100), (.05, 2)), coord, ii, n_pixels,
+                pixels = [rainbow(t * scale(30, (1, 100), (.05, 2)), coord, ii, n_pixels,
                                                           random_values) for ii, coord in
                                                           enumerate(coordinates)]
 
