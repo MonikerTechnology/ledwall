@@ -20,8 +20,8 @@ def rainbow(t, coord, ii, n_pixels, random_values):
     x, y, z = coord
 
     # Scale the x and z to match the original map file wall.json
-    x = color_utils.remap(x, (0, 14), (-0.7, 0.7))
-    z = color_utils.remap(z, (0, 8), (-0.4, 0.4))
+    x = color_utils.remap(x, 0, 14, -0.7, 0.7)
+    z = color_utils.remap(z, 0, 8, -0.4, 0.4)
 
     y += color_utils.cos(x + 0.2 * z, offset=0, period=1, minn=0, maxx=0.6)
     z += color_utils.cos(x, offset=0, period=1, minn=0, maxx=0.3)
