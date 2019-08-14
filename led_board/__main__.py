@@ -20,7 +20,7 @@ import sys
 from audio_processing import *
 from led_board import http_server, opc, animation
 # from led_board.animation.a_rainbow import *
-from .animation.a_rainbow import *
+from led_board.rainbow import *
 from led_board.settings import Settings
 
 
