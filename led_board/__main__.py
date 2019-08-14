@@ -250,7 +250,7 @@ try:
         # ----------------------------------------------
         # this tracks the FPS and adjusts the delay to keep it consistent.
         fps.maintain()
-        Settings.mode = "rainbow"
+
         Settings.mode = 1
         if not Settings.power or Settings.mode != 'audio_bars':
             audio_obj.run = False
@@ -258,16 +258,16 @@ try:
         if Settings.power:
 
             # Force for testing
-            Settings.mode = "rainbow"
+            Settings.mode = "breathe"
             if Settings.mode == "rainbow":
-                print('should be sending pixles')
+
                 pixels = [animation.rainbow(t * scale(30, (1, 100), (.05, 2)), coord, ii, n_pixels,
                                             random_values) for ii, coord in
                                             enumerate(coordinates)]
 
                 client.put_pixels(pixels, channel=0)
             elif Settings.mode == "breathe":
-
+                print('should be sending pixles')
                 pixels = [animation.start_up(t, coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]
                 client.put_pixels(pixels, channel=0)
 
