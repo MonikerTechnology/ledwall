@@ -146,8 +146,8 @@ os.system('sudo ls')
 print('\nls of supporting_files')
 os.system('sudo  ls supporting_files')
 
-print('\nls of ledwall')
-os.system('sudo ls led_wall')
+print('\nls of led_board')
+os.system('sudo ls led_board')
 print()
 
 if platform.system() == "Darwin":
