@@ -62,7 +62,7 @@ def get_args():
 # Main kill switch to stop the threads
 def kill_switch():
     global run_main
-
+    print('\n\n')
     logger.info('Killing main loop')
     run_main = False
 
@@ -90,6 +90,7 @@ def kill_switch():
     logger.info(f"Is the HTTPserver thread running " + str(http_server.server_thread.is_alive()))
     # logging.info(f"{file} Is the googleAssistant thread running " + str(t_googleAssistant.is_alive()))
 
+    print("\n\n")
     return None
 
 
@@ -250,6 +251,7 @@ try:
         # this tracks the FPS and adjusts the delay to keep it consistent.
         fps.maintain()
         Settings.mode = "rainbow"
+        Settings.mode = 1
         if not Settings.power or Settings.mode != 'audio_bars':
             audio_obj.run = False
 
@@ -260,10 +262,8 @@ try:
             if Settings.mode == "rainbow":
 
                 pixels = [animation.rainbow(t * scale(30, (1, 100), (.05, 2)), coord, ii, n_pixels,
-                                           random_values) for ii, coord in
-                          enumerate(coordinates)]
-
-
+                                            random_values) for ii, coord in
+                                            enumerate(coordinates)]
 
                 client.put_pixels(pixels, channel=0)
             elif Settings.mode == "breathe":
