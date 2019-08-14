@@ -141,12 +141,13 @@ logger.info(f'setup')
 logger.info(f'Trying to start FC server...')
 
 os.system('sudo ls')
+os.system('sudo  ls supporting files')
 if platform.system() == "Darwin":
     logger.info(f'Backgrounding FC server for Mac and continuing with python')
     os.system(f"./supporting_files/fcserver-osx ./supporting_files/fcserver_config.json &")
 if platform.system() == "Linux":
     logger.info(f'Backgrounding FC server for Linux and continuing with python')
-    os.system(f"sudo ./supporting_files/fcserver-rpi ./supporting_files/fcserver_config.json &")
+    os.system(f"sudo supporting_files/fcserver-rpi ./supporting_files/fcserver_config.json &")
 
 
 # logging.warning(f'{file} Failed to start FC server Maybe it is already running?')
