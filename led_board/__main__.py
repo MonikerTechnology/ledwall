@@ -246,6 +246,8 @@ value.extend(reversed(range(0,250)))
 
 try:
     logger.info(f"about to start main loop")
+    Settings.mode = 1
+    Settings.mode = "rainbow"
     while run_main:
 
         # set looping variables
@@ -255,21 +257,17 @@ try:
         # this tracks the FPS and adjusts the delay to keep it consistent.
         fps.maintain()
 
-        Settings.mode = 1
-        Settings.mode = "rainbow"
         if not Settings.power or Settings.mode != 'audio_bars':
             audio_obj.run = False
 
         if Settings.power:
 
-            # Force for testing
-            Settings.mode = "rainbow"
             if Settings.mode == "rainbow":
 
                 pixels = [animation.rainbow(t * scale(30, (1, 100), (.05, 2)), coord, ii, n_pixels,
                                             random_values) for ii, coord in
                                             enumerate(coordinates)]
-                print(f'printing pixles {pixels}')
+
                 client.put_pixels(pixels, channel=0)
             elif Settings.mode == "breathe":
 
