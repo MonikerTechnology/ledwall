@@ -256,6 +256,7 @@ try:
         fps.maintain()
 
         Settings.mode = 1
+        Settings.mode = "rainbow"
         if not Settings.power or Settings.mode != 'audio_bars':
             audio_obj.run = False
 
@@ -268,12 +269,12 @@ try:
                 pixels = [animation.rainbow(t * scale(30, (1, 100), (.05, 2)), coord, ii, n_pixels,
                                             random_values) for ii, coord in
                                             enumerate(coordinates)]
-
+                print(f'printing pixles {pixels}')
                 client.put_pixels(pixels, channel=0)
             elif Settings.mode == "breathe":
 
                 pixels = [animation.start_up(t, coord, ii, n_pixels, value) for ii, coord in enumerate(coordinates)]
-                print(f'printing pixles {pixels}')
+
                 client.put_pixels(pixels, channel=0)
 
             elif Settings.mode == "audio_bars":
