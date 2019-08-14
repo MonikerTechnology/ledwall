@@ -19,8 +19,11 @@ import sys
 # My custom
 from audio_processing import *
 from led_board import http_server, opc, animation
-from led_board.animation.a_rainbow import rainbow
+from led_board.animation.a_rainbow import *
 from led_board.settings import Settings
+
+
+
 
 
 
