@@ -273,7 +273,7 @@ try:
             elif Settings.mode == "breathe":
 
                 pixels = [animation.start_up(t, coord, ii, n_pixels, value) for ii, coord in enumerate(coordinates)]
-                print(pixels)
+                print(f'printing pixles {pixels}')
                 client.put_pixels(pixels, channel=0)
 
             elif Settings.mode == "audio_bars":
