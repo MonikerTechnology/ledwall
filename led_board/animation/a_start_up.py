@@ -1,4 +1,4 @@
-def start_up(t, coord, ii, n_pixels):
+def start_up(t, coord, ii, n_pixels, value):
     """Compute the color of a given pixel.
     t: time in seconds since the program started.
     ii: which pixel this is, starting at 0

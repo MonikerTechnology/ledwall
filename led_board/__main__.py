@@ -240,6 +240,10 @@ random_values = [random.random() for ii in range(n_pixels)]
 
 Settings.__init__()
 
+value = [] # list from 0 - 250 - 0
+value.extend(range(0,250))
+value.extend(reversed(range(0,250)))
+
 try:
     logger.info(f"about to start main loop")
     while run_main:
@@ -268,7 +272,7 @@ try:
                 client.put_pixels(pixels, channel=0)
             elif Settings.mode == "breathe":
                 print('should be sending pixles')
-                pixels = [animation.start_up(t, coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]
+                pixels = [animation.start_up(t, coord, ii, n_pixels, value) for ii, coord in enumerate(coordinates)]
                 client.put_pixels(pixels, channel=0)
 
             elif Settings.mode == "audio_bars":
