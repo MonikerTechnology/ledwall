@@ -79,8 +79,8 @@ def kill_switch():
     # googleAssistant.run = False
 
     logger.info(f"killing fadecandy server")
-    os.system("kill $(ps aux | grep 'fcserver' | grep -v grep | awk '{print $2}')")
-    # os.system("killall fcserver")
+    # os.system("sudo kill $(ps aux | grep 'fcserver' | grep -v grep | awk '{print $2}')")
+    os.system("sudo killall fcserver-rpi")
     time.sleep(.5)
 
     logger.info(f"Setting pixels to 0,0,0")
@@ -260,13 +260,14 @@ try:
             # Force for testing
             Settings.mode = "rainbow"
             if Settings.mode == "rainbow":
-
+                print('should be sending pixles')
                 pixels = [animation.rainbow(t * scale(30, (1, 100), (.05, 2)), coord, ii, n_pixels,
                                             random_values) for ii, coord in
                                             enumerate(coordinates)]
 
                 client.put_pixels(pixels, channel=0)
             elif Settings.mode == "breathe":
+
                 pixels = [animation.start_up(t, coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]
                 client.put_pixels(pixels, channel=0)
 
