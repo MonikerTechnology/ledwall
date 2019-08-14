@@ -1,3 +1,6 @@
+from led_board import color_utils
+from led_board.__main__ import scale
+
 def rainbow(t, coord, ii, n_pixels, random_values):
     """Compute the color of a given pixel.
 
