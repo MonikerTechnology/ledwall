@@ -240,6 +240,9 @@ fps = FPS(args.fps)
 # TODO: Keep track of pixels last position to add in an optional fade
 
 random_values = [random.random() for ii in range(n_pixels)]
+
+Settings.__init__()
+
 try:
     logger.info(f"about to start main loop")
     while run_main:
