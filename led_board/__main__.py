@@ -143,16 +143,6 @@ logger.info(f'setup')
 
 logger.info(f'Trying to start FC server...')
 
-print('\nls of .')
-os.system('sudo ls')
-
-print('\nls of supporting_files')
-os.system('sudo  ls supporting_files')
-
-print('\nls of led_board')
-os.system('sudo ls led_board')
-print()
-
 if platform.system() == "Darwin":
     logger.info(f'Backgrounding FC server for Mac and continuing with python')
     os.system(f"led_board/supporting_files/fcserver-osx led_board/supporting_files/fcserver_config.json &")
@@ -264,10 +254,22 @@ try:
             # Force for testing
             Settings.mode = "rainbow"
             if Settings.mode == "rainbow":
+                try:
+                    pixels = [animation.rainbow(t * scale(30, (1, 100), (.05, 2)), coord, ii, n_pixels,
+                                                          random_values) for ii, coord in
+                                                          enumerate(coordinates)]
+                    print('animation.rainbow')
+                except:
+                    pass
+                try:
+                    pixels = [animation.a_rainbow.rainbow(t * scale(30, (1, 100), (.05, 2)), coord, ii, n_pixels,
+                                                random_values) for ii, coord in
+                              enumerate(coordinates)]
+                    print('animation.a_rainbow.rainbow')
+                except:
+                    pass
 
-                pixels = [animation.rainbow(t * scale(30, (1, 100), (.05, 2)), coord, ii, n_pixels,
-                                                      random_values) for ii, coord in
-                                                      enumerate(coordinates)]
+
                 client.put_pixels(pixels, channel=0)
             elif Settings.mode == "breathe":
                 pixels = [animation.start_up(t, coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]
