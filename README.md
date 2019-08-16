@@ -91,12 +91,17 @@ Remember how to do this in the case of a Pi failure or you have to reproduce thi
 - We should put this into the same folder as the rest of our project so that it will work with the launch scripts later
 - Also, don't forget to add the fcserver15x9.json to the bin folder
 
-### Install Python libraries:
-##### Tools:
+
+### Dependancies
 ```
 
-sudo apt-get install python3-dev
+sudo apt-get install python3-dev libatlas3-base portaudio19-dev python3-all-dev
 ```
+
+libatlas3-base # for numpy
+portaudio19-dev # for pyaudio
+python3-all-dev
+python3-dev
 
 #### Install numpy
 ```
@@ -128,7 +133,6 @@ sudo pip install pyaudio
 ```
 
 
-
 #### Modules:
 
 Python3 
@@ -137,12 +141,8 @@ sudo pip3 install aubio
 
 ```
     
-```
-git clone https://github.com/ptone/pyosc.git
-sudo ./setup.py install
-```
 
-### Audio:
+### Audio Setup:
 Change the following two lines in /usr/share/alsa/alsa.conf
 ```        
 defaults.ctl.card 0
