@@ -140,12 +140,13 @@ def pixel_color(t, coord, ii, n_pixels):
 def start_fc_server(args):
 
     # TODO: first check if running
+    # This will fail if it is already running, but it can still connect
     logging.info(f'Trying to start FC server...')
 
     fc_mac = 'supporting_files/fcserver-osx'
-    fc_rpi = 'ledwall/supporting_files/fcserver-rpi'
+    fc_rpi = 'supporting_files/fcserver-rpi'
     config_mac = 'supporting_files/fcserver_config.json'
-    config = 'ledwall/supporting_files/fcserver_config.json'
+    config = 'supporting_files/fcserver_config.json'
 
     if platform.system() == "Darwin":
         logging.info(f'Backgrounding FC server for Mac and continuing with python')
@@ -200,7 +201,7 @@ def main():
                 coordinates.append(tuple(item['point']))
 
     else:
-        for item in json.load(open(args.layout)):
+        for item in json.load(open('supporting_files/ledwall15x9.json')):
             if 'point' in item:
                 coordinates.append(tuple(item['point']))
 
