@@ -1,4 +1,4 @@
-from led_board import color_utils
+from ledwall import color_utils
 
 
 def rainbow(t, coord, ii, n_pixels, random_values):

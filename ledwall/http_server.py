@@ -13,7 +13,7 @@ import logging
 import threading
 import time
 import urllib.parse as urlparse
-from led_board.settings import Settings
+from ledwall.settings import Settings
 
 httpd = None
 server_thread = None

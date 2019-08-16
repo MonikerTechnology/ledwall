@@ -147,7 +147,7 @@ def shutdownPi():
 def restartPython():
     pixels = [(0,0,0) for ii, coord in enumerate(coordinates)]
     client.put_pixels(pixels, channel=0)
-    os.system("sudo systemctl restart ledwall.service")
+    os.system("sudo systemctl restart LedWall.service")
 
 def scale(val, src, dst):
     """
@@ -185,7 +185,7 @@ parser = optparse.OptionParser()
 parser.add_option('-l', '--layout', dest='layout', default='supporting_files/ledwall15x9.json',
                     action='store', type='string',
                     help='layout file')
-parser.add_option('-s', '--server', dest='server', default='ledwall:7890',
+parser.add_option('-s', '--server', dest='server', default='LedWall:7890',
                     action='store', type='string',
                     help='ip and port of server')
 parser.add_option('-f', '--fps', dest='fps', default=30,

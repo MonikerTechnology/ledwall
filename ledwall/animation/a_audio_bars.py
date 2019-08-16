@@ -1,4 +1,4 @@
-from audio_processing import AudioProcessor
+from audioprocessing import AudioProcessor
 
 
 def audio_bars(t, random_values, audio_o: AudioProcessor, coordinates):

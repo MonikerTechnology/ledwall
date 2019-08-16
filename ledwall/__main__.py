@@ -14,9 +14,9 @@ import time
 import sys
 
 # My custom
-from audio_processing import *
-from led_board import http_server, opc, animation
-from led_board.settings import Settings
+from audioprocessing import *
+from ledwall import http_server, opc, animation
+from ledwall.settings import Settings
 
 
 def get_args():
@@ -25,7 +25,7 @@ def get_args():
     # -------------------------------------------------------------------------------
     # logging setup
 
-    logging.getLogger(f'ledwall.{__name__}')
+    logging.getLogger(f'LedWall.{__name__}')
     debug = logging.WARNING
 
     logging.basicConfig(level=debug, format=f'%(asctime)s %(levelname)s %(name)s Line:%(lineno)s %(message)s')
@@ -37,7 +37,7 @@ def get_args():
 
     parser.add_argument('-d', '--debug', action='count', help='Increase debug level for each -d')
 
-    parser.add_argument('-l', '--layout', dest='layout', default='led_board/supporting_files/ledwall15x9.json',
+    parser.add_argument('-l', '--layout', dest='layout', default='ledwall/supporting_files/ledwall15x9.json',
                         action='store', type=str, required=False,
                         help='layout file')
     parser.add_argument('-s', '--server', dest='server', default='localhost:7890',
@@ -112,7 +112,7 @@ def shutdown_pi(client, coordinates):
 def restart_python(client, coordinates):
     pixels = [(0, 0, 0) for ii, coord in enumerate(coordinates)]
     client.put_pixels(pixels, channel=0)
-    os.system("sudo systemctl restart ledwall.service")
+    os.system("sudo systemctl restart LedWall.service")
 
 
 def scale(val, src, dst):
@@ -136,9 +136,9 @@ def start_fc_server(args):
     # TODO: first check if running
     logging.info(f'Trying to start FC server...')
 
-    fc_mac = 'led_board/supporting_files/fcserver-osx'
-    fc_rpi = 'led_board/supporting_files/fcserver-rpi'
-    config = 'led_board/supporting_files/fcserver_config.json'
+    fc_mac = 'ledwall/supporting_files/fcserver-osx'
+    fc_rpi = 'ledwall/supporting_files/fcserver-rpi'
+    config = 'ledwall/supporting_files/fcserver_config.json'
 
     if platform.system() == "Darwin":
         logging.info(f'Backgrounding FC server for Mac and continuing with python')
