@@ -98,7 +98,11 @@ Remember how to do this in the case of a Pi failure or you have to reproduce thi
 sudo apt-get install python3-dev
 ```
 
-What you need to do:
+install numpy
+```
+sudo apt install libatlas3-base
+sudo pip3 install numpy
+```
 
 
 Download the latest version (19) of PortAudio.
