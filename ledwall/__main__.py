@@ -229,7 +229,7 @@ def main():
 
     try:
         logging.info(f"about to start main loop")
-        Settings.mode = 1
+        Settings.mode = 'On'
         Settings.mode = args.mode
         while run_main:
 
