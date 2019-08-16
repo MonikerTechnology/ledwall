@@ -9,7 +9,7 @@ class Settings:
     def __init__(cls):
         cls.logger = logging.getLogger(f'Settings')
         cls.mode = "rainbow"
-        cls.power = 1
+        cls.power = "1"
 
     @classmethod
     def update_values(cls, **kwargs):
