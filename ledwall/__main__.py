@@ -262,7 +262,7 @@ def main():
                 elif Settings.mode == "solid":
                     pixels = [animation.solid(t * scale(30, (1, 100), (.05, 2)), coord, ii, n_pixels, random_values) for ii, coord in
                               enumerate(coordinates)]
-                    pixels = [(0, 0, 0)] * len(coordinates)
+                    pixels = [(50, 50, 50)] * len(coordinates)
                     client.put_pixels(pixels, channel=0)
 
                 else:  # catch all maybe do loading
