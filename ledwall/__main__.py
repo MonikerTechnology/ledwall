@@ -197,7 +197,7 @@ def main():
 
     coordinates = []
 
-    os.system('ls')
+
     if platform.system() == "Darwin":
         for item in json.load(open(f'/usr/local/supporting_files/ledwall15x9.json')):
             if 'point' in item:
@@ -243,7 +243,7 @@ def main():
             if not Settings.power or Settings.mode != 'audio_bars':
                 audio_obj.run = False
 
-            if Settings.power:
+            if Settings.power.lower() in ('1', 'on', 1):
 
                 if Settings.mode == "rainbow":
 
@@ -276,7 +276,7 @@ def main():
                 else:  # catch all maybe do loading
                     pass
 
-            if Settings.power == 0:
+            if Settings.power.lower() in ['0', 'off', 0]:
                 # add fade out!!
 
                 pixels = [(0, 0, 0) for ii, coord in enumerate(coordinates)]  # set all the pixels to off
