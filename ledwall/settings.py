@@ -23,9 +23,8 @@ class Settings:
                 logging.debug("%s == %s" % (key, value))
                 setattr(cls, key, value)
 
-
-        logging.debug(f"Current mode is: {cls.mode}")
-        logging.debug(f"Current power is: {cls.power}")
+        logging.info(f"Current mode is: {cls.mode}")
+        logging.info(f"Current power is: {cls.power}")
 
 
 
