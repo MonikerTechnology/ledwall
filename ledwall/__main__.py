@@ -172,6 +172,9 @@ def start_fc_server(args):
 
 def main():
 
+    print(sys.prefix)
+    os.system(f'ls {sys.prefix}')
+
     run_main = True
 
     args = get_args()
