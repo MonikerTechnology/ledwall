@@ -71,6 +71,12 @@ def kill_switch(audio_obj, client, coordinates, args):
     logging.info(f'Stopping audio loop')
     audio_obj.stop_capturing()
 
+    logging.info(f"Setting pixels to 0,0,0")
+    # pixels = [(0, 0, 0) for ii, coord in enumerate(coordinates)]  # set all the pixels to off
+    pixels = [(0, 0, 0)] * len(coordinates)
+    client.put_pixels(pixels, channel=0)
+    time.sleep(.25)
+
     logging.info(f'Stopping http_server')
     http_server.httpd.server_close()
     time.sleep(.25)
@@ -82,11 +88,7 @@ def kill_switch(audio_obj, client, coordinates, args):
     # log.info(file, "killing googleAssistant")
     # googleAssistant.run = False
 
-    logging.info(f"Setting pixels to 0,0,0")
-    # pixels = [(0, 0, 0) for ii, coord in enumerate(coordinates)]  # set all the pixels to off
-    pixels = [(0, 0, 0)] * len(coordinates)
-    client.put_pixels(pixels, channel=0)
-    time.sleep(.25)
+
 
     logging.info(f"killing fadecandy server")
     # os.system("sudo kill $(ps aux | grep 'fcserver' | grep -v grep | awk '{print $2}')")
