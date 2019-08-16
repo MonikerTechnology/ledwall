@@ -4,6 +4,11 @@ from audioprocessing import AudioProcessor
 def audio_bars(t, random_values, audio_o: AudioProcessor, coordinates):
     """Compute the color of a given pixel.
 
+    This function is run once per frame unlike the other animation functions.
+
+    coordinates = [(x, z, y), (x, z, y), (x, z, y) ...]
+
+
     t: time in seconds since the program started.
     ii: which pixel this is, starting at 0
     coord: the (x, y, z) position of the pixel as a tuple
@@ -15,19 +20,28 @@ def audio_bars(t, random_values, audio_o: AudioProcessor, coordinates):
     """
     pixels = []
 
+    # One level for each pixel that should be illuminated
     vol_levels = audio_o.max_calc_volume / 9
-    # print(coordinates)
+    x = 0
+    y = 2
+
+    # TODO Variable brightness for whole column based on volume
+
     for coord in coordinates:
 
-        this_pixel = (0, 0, 0)
-        # print(coord)
-        if audio_o.data_dict[coord[0]]['max_volume'] > vol_levels * coord[2]:
-            this_pixel = (255, 255, 0)
+        this_pixel = (0, 0, 0)  # Pixel should be off if not called upon below
+
+        # Highest pixel and diff color (but low y value)
+        audio_channel_volume = audio_o.data_dict[coord[x]]['max_volume']
+        if audio_channel_volume > vol_levels * coord[y]:
+            this_pixel = (250, 250, 250)
+
+        #
         if vol_levels * (coord[2] + 1) > audio_o.data_dict[coord[0]]['falling_max'] > vol_levels * coord[2]:
-            this_pixel = (255, 255, 255)
+            this_pixel = (150, 150, 150)
 
         pixels.append(this_pixel)
-    return pixels
+    return pixels  # Returns a list of pixels
 
 
 

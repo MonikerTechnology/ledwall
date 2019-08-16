@@ -81,8 +81,10 @@ def kill_switch(audio_obj, client, coordinates):
     # googleAssistant.run = False
 
     logging.info(f"Setting pixels to 0,0,0")
-    pixels = [(0, 0, 0) for ii, coord in enumerate(coordinates)]  # set all the pixels to off
+    # pixels = [(0, 0, 0) for ii, coord in enumerate(coordinates)]  # set all the pixels to off
+    pixels = [(0, 0, 0)] * len(coordinates)
     client.put_pixels(pixels, channel=0)
+    time.sleep(.25)
 
     logging.info(f"killing fadecandy server")
     # os.system("sudo kill $(ps aux | grep 'fcserver' | grep -v grep | awk '{print $2}')")
@@ -136,13 +138,14 @@ def start_fc_server(args):
     # TODO: first check if running
     logging.info(f'Trying to start FC server...')
 
-    fc_mac = 'ledwall/supporting_files/fcserver-osx'
+    fc_mac = 'supporting_files/fcserver-osx'
     fc_rpi = 'ledwall/supporting_files/fcserver-rpi'
+    config_mac = 'supporting_files/fcserver_config.json'
     config = 'ledwall/supporting_files/fcserver_config.json'
 
     if platform.system() == "Darwin":
         logging.info(f'Backgrounding FC server for Mac and continuing with python')
-        os.system(f"{fc_mac} {config} &")
+        os.system(f"{fc_mac} {config_mac} &")
     if platform.system() == "Linux":
         logging.info(f'Backgrounding FC server for Linux and continuing with python')
         os.system(f"sudo {fc_rpi} {config} &")
@@ -186,9 +189,18 @@ def main():
 
     coordinates = []
 
-    for item in json.load(open(args.layout)):
-        if 'point' in item:
-            coordinates.append(tuple(item['point']))
+    os.system('ls')
+    if platform.system() == "Darwin":
+        for item in json.load(open('supporting_files/ledwall15x9.json')):
+            if 'point' in item:
+                coordinates.append(tuple(item['point']))
+
+    else:
+        for item in json.load(open(args.layout)):
+            if 'point' in item:
+                coordinates.append(tuple(item['point']))
+
+
 
     # -------------------------------------------------------------------------------
     # color modes function
