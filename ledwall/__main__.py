@@ -74,7 +74,7 @@ def kill_switch(audio_obj, client, coordinates, args):
     logging.info(f'Stopping http_server')
     http_server.httpd.server_close()
     time.sleep(.25)
-    requests.get('http://localhost:8080')
+    # requests.get('http://localhost:8080')
 
     # sudo kill $(ps aux | grep 'fadecandy' | awk '{print $2}')
     # sudo kill $(ps aux | grep 'main.py' | awk '{print $2}')
@@ -264,7 +264,7 @@ def main():
                 elif Settings.mode == "solid":
                     pixels = [animation.solid(t * scale(30, (1, 100), (.05, 2)), coord, ii, n_pixels, random_values) for ii, coord in
                               enumerate(coordinates)]
-                    pixels = [(50, 50, 50)] * len(coordinates)
+                    pixels = [(200, 200, 200)] * len(coordinates)
                     client.put_pixels(pixels, channel=0)
 
                 else:  # catch all maybe do loading
