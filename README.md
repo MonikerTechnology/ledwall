@@ -98,14 +98,14 @@ Remember how to do this in the case of a Pi failure or you have to reproduce thi
 sudo apt-get install python3-dev
 ```
 
-install numpy
+#### Install numpy
 ```
 sudo apt install libatlas3-base
 sudo pip3 install numpy
 ```
 
 
-Download the latest version (19) of PortAudio.
+#### Install PortAudio.
 
 http://www.portaudio.com/download.html
 Untar and install PortAudio
@@ -118,30 +118,23 @@ make
 make install
 ```
 
-Get the dependencies for pyaudio
+#### Install pyaudio
+##### Get the dependencies for pyaudio
 
 ```
-portaudio19-dev
-python3-all-dev 
-```
+sudo apt-get install portaudio19-dev python3-all-dev -y 
+
 sudo pip install pyaudio
-After that, I was able to use pyaudio.
-
-
-
-Fory python3
 ```
-sudo apt-get install python3-pip
-```
+
+
 
 #### Modules:
 
 Python3 
 ```
 sudo pip3 install aubio
-sudo python3 -m pip install numpy
-sudo apt-get install python3-pyaudio
-sudo pip3 install dweepy
+
 ```
     
 ```
