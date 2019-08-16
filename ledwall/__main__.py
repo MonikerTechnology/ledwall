@@ -147,6 +147,8 @@ def start_fc_server(args):
         logging.info(f'Backgrounding FC server for Linux and continuing with python')
         os.system(f"sudo {fc_rpi} {config} &")
 
+    time.sleep(.5)
+
     # -------------------------------------------------------------------------------
     # connect OPC to server
 
@@ -183,8 +185,7 @@ def main():
     logging.info(f'parsing FC layout file')
 
     coordinates = []
-    print('l\ns')
-    os.system('ls')
+
     for item in json.load(open(args.layout)):
         if 'point' in item:
             coordinates.append(tuple(item['point']))

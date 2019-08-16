@@ -1,4 +1,7 @@
-print('\n\nran __init__ in the animation folder\n\n')
+import logging
+
+
+logging.debug('\n\nran __init__ in the animation folder\n\n')
 
 from .a_audio_bars import audio_bars
 from .rainbow import rainbow
