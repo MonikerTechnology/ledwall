@@ -61,7 +61,9 @@ def _run(server_class=HTTPServer, handler_class=S, port=8080):
     global httpd
     logging.basicConfig(level=logging.INFO)
     server_address = ('', port)
-    httpd = server_class(server_address, handler_class)
+
+    httpd = server_class(server_address, handler_class)  # except OSError when server already exists
+    # Don't use old server, need to kill or try different port
     logging.info('Starting httpd...\n')
     try:
         httpd.serve_forever()

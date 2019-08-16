@@ -143,10 +143,11 @@ def start_fc_server(args):
     # This will fail if it is already running, but it can still connect
     logging.info(f'Trying to start FC server...')
 
-    fc_mac = f'{sys.prefix}/supporting_files/fcserver-osx'
-    fc_rpi = f'{sys.prefix}/supporting_files/fcserver-rpi'
-    config_mac = f'{sys.prefix}/supporting_files/fcserver_config.json'
-    config = f'{sys.prefix}/supporting_files/fcserver_config.json'
+    # TODO stop using absalute path
+    fc_mac = f'/usr/local/supporting_files/fcserver-osx'
+    fc_rpi = f'/usr/local/supporting_files/fcserver-rpi'
+    config_mac = f'/usr/local/supporting_files/fcserver_config.json'
+    config = f'/usr/local/supporting_files/fcserver_config.json'
 
     if platform.system() == "Darwin":
         logging.info(f'Backgrounding FC server for Mac and continuing with python')
@@ -199,12 +200,12 @@ def main():
 
     os.system('ls')
     if platform.system() == "Darwin":
-        for item in json.load(open(f'{sys.prefix}/supporting_files/ledwall15x9.json')):
+        for item in json.load(open(f'/usr/local/supporting_files/ledwall15x9.json')):
             if 'point' in item:
                 coordinates.append(tuple(item['point']))
 
     else:
-        for item in json.load(open(f'{sys.prefix}/supporting_files/ledwall15x9.json')):
+        for item in json.load(open(f'/usr/local/supporting_files/ledwall15x9.json')):
             if 'point' in item:
                 coordinates.append(tuple(item['point']))
 
