@@ -74,7 +74,7 @@ def kill_switch(audio_obj, client, coordinates, args):
     logging.info(f'Stopping http_server')
     http_server.httpd.server_close()
     time.sleep(.25)
-    requests.get('localhost:8080')
+    requests.get('http://localhost:8080')
 
     # sudo kill $(ps aux | grep 'fadecandy' | awk '{print $2}')
     # sudo kill $(ps aux | grep 'main.py' | awk '{print $2}')
