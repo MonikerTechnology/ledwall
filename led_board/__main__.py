@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 
 
-
-# import colorsys
 import argparse
 import json
 import logging
@@ -21,17 +19,19 @@ from led_board import http_server, opc, animation
 from led_board.settings import Settings
 
 
-
-
-
-
-
-
-
-# import googleAssistant
-
 def get_args():
     global debug
+
+    # -------------------------------------------------------------------------------
+    # logging setup
+
+    logging.getLogger(f'ledwall.{__name__}')
+    debug = logging.WARNING
+
+    logging.basicConfig(level=debug, format=f'%(asctime)s %(levelname)s %(name)s Line:%(lineno)s %(message)s')
+    # format='%(asctime)s %levelname)s: %(message)s',
+    #                         datefmt='%m/%d/%Y %I:%M:%S %p'
+    logging.info(f"Logging level: {str(debug)}")
 
     parser = argparse.ArgumentParser(description="LED Board Controller")
 
@@ -46,6 +46,7 @@ def get_args():
     parser.add_argument('-f', '--fps', dest='fps', default=30,
                         action='store', type=int,
                         help='frames per second')
+    parser.add_argument('-m', dest='mode', help='start mode: rainbow, audio_bars', default='rainbow')
     arguments = parser.parse_args()
 
     if arguments.debug:
@@ -60,16 +61,17 @@ def get_args():
 
 
 # Main kill switch to stop the threads
-def kill_switch():
+def kill_switch(audio_obj, client, coordinates):
+
     global run_main
     print('\n\n')
-    logger.info('Killing main loop')
+    logging.info('Killing main loop')
     run_main = False
 
-    logger.info(f'Stopping audio loop')
-    audio_obj.start_capturing()
+    logging.info(f'Stopping audio loop')
+    audio_obj.stop_capturing()
 
-    logger.info(f'Stopping http_server')
+    logging.info(f'Stopping http_server')
     http_server.httpd.server_close()
 
     # sudo kill $(ps aux | grep 'fadecandy' | awk '{print $2}')
@@ -78,36 +80,36 @@ def kill_switch():
     # log.info(file, "killing googleAssistant")
     # googleAssistant.run = False
 
-    logger.info(f"Setting pixels to 0,0,0")
+    logging.info(f"Setting pixels to 0,0,0")
     pixels = [(0, 0, 0) for ii, coord in enumerate(coordinates)]  # set all the pixels to off
     client.put_pixels(pixels, channel=0)
 
-    logger.info(f"killing fadecandy server")
+    logging.info(f"killing fadecandy server")
     # os.system("sudo kill $(ps aux | grep 'fcserver' | grep -v grep | awk '{print $2}')")
     os.system("sudo killall fcserver-rpi")
     time.sleep(.5)
 
-
-    logger.info(f"Is the HTTPserver thread running " + str(http_server.server_thread.is_alive()))
+    logging.info(f"Is the HTTP server thread running " + str(http_server.server_thread.is_alive()))
     # logging.info(f"{file} Is the googleAssistant thread running " + str(t_googleAssistant.is_alive()))
 
     print("\n\n")
     return None
 
 
-def restart_pi():
+def restart_pi(client, coordinates):
+    # TODO simplify this
     pixels = [(0, 0, 0) for ii, coord in enumerate(coordinates)]
     client.put_pixels(pixels, channel=0)
     os.system("sudo shutdown -r now")
 
 
-def shutdown_pi():
+def shutdown_pi(client, coordinates):
     pixels = [(0, 0, 0) for ii, coord in enumerate(coordinates)]
     client.put_pixels(pixels, channel=0)
     os.system("sudo shutdown now")
 
 
-def restart_python():
+def restart_python(client, coordinates):
     pixels = [(0, 0, 0) for ii, coord in enumerate(coordinates)]
     client.put_pixels(pixels, channel=0)
     os.system("sudo systemctl restart ledwall.service")
@@ -120,185 +122,149 @@ def scale(val, src, dst):
     return ((val - src[0]) / (src[1] - src[0])) * (dst[1] - dst[0]) + dst[0]
 
 
-# -------------------------------------------------------------------------------
-# logging setup
-
-logger = logging.getLogger(f'ledwall.{__name__}')
-debug = logging.WARNING
-
-logging.basicConfig(level=debug, format=f'%(asctime)s %(levelname)s %(name)s Line:%(lineno)s %(message)s')
-# format='%(asctime)s %levelname)s: %(message)s',
-#                         datefmt='%m/%d/%Y %I:%M:%S %p'
-logging.info(f"Logging level: {str(debug)}")
-
-
-run_main = True
-
-# -------------------------------------------------------------------------------
-# args
-
-args = get_args()
-
-if args.layout == 'supported_files/ledwall15x9.json':
-    logger.info(f"No layout selected, using default layout: {str(args.layout)}")
-
-logger.info(f'setup')
-
-# -------------------------------------------------------------------------------
-# Try to start fadecandy server
-
-logger.info(f'Trying to start FC server...')
-
-if platform.system() == "Darwin":
-    logger.info(f'Backgrounding FC server for Mac and continuing with python')
-    os.system(f"led_board/supporting_files/fcserver-osx led_board/supporting_files/fcserver_config.json &")
-if platform.system() == "Linux":
-    logger.info(f'Backgrounding FC server for Linux and continuing with python')
-    os.system(f"sudo led_board/supporting_files/fcserver-rpi led_board/supporting_files/fcserver_config.json &")
-
-
-# logging.warning(f'{file} Failed to start FC server Maybe it is already running?')
-
-time.sleep(1)
-# -------------------------------------------------------------------------------
-# Threading
-# -------------------------------------------------------------------------------
-# Threads for audio input and the threading all kill switch stuff
-
-# Starts listening and server, launch via threading
-logger.info(f"Starting audio loop")
-audio_obj = AudioProcessor(num_pitch_ranges=15, start=False)
-
-
-logger.info(f"Starting http_server")
-http_server.start_server()
-
-# add in a check to see if it stopped and restart it
-# also check fadecandy
-
-# log.header(file, "Starting googleAssistant server")
-# t_googleAssistant.start()
-
-# -------------------------------------------------------------------------------
-# command line options for main
-
-
-
-
-
-
-
-# -------------------------------------------------------------------------------
-# parse layout file
-
-logger.info(f'parsing FC layout file')
-
-coordinates = []
-print('l\ns')
-os.system('ls')
-for item in json.load(open(args.layout)):
-    if 'point' in item:
-        coordinates.append(tuple(item['point']))
-
-# -------------------------------------------------------------------------------
-# connect OPC to server
-
-client = opc.Client(args.server)
-if client.can_connect():
-    logger.info(f'OPC connected to {args.server}')
-else:
-    # can't connect, but keep running in case the server appears later
-    logger.warning(f'could not connect to {args.server}')
-
-# -------------------------------------------------------------------------------
-# color modes function
-
-
 def pixel_color(t, coord, ii, n_pixels):
     # r,g,b = colorOSC
     r, g, b = 50, 50, 50
     r *= .95
     g *= .95
     b *= .95
-    return (r, g, b)
+    return r, g, b
 
 
-# -------------------------------------------------------------------------------
-# send pixels
+def start_fc_server(args):
 
-logger.info(f'sending pixels forever (control-c to exit)...')
+    # TODO: first check if running
+    logging.info(f'Trying to start FC server...')
 
-# -------------------------------------------------------------------------------
+    fc_mac = 'led_board/supporting_files/fcserver-osx'
+    fc_rpi = 'led_board/supporting_files/fcserver-rpi'
+    config = 'led_board/supporting_files/fcserver_config.json'
 
-n_pixels = len(coordinates)
+    if platform.system() == "Darwin":
+        logging.info(f'Backgrounding FC server for Mac and continuing with python')
+        os.system(f"{fc_mac} {config} &")
+    if platform.system() == "Linux":
+        logging.info(f'Backgrounding FC server for Linux and continuing with python')
+        os.system(f"sudo {fc_rpi} {config} &")
+
+    # -------------------------------------------------------------------------------
+    # connect OPC to server
+
+    client = opc.Client(args.server)
+    if client.can_connect():
+        logging.info(f'OPC connected to {args.server}')
+    else:
+        # can't connect, but keep running in case the server appears later
+        logging.warning(f'could not connect to {args.server}')
+
+    return client
 
 
-# fps counter
-fps = FPS(args.fps)
-# TODO: Keep track of pixels last position to add in an optional fade
+def main():
 
-random_values = [random.random() for ii in range(n_pixels)]
+    run_main = True
 
-Settings.__init__()
+    args = get_args()
 
-value = [] # list from 0 - 250 - 0
-value.extend(range(0,250))
-value.extend(reversed(range(0,250)))
+    logging.info(f'setup')
+    client = start_fc_server(args)
 
-try:
-    logger.info(f"about to start main loop")
-    Settings.mode = 1
-    Settings.mode = "audio_bars"
-    while run_main:
+    time.sleep(1)
 
-        # set looping variables
-        t = fps.elapsed  # keep track of how long the program has been running
+    # Starts listening and server, launch via threading
+    logging.info(f"Starting audio loop")
+    audio_obj = AudioProcessor(num_pitch_ranges=15, start=False)
 
-        # ----------------------------------------------
-        # this tracks the FPS and adjusts the delay to keep it consistent.
-        fps.maintain()
+    logging.info(f"Starting http_server")
+    http_server.start_server()
 
-        if not Settings.power or Settings.mode != 'audio_bars':
-            audio_obj.run = False
+    # parse layout file
 
-        if Settings.power:
+    logging.info(f'parsing FC layout file')
 
-            if Settings.mode == "rainbow":
+    coordinates = []
+    print('l\ns')
+    os.system('ls')
+    for item in json.load(open(args.layout)):
+        if 'point' in item:
+            coordinates.append(tuple(item['point']))
 
-                pixels = [animation.rainbow(t * scale(30, (1, 100), (.05, 2)), coord, ii, n_pixels,
-                                            random_values) for ii, coord in
-                                            enumerate(coordinates)]
+    # -------------------------------------------------------------------------------
+    # color modes function
 
+    n_pixels = len(coordinates)
+
+    # fps counter
+    fps = FPS(args.fps)
+    # TODO: Keep track of pixels last position to add in an optional fade
+
+    random_values = [random.random() for ii in range(n_pixels)]
+
+    Settings.__init__()
+
+    value = [] # list from 0 - 250 - 0
+    value.extend(range(0,250))
+    value.extend(reversed(range(0,250)))
+
+    try:
+        logging.info(f"about to start main loop")
+        Settings.mode = 1
+        Settings.mode = args.mode
+        while run_main:
+
+            # set looping variables
+            t = fps.elapsed  # keep track of how long the program has been running
+
+            # ----------------------------------------------
+            # this tracks the FPS and adjusts the delay to keep it consistent.
+            fps.maintain()
+
+            if not Settings.power or Settings.mode != 'audio_bars':
+                audio_obj.run = False
+
+            if Settings.power:
+
+                if Settings.mode == "rainbow":
+
+                    pixels = [animation.rainbow(t * scale(30, (1, 100), (.05, 2)), coord, ii, n_pixels,
+                                                random_values) for ii, coord in
+                                                enumerate(coordinates)]
+
+                    client.put_pixels(pixels, channel=0)
+                elif Settings.mode == "breathe":
+
+                    pixels = [animation.start_up(t, coord, ii, n_pixels, value) for ii, coord in enumerate(coordinates)]
+
+                    client.put_pixels(pixels, channel=0)
+
+                elif Settings.mode == "audio_bars":
+                    audio_obj.run = True
+                    audio_obj.update()
+                    pixels = animation.audio_bars(t, random_values, audio_obj, coordinates)
+
+                    # pixels = [animation.audio_bars(t * scale(30, (1, 100), (.05, 2)), coord, ii, n_pixels, random_values) for ii, coord in
+                    #          enumerate(coordinates)]
+                    client.put_pixels(pixels, channel=0)
+
+                elif Settings.mode == "solid":
+                    pixels = [animation.solid(t * scale(30, (1, 100), (.05, 2)), coord, ii, n_pixels, random_values) for ii, coord in
+                              enumerate(coordinates)]
+                    client.put_pixels(pixels, channel=0)
+
+                else:  # catch all maybe do loading
+                    pass
+
+            if Settings.power == 0:
+                # add fade out!!
+
+                pixels = [(0, 0, 0) for ii, coord in enumerate(coordinates)]  # set all the pixels to off
                 client.put_pixels(pixels, channel=0)
-            elif Settings.mode == "breathe":
 
-                pixels = [animation.start_up(t, coord, ii, n_pixels, value) for ii, coord in enumerate(coordinates)]
+    except KeyboardInterrupt:
+        logging.warning(f'Interrupt detected')
+        kill_switch(audio_obj, client, coordinates)  # shut down all the things as gracefully as possible
+        sys.exit()
 
-                client.put_pixels(pixels, channel=0)
 
-            elif Settings.mode == "audio_bars":
-                audio_obj.run = True
-                audio_obj.update()
-                pixels = animation.audio_bars(t, random_values, audio_obj, coordinates)
-
-                # pixels = [animation.audio_bars(t * scale(30, (1, 100), (.05, 2)), coord, ii, n_pixels, random_values) for ii, coord in
-                #          enumerate(coordinates)]
-                client.put_pixels(pixels, channel=0)
-
-            elif Settings.mode == "solid":
-                pixels = [animation.solid(t * scale(30, (1, 100), (.05, 2)), coord, ii, n_pixels, random_values) for ii, coord in
-                          enumerate(coordinates)]
-
-            else:  # catch all maybe do loading
-                nothing = 0
-
-        if Settings.power == 0:
-        # add fade out!!
-
-            pixels = [(0, 0, 0) for ii, coord in enumerate(coordinates)]  # set all the pixels to off
-            client.put_pixels(pixels, channel=0)
-
-except KeyboardInterrupt:
-    logger.warning(f'Interrupt detected')
-    kill_switch()  # shut down all the things as gracefully as possible
-    sys.exit()
+if __name__ == '__main__':
+    main()
