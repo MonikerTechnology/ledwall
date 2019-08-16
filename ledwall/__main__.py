@@ -8,7 +8,7 @@ import logging
 import os
 import platform
 import random
-# import requests
+import requests
 import time
 # import subprocess
 import sys
@@ -61,7 +61,7 @@ def get_args():
 
 
 # Main kill switch to stop the threads
-def kill_switch(audio_obj, client, coordinates):
+def kill_switch(audio_obj, client, coordinates, args):
 
     global run_main
     print('\n\n')
@@ -73,6 +73,8 @@ def kill_switch(audio_obj, client, coordinates):
 
     logging.info(f'Stopping http_server')
     http_server.httpd.server_close()
+    time.sleep(.25)
+    requests.get('localhost:8080')
 
     # sudo kill $(ps aux | grep 'fadecandy' | awk '{print $2}')
     # sudo kill $(ps aux | grep 'main.py' | awk '{print $2}')
@@ -276,7 +278,7 @@ def main():
 
     except KeyboardInterrupt:
         logging.warning(f'Interrupt detected')
-        kill_switch(audio_obj, client, coordinates)  # shut down all the things as gracefully as possible
+        kill_switch(audio_obj, client, coordinates, args)  # shut down all the things as gracefully as possible
         sys.exit()
 
 
