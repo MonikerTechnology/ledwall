@@ -64,80 +64,12 @@ This matrix is composed of three strings of 45 LEDs each, each zigzagged into 3 
 Remember how to do this in the case of a Pi failure or you have to reproduce this in the future. 
 
 
-### Create bootable SD for the Pi:
-I used the minimal image as it doesn't have a Graphical User Interface (GUI) or extras and I figured it should be faster. 
-
-This is on a mac: 
-
-Use `df -h` or `diskutil list` to see mounted paths. The disk may show up as something like "/disk2s1" you can ignore the "s1" You will need to unmount the drive, I can't remember the command off the top of my head, you can just use the disk utility.
-
-`sudo dd if=[/path/to/image] of=/dev/rdisk[n] bs=512k`
- 
-Ctrl + t to check the status
-
-"rdisk" is much faster than just "disk" - it doesn’t buffer
-
-### Change Raspberry Pi configuration:
-`sudo raspi-config`
-- Enable autologin
-- Change password
-- Change hostname (ledwall)
-- Enable SSH (if you don't know how to secure SSH, you should google a tutorial)
-
-### Set up wifi via command line:
-`sudo nano /etc/wpa_supplicant/wpa_supplicant.conf`
-
-Add the following to the bottom of the file replacing "testing" and "password" with your SSID and WIFI password. (keep the quotes e.g. ssid="myNetwork"
-```
-network={
-    ssid="testing"
-    psk="Password"
-}
-```
-Then `sudo reboot`
 
 ### Instal tools:
 - `sudo apt-get install git`
 - `sudo apt-get install Pure-FTPd` (This will work as is, but you probably should google how to secure it)
 
 
-### Install Everything for HomeKit
-
-#### HAP-nodeJS
-- https://github.com/KhaosT/HAP-NodeJS
-
-Default pairing code: `031-45-154`
-Use `sudo DEBUG=* node BridgedCore.js` for detailed output when troubleshooting
-
-.service file for HAP-NodeJS
-Double check path for node `which node` as it can vary.
-```
-#
-#Place this file in /etc/systemd/system/name_of_file.service
-#
-#
-#Here are some example commands 
-#	sudo systemctl status -l name_of_file.service
-#	sudo systemctl enable name_of_file.service
-#	sudo systemctl stop name_of_file.service
-#   	sudo systemctl start name_of_file.service
-#   	journalctl -u name_of_file.service
-
-[Unit] 
-Description=HAP-NodejS 
-
-[Service] 
-Type=simple
-
-#Everything must use absolute path
-WorkingDirectory=/home/pi/HAP-NodeJS 
-ExecStartPre=/bin/echo "hap-nodejs.service started" 
-ExecStart=/usr/local/bin/node /home/pi/HAP-NodeJS/BridgedCore.js 
-ExecStop=/bin/echo "hap-nodejs.services stopped" 
-
-[Install]
-WantedBy=multi-user.target
-```
 
 #### MQTT
 - Mosquitto (maybe not needed? def good for testing)
@@ -173,17 +105,8 @@ sudo apt-get install python3-pip
 ```
 
 #### Modules:
-```
-sudo apt-get install python-pyaudio
-```
-```
-sudo apt-get install aubio-tools libaubio-dev libaubio-doc
-```
-```
-python -m pip install aubio
-```
 
-Python3 - The way of the future
+Python3 
 ```
 sudo pip3 install aubio
 sudo python3 -m pip install numpy
@@ -194,12 +117,6 @@ sudo pip3 install dweepy
 ```
 git clone https://github.com/ptone/pyosc.git
 sudo ./setup.py install
-```
-
-**If installing on a Mac use these instead:**
-```
-sudo easy_install aubio
-sudo easy_install pyaudio
 ```
 
 ### Audio:
