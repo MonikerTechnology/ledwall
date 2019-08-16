@@ -94,22 +94,32 @@ Remember how to do this in the case of a Pi failure or you have to reproduce thi
 ### Install Python libraries:
 ##### Tools:
 ```
-sudo apt-get install python-setuptools
-sudo apt-get install python-pip
-sudo apt-get install python-dev
+
+sudo apt-get install python3-dev
 ```
 
 What you need to do:
 
-Uninstall python-pyaudio with sudo apt-get purge --remove python-pyaudio if you have it (This is version 0.2.8)
+
 Download the latest version (19) of PortAudio.
+
+http://www.portaudio.com/download.html
 Untar and install PortAudio
+
+```
+tar zxvf fileNameHere.tgz
+
 ./configure
 make
 make install
+```
+
 Get the dependencies for pyaudio
+
+```
 portaudio19-dev
-python-all-dev (python3-all-dev for Python 3)
+python3-all-dev 
+```
 sudo pip install pyaudio
 After that, I was able to use pyaudio.
 
