@@ -1,4 +1,5 @@
 from audioprocessing import AudioProcessor
+import ledwall.color_utils as tools
 
 
 def audio_bars(t, random_values, audio_o: AudioProcessor, coordinates):
@@ -12,7 +13,7 @@ def audio_bars(t, random_values, audio_o: AudioProcessor, coordinates):
     t: time in seconds since the program started.
     ii: which pixel this is, starting at 0
     coord: the (x, y, z) position of the pixel as a tuple
-    n_pixels: the total number of pixels
+    n_pixels: the total number of pixe ls
     random_values: a list containing a constant random value for each pixel
 
     Returns an (r, g, b) tuple in the range 0-255
@@ -34,7 +35,8 @@ def audio_bars(t, random_values, audio_o: AudioProcessor, coordinates):
 
         # Highest pixel and diff color (but low y value)
         audio_channel_volume = audio_o.data_dict[coord[x]]['max_volume']
-        if audio_channel_volume > vol_levels * coord[y]:
+        more_than_last = audio_o.data_dict[coord[x]]['max_volume'] > audio_o.data_dict[coord[x]]['max_last']
+        if audio_channel_volume > vol_levels * coord[y] and more_than_last:
             this_pixel = (250, 250, 250)
 
         # Rest of the bar
