@@ -90,8 +90,8 @@ def kill_switch(audio_obj, client, coordinates, args):
     os.system("sudo killall fcserver-rpi")
     time.sleep(.5)
 
-    if http_server.server_thread.is_alive():
-        requests.get('http://localhost:8080')
+    # if http_server.server_thread.is_alive():
+    #     requests.get('http://localhost:8080')
     logging.info(f"Is the HTTP server thread running " + str(http_server.server_thread.is_alive()))
 
     print("\n\n")
