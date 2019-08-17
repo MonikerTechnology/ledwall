@@ -85,18 +85,14 @@ def kill_switch(audio_obj, client, coordinates, args):
     # sudo kill $(ps aux | grep 'fadecandy' | awk '{print $2}')
     # sudo kill $(ps aux | grep 'main.py' | awk '{print $2}')
 
-    # log.info(file, "killing googleAssistant")
-    # googleAssistant.run = False
-
-
-
     logging.info(f"killing fadecandy server")
     # os.system("sudo kill $(ps aux | grep 'fcserver' | grep -v grep | awk '{print $2}')")
     os.system("sudo killall fcserver-rpi")
     time.sleep(.5)
 
+    if http_server.server_thread.is_alive():
+        requests.get('http://localhost:8080')
     logging.info(f"Is the HTTP server thread running " + str(http_server.server_thread.is_alive()))
-    # logging.info(f"{file} Is the googleAssistant thread running " + str(t_googleAssistant.is_alive()))
 
     print("\n\n")
     return None
