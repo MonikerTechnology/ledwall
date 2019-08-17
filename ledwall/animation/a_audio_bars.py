@@ -41,7 +41,7 @@ def audio_bars(t, random_values, audio_o: AudioProcessor, coordinates):
             this_pixel = (250, 250, 250)
 
         # Rest of the bar
-        if vol_levels * (coord[y] + 1) < audio_o.data_dict[coord[0]]['falling_max'] < vol_levels * coord[2]:
+        if vol_levels * (coord[y] + 1) < audio_o.data_dict[coord[0]]['falling_max'] < vol_levels * coord[y]:
             this_pixel = (150, 15, 150)
 
         pixels.append(this_pixel)
