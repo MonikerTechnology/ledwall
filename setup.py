@@ -147,7 +147,8 @@ setup(
                  ['ledwall/supporting_files/fcserver-osx',
                   'ledwall/supporting_files/fcserver-rpi',
                   'ledwall/supporting_files/fcserver_config.json',
-                  'ledwall/supporting_files/ledwall15x9.json'])],  # Optional
+                  'ledwall/supporting_files/ledwall15x9.json',
+                  'ledwall/supporting_files/audio_coord.json'])],  # Optional
 
     # To provide executable scripts, use entry points in preference to the
     # "scripts" keyword. Entry points provide cross-platform support and allow

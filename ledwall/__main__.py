@@ -171,9 +171,25 @@ def start_fc_server(args):
     return client
 
 
+def parse_layout():
+    # parse layout file
+
+    logging.info(f'parsing FC layout file')
+
+    coordinates = []
+    for item in json.load(open(f'/usr/local/supporting_files/ledwall15x9.json')):
+        if 'point' in item:
+            coordinates.append(tuple(item['point']))
+
+    audio_coordinates = []
+    for item in json.load(open(f'/usr/local/supporting_files/audio_coord.json')):
+        if 'point' in item:
+            audio_coordinates.append(tuple(item['point']))
+
+    return coordinates, audio_coordinates
+
+
 def main():
-
-
 
     run_main = True
 
@@ -191,22 +207,8 @@ def main():
     logging.info(f"Starting http_server")
     http_server.start_server()
 
-    # parse layout file
+    coordinates, audio_coordinates =  parse_layout()
 
-    logging.info(f'parsing FC layout file')
-
-    coordinates = []
-
-
-    if platform.system() == "Darwin":
-        for item in json.load(open(f'/usr/local/supporting_files/ledwall15x9.json')):
-            if 'point' in item:
-                coordinates.append(tuple(item['point']))
-
-    else:
-        for item in json.load(open(f'/usr/local/supporting_files/ledwall15x9.json')):
-            if 'point' in item:
-                coordinates.append(tuple(item['point']))
 
 
 
@@ -261,7 +263,7 @@ def main():
                 elif Settings.mode == "audio_bars":
                     audio_obj.run = True
                     audio_obj.update()
-                    pixels = animation.audio_bars(t, random_values, audio_obj, coordinates)
+                    pixels = animation.audio_bars(t, random_values, audio_obj, audio_coordinates)
 
                     # pixels = [animation.audio_bars(t * scale(30, (1, 100), (.05, 2)), coord, ii, n_pixels, random_values) for ii, coord in
                     #          enumerate(coordinates)]
