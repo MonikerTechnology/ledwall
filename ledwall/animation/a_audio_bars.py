@@ -26,6 +26,7 @@ def audio_bars(t, random_values, audio_o: AudioProcessor, coordinates):
     y = 2
 
     # TODO Variable brightness for whole column based on volume
+    # only color if higher than last time
 
     for coord in coordinates:
 
@@ -33,11 +34,11 @@ def audio_bars(t, random_values, audio_o: AudioProcessor, coordinates):
 
         # Highest pixel and diff color (but low y value)
         audio_channel_volume = audio_o.data_dict[coord[x]]['max_volume']
-        if audio_channel_volume < vol_levels * coord[y]:
+        if audio_channel_volume > vol_levels * coord[y]:
             this_pixel = (250, 250, 250)
 
         # Rest of the bar
-        if vol_levels * (coord[y] + 1) < audio_o.data_dict[coord[0]]['falling_max'] < vol_levels * coord[2]:
+        if vol_levels * (coord[y] + 1) > audio_o.data_dict[coord[0]]['falling_max'] > vol_levels * coord[2]:
             this_pixel = (150, 15, 150)
 
         pixels.append(this_pixel)
