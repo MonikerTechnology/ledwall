@@ -7,6 +7,7 @@ def audio_bars(t, random_values, audio_o: AudioProcessor, coordinates):
 
     This function is run once per frame unlike the other animation functions.
 
+    I swapped y and z so below is wrong
     coordinates = [(x, z, y), (x, z, y), (x, z, y) ...]
 
 
@@ -24,7 +25,7 @@ def audio_bars(t, random_values, audio_o: AudioProcessor, coordinates):
     # One level for each pixel that should be illuminated
     vol_levels = audio_o.max_calc_volume / 9
     x = 0
-    y = 2
+    y = 1
 
     # TODO Variable brightness for whole column based on volume
     # only color if higher than last time
