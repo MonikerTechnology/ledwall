@@ -31,7 +31,7 @@ setup(
     # There are some restrictions on what makes a valid project name
     # specification here:
     # https://packaging.python.org/specifications/core-metadata/#name
-    name='LedWall',  # Required
+    name='ledwall',  # Required
 
     # Versions should comply with PEP 440:
     # https://www.python.org/dev/peps/pep-0440/
@@ -99,6 +99,8 @@ setup(
     # package_data={  # Optional
     #     'sample': ['package_data.dat'],
     # },
+    # package_dir={'ledwall': 'mypkg'},
+    package_data={'ledwall': ['supporting_files/*']},
 
     # Although 'package_data' is the preferred approach, in some case you may
     # need to place data files outside of your packages. See:

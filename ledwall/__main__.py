@@ -15,8 +15,10 @@ import sys
 
 # My custom
 from audioprocessing import *
-from ledwall import http_server, opc, animation
+from ledwall import http_server, opc, animation, rotary
 from ledwall.settings import Settings
+
+DATA_DIR = f"{os.path.dirname(__file__)}/supporting_files/"
 
 
 def get_args():
@@ -61,7 +63,7 @@ def get_args():
 
 
 # Main kill switch to stop the threads
-def kill_switch(audio_obj, client, coordinates, args):
+def kill_switch(audio_obj, rotary_obj: rotary.Pysical, client, coordinates, args):
 
     global run_main
     print('\n\n')
@@ -70,6 +72,9 @@ def kill_switch(audio_obj, client, coordinates, args):
 
     logging.info(f'Stopping audio loop')
     audio_obj.stop_capturing()
+
+    logging.info('Killing rotary loop')
+    rotary_obj.run = False
 
     logging.info(f"Setting pixels to 0,0,0")
     # pixels = [(0, 0, 0) for ii, coord in enumerate(coordinates)]  # set all the pixels to off
@@ -187,6 +192,8 @@ def parse_layout():
 
 def main():
 
+
+
     run_main = True
 
     args = get_args()
@@ -199,6 +206,10 @@ def main():
     # Starts listening and server, launch via threading
     logging.info(f"Starting audio loop")
     audio_obj = AudioProcessor(num_pitch_ranges=15, start=False)
+
+    # Starts listening for rotary controls
+    logging.info('Starting rotary loop')
+    rotary_obj = rotary.Pysical()
 
     logging.info(f"Starting http_server")
     http_server.start_server()
@@ -282,7 +293,7 @@ def main():
 
     except KeyboardInterrupt:
         logging.warning(f'Interrupt detected')
-        kill_switch(audio_obj, client, coordinates, args)  # shut down all the things as gracefully as possible
+        kill_switch(audio_obj, rotary_obj, client, coordinates, args)  # shut down all the things as gracefully as possible
         sys.exit()
 
 
