@@ -31,7 +31,7 @@ class Pysical:
             self.run_loop = threading.Thread(target=self.run_loop)
             self.run_loop.start()
         else:
-            print("Could not import from RPi import GPIO")
+            print("Could not import from RPi import GPIO - Must run as root")
 
     def run_loop(self):
         try:
@@ -50,7 +50,7 @@ class Pysical:
                                         Settings.brightness -= .05
                                         # payload = {'brightness': '-0.1'}
                                         # r = requests.get('http://localhost:8080', params=payload)
-                                print(self.counter)
+                                print(Settings.brightness)
                         self.clkLastState = clkState
                         sleep(0.01)
         finally:
