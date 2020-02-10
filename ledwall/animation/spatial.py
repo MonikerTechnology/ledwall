@@ -3,7 +3,7 @@ from ledwall.settings import Settings
 
 Settings.__init__()
 
-def pixel_color(t, coord, ii, n_pixels):
+def spatial(t, coord, ii, n_pixels):
     """Compute the color of a given pixel.
     t: time in seconds since the program started.
     ii: which pixel this is, starting at 0

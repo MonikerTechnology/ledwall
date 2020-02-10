@@ -272,7 +272,7 @@ def main():
                         time.sleep(0.01)
 
                 elif Settings.mode == "spatial":
-                    pixels = [pixel_color(t, coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]
+                    pixels = [animation.spatial(t, coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]
                     client.put_pixels(pixels, channel=0)
 
                 elif Settings.mode == "audio_bars":

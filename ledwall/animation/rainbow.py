@@ -47,8 +47,8 @@ def rainbow(t, coord, ii, n_pixels, random_values):
     # r, g, b = color_utils.clip_black_by_luminance((r, g, b), 0.5)
     #
     # # shift the color of a few outliers
-    # if random_values[ii] < 0.03:
-    #     r, g, b = b, g, r
+    if random_values[ii] < 0.03:
+        r, g, b = b, g, r
 
     # black out regions
     r2 = color_utils.cos(x, offset=t / 10 + 12.345, period=3, minn=0, maxx=1)
