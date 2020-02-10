@@ -264,6 +264,13 @@ def main():
 
                     client.put_pixels(pixels, channel=0)
 
+                elif Settings.mode == "chase":
+                    for i in range(n_pixels):
+                        pixels = [(0, 0, 0)] * n_pixels
+                        pixels[i] = (255, 255, 255)
+                        client.put_pixels(pixels)
+                        time.sleep(0.01)
+
                 elif Settings.mode == "audio_bars":
                     audio_obj.run = True
                     audio_obj.update()
