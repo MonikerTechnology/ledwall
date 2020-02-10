@@ -41,13 +41,15 @@ class Pysical:
                         if clkState != self.clkLastState:
                                 if dtState != clkState:
                                         self.counter += 1
-                                        Settings.brightness += .05
+                                        # Settings.brightness += .05
+                                        Settings.modify_brightness(.05)
                                         # payload = {'brightness': '.1'}
                                         # r = requests.get('http://localhost:8080', params=payload)
 
                                 else:
                                         self.counter -= 1
-                                        Settings.brightness -= .05
+                                        # Settings.brightness -= .05
+                                        Settings.modify_brightness(-.05)
                                         # payload = {'brightness': '-0.1'}
                                         # r = requests.get('http://localhost:8080', params=payload)
                                 print(Settings.brightness)

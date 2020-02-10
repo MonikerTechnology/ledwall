@@ -16,6 +16,23 @@ class Settings:
         cls.brightness = 1.0  # 0 is off, 1 is full
 
     @classmethod
+    def update_brightness(cls, value):
+        """Give new brightness value 0-1"""
+        pass
+
+    @classmethod
+    def modify_brightness(cls, value):
+        """Add or subtract from brightness value
+            Maintain range 0-1 """
+
+        cls.brightness += value
+
+        if cls.brightness > 1:
+            cls.brightness = 1
+        if cls.brightness < 0:
+            cls.brightness = 0
+
+    @classmethod
     def update_values(cls, **kwargs):
         for key, value in kwargs.items():
 
