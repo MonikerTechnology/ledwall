@@ -67,17 +67,17 @@ def kill_switch(audio_obj, rotary_obj: rotary.Physical, client, coordinates, arg
     logging.info('Killing main loop')
     run_main = False
 
-    logging.info('Killing rotary loop')
-    rotary_obj.run = False
-
-    logging.info(f'Stopping audio loop')
-    audio_obj.stop_capturing()
-
     logging.info(f"Setting pixels to 0,0,0")
     # pixels = [(0, 0, 0) for ii, coord in enumerate(coordinates)]  # set all the pixels to off
     pixels = [(0, 0, 0)] * len(coordinates)
     client.put_pixels(pixels, channel=0)
     time.sleep(.25)
+
+    logging.info('Killing rotary loop')
+    rotary_obj.run = False
+
+    logging.info(f'Stopping audio loop')
+    audio_obj.stop_capturing()
 
     logging.info(f'Stopping http_server')
     http_server.httpd.server_close()
