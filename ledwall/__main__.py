@@ -60,7 +60,7 @@ def get_args():
 
 
 # Main kill switch to stop the threads
-def kill_switch(audio_obj, rotary_obj: rotary.Pysical, client, coordinates, args):
+def kill_switch(audio_obj, rotary_obj: rotary.Physical, client, coordinates, args):
 
     global run_main
     print('\n\n')
@@ -206,7 +206,7 @@ def main():
 
     # Starts listening for rotary controls
     logging.info('Starting rotary loop')
-    rotary_obj = rotary.Pysical()
+    rotary_obj = rotary.Physical()
 
     logging.info(f"Starting http_server")
     http_server.start_server()

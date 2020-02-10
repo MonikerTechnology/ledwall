@@ -13,7 +13,7 @@ Settings.__init__()
 # self.capture_thread = threading.Thread(target=self._capture)
 
 
-class Pysical:
+class Physical:
 
     def __init__(self):
         if rpi:
@@ -25,35 +25,25 @@ class Pysical:
             GPIO.setup(self.clk, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
             GPIO.setup(self.dt, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
-            self.counter = 0
             self.clkLastState = GPIO.input(self.clk)
-            # self.capture_thread = threading.Thread(target=self._capture)
             self.run_loop = threading.Thread(target=self.run_loop)
             self.run_loop.start()
         else:
-            print("Could not import from RPi import GPIO - Must run as root")
+            print("Could not 'import RPi.GPIO as GPIO' - Must run as root")
 
     def run_loop(self):
         try:
                 while self.run:
-                        clkState = GPIO.input(self.clk)
-                        dtState = GPIO.input(self.dt)
-                        if clkState != self.clkLastState:
-                                if dtState != clkState:
-                                        self.counter += 1
-                                        # Settings.brightness += .05
-                                        Settings.modify_brightness(.05)
-                                        # payload = {'brightness': '.1'}
-                                        # r = requests.get('http://localhost:8080', params=payload)
+                        clk_state = GPIO.input(self.clk)
+                        dt_state = GPIO.input(self.dt)
+                        if clk_state != self.clkLastState:
+                                if dt_state != clk_state:
+                                        Settings.modify_brightness(.01)
 
                                 else:
-                                        self.counter -= 1
-                                        # Settings.brightness -= .05
-                                        Settings.modify_brightness(-.05)
-                                        # payload = {'brightness': '-0.1'}
-                                        # r = requests.get('http://localhost:8080', params=payload)
+                                        Settings.modify_brightness(-.01)
                                 print(Settings.brightness)
-                        self.clkLastState = clkState
+                        self.clkLastState = clk_state
                         sleep(0.01)
         finally:
                 GPIO.cleanup()
