@@ -38,10 +38,10 @@ class Physical:
                         dt_state = GPIO.input(self.dt)
                         if clk_state != self.clkLastState:
                                 if dt_state != clk_state:
-                                        Settings.modify_brightness(.01)
+                                        Settings.modify_brightness(.05)
 
                                 else:
-                                        Settings.modify_brightness(-.01)
+                                        Settings.modify_brightness(-.05)
                                 print(Settings.brightness)
                         self.clkLastState = clk_state
                         sleep(0.01)
