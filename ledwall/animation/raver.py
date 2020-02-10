@@ -5,7 +5,7 @@ import math
 Settings.__init__()
 
 
-def raver(t, coord, ii, n_pixels, random_values):
+def raver(t, n_pixels):
 
 
     # how many sine wave cycles are squeezed into our n_pixels

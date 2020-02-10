@@ -278,7 +278,7 @@ def main():
                 elif Settings.mode == "raver":
 
                     t = (time.time() - fps.start_time) * 5
-                    pixels = [animation.raver(t, coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]
+                    pixels = animation.raver(t, n_pixels)
                     client.put_pixels(pixels, channel=0)
 
                 elif Settings.mode == "audio_bars":
