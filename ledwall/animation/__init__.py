@@ -10,3 +10,4 @@ from .a_solid import solid
 from .test import test
 from .spatial import spatial
 from .raver import raver
+from .sailor import sailor

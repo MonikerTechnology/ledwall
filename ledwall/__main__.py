@@ -265,6 +265,7 @@ def main():
                     client.put_pixels(pixels, channel=0)
 
                 elif Settings.mode == "chase":
+
                     for i in range(n_pixels):
                         pixels = [(0, 0, 0)] * n_pixels
                         pixels[i] = (255, 255, 255)
@@ -272,6 +273,7 @@ def main():
                         time.sleep(0.01)
 
                 elif Settings.mode == "spatial":
+
                     pixels = [animation.spatial(t, coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]
                     client.put_pixels(pixels, channel=0)
 
@@ -279,6 +281,11 @@ def main():
 
                     t = (time.time() - fps.start_time) * 5
                     pixels = animation.raver(t, n_pixels)
+                    client.put_pixels(pixels, channel=0)
+
+                elif Settings.mode == "sailor":
+
+                    pixels = [animation.sailor(t, coord, ii, n_pixels, value) for ii, coord in enumerate(coordinates)]
                     client.put_pixels(pixels, channel=0)
 
                 elif Settings.mode == "audio_bars":
