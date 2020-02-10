@@ -38,20 +38,20 @@ class Pysical:
                 while self.run:
                         clkState = GPIO.input(self.clk)
                         dtState = GPIO.input(self.dt)
-                        if clkState != clkLastState:
+                        if clkState != self.clkLastState:
                                 if dtState != clkState:
                                         self.counter += 1
-                                        Settings.brightness += .1
+                                        Settings.brightness += .05
                                         # payload = {'brightness': '.1'}
                                         # r = requests.get('http://localhost:8080', params=payload)
 
                                 else:
                                         self.counter -= 1
-                                        Settings.brightness += -.1
+                                        Settings.brightness -= .05
                                         # payload = {'brightness': '-0.1'}
                                         # r = requests.get('http://localhost:8080', params=payload)
                                 print(self.counter)
-                        clkLastState = clkState
+                        self.clkLastState = clkState
                         sleep(0.01)
         finally:
                 GPIO.cleanup()
