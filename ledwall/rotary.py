@@ -1,5 +1,5 @@
 try:
-    from RPi import GPIO
+    from RPi.GPIO import GPIO
     rpi = True
 except ImportError:
     rpi = False
