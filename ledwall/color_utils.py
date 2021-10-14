@@ -48,14 +48,14 @@ def fade_pixel(last_rgb: tuple, target_rgb: tuple) -> tuple:
     return tuple(out_rgb)
 
 
-def color_to_target(last, target):
+def color_to_target(last, target, rate=8):
     if last == target:
         return target
-    if abs(last - target) < 5:
+    if abs(last - target) < rate:
         return target
     if target > last:
-        return last + 5
-    return last - 5
+        return last + rate
+    return last - rate
 
 
 def remap(x, oldmin, oldmax, newmin, newmax):
