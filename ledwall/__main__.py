@@ -268,6 +268,7 @@ def main():
                 print(f"{Settings.rgb_last} - {Settings.rgb}")
                 Settings.rgb_last = color_utils.fade_pixel(Settings.rgb_last, Settings.rgb)
                 pixels.fill(Settings.rgb_last)
+                pixels.show()
                 # if Settings.mode == "rainbow":
                 #     pass
 
