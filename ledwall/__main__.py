@@ -206,7 +206,8 @@ def main():
     run_main = True
 
     args = get_args()
-    pixels = neopixel.NeoPixel(board.D12, 135, auto_write=True)
+    pixels = neopixel.NeoPixel(board.D18, 135, auto_write=True)
+
 
     logging.info(f'setup')
     # client = start_fc_server(args)
