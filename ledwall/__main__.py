@@ -16,7 +16,7 @@ import board
 import neopixel
 
 print("About to import hap.")
-import control.hap
+from ledwall.control import hap
 # run_loop = threading.Thread(target=control.hap.main())
 # run_loop.start()
 print("finished importing hap")
@@ -30,6 +30,7 @@ from ledwall.control import http_server, rotary
 from ledwall.settings import Settings
 from ledwall.fps import FPS
 import ledwall.color_utils as color_utils
+
 
 DATA_DIR = f"{os.path.dirname(__file__)}/supporting_files/"
 
