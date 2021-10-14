@@ -5,6 +5,57 @@
 from __future__ import division
 import math
 
+
+def get_cord(pixel, width=15):
+    column = pixel % width
+    row = int(pixel / width)
+    if row in [1, 4, 7]:
+        column = width - column - 1
+    return row, column
+
+
+def get_pos(x, y, width=15):
+    if x in [1, 4, 7]:
+        y = width - y - 1
+    return (x * 15) + y
+
+
+# def order_to_array(num, width=15):
+#     row = int(num / width)
+#     column = num % width
+#     if row in [1, 4, 7]:
+#         column = width - column - 1
+#     return (row * width) + column
+
+
+def order_to_array(pos, width=15):
+    row = int(pos / width)
+    column = pos % width
+    if row in [3, 4, 5]:
+        column = width - column - 1
+    return (row * width) + column
+
+
+def array_to_order(num, width=15):
+    pass
+
+
+def fade_pixel(last_rgb: tuple, target_rgb: tuple) -> tuple:
+    """Single pixel"""
+    out_rgb = list()
+    for last, target in zip(last_rgb, target_rgb):
+        out_rgb.append(color_to_target(last, target))
+    return tuple(out_rgb)
+
+
+def color_to_target(last, target):
+    if abs(last - target) < 5:
+        return target
+    if target > last:
+        return last + 5
+    return last - 5
+
+
 def remap(x, oldmin, oldmax, newmin, newmax):
     """Remap the float x from the range oldmin-oldmax to the range newmin-newmax
 

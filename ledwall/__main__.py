@@ -5,15 +5,23 @@ import logging
 import os
 import platform
 import random
-import requests
+# import requests
 import time
 # import subprocess
 import sys
 
+import board
+import neopixel
+
+pixels = None
+
 # My custom
-from audioprocessing import *
-from ledwall import http_server, opc, animation, rotary
+# from audioprocessing import *
+# from ledwall import opc
+from ledwall.control import http_server, rotary
 from ledwall.settings import Settings
+from ledwall.fps import FPS
+import color_utils
 
 DATA_DIR = f"{os.path.dirname(__file__)}/supporting_files/"
 
@@ -36,9 +44,9 @@ def get_args():
 
     parser.add_argument('-d', '--debug', action='count', help='Increase debug level for each -d')
 
-    parser.add_argument('-l', '--layout', dest='layout', default='ledwall/supporting_files/ledwall15x9.json',
-                        action='store', type=str, required=False,
-                        help='layout file')
+    # parser.add_argument('-l', '--layout', dest='layout', default='ledwall/supporting_files/ledwall15x9.json',
+    #                     action='store', type=str, required=False,
+    #                     help='layout file')
     parser.add_argument('-s', '--server', dest='server', default='localhost:7890',
                         action='store', type=str,
                         help='ip and port of server')
@@ -60,28 +68,27 @@ def get_args():
 
 
 # Main kill switch to stop the threads
-def kill_switch(audio_obj, rotary_obj: rotary.Physical, client, coordinates, args):
+def kill_switch(rotary_obj: rotary.Physical):
 
     global run_main
+    global pixels
     print('\n\n')
     logging.info('Killing main loop')
     run_main = False
 
     logging.info(f"Setting pixels to 0,0,0")
-    # pixels = [(0, 0, 0) for ii, coord in enumerate(coordinates)]  # set all the pixels to off
-    pixels = [(0, 0, 0)] * len(coordinates)
-    client.put_pixels(pixels, channel=0)
+    pixels.fill((0, 0, 0))
     time.sleep(.25)
 
     logging.info('Killing rotary loop')
     rotary_obj.run = False
 
-    logging.info(f'Stopping audio loop')
-    audio_obj.stop_capturing()
+    # logging.info(f'Stopping audio loop')
+    # audio_obj.stop_capturing()
 
-    logging.info(f'Stopping http_server')
-    http_server.httpd.server_close()
-    time.sleep(.25)
+    # logging.info(f'Stopping http_server')
+    # http_server.httpd.server_close()
+    # time.sleep(.25)
     # requests.get('http://localhost:8080')
 
     # sudo kill $(ps aux | grep 'fadecandy' | awk '{print $2}')
@@ -189,29 +196,28 @@ def parse_layout():
 
 def main():
 
-
-
     run_main = True
 
     args = get_args()
+    pixels = neopixel.NeoPixel(board.D12, 135, auto_write=True)
 
     logging.info(f'setup')
-    client = start_fc_server(args)
+    # client = start_fc_server(args)
 
     time.sleep(1)
 
     # Starts listening and server, launch via threading
-    logging.info(f"Starting audio loop")
-    audio_obj = AudioProcessor(num_pitch_ranges=15, start=False)
+    # logging.info(f"Starting audio loop")
+    # audio_obj = AudioProcessor(num_pitch_ranges=15, start=False)
 
     # Starts listening for rotary controls
     logging.info('Starting rotary loop')
     rotary_obj = rotary.Physical()
+    #
+    # logging.info(f"Starting http_server")
+    # http_server.start_server()
 
-    logging.info(f"Starting http_server")
-    http_server.start_server()
-
-    coordinates, audio_coordinates =  parse_layout()
+    # coordinates, audio_coordinates =  parse_layout()
 
 
 
@@ -219,7 +225,8 @@ def main():
     # -------------------------------------------------------------------------------
     # color modes function
 
-    n_pixels = len(coordinates)
+    # n_pixels = len(coordinates)
+    n_pixels = 135
 
     # fps counter
     fps = FPS(args.fps)
@@ -230,8 +237,8 @@ def main():
     Settings.__init__()
 
     value = [] # list from 0 - 250 - 0
-    value.extend(range(0,250))
-    value.extend(reversed(range(0,250)))
+    value.extend(range(0, 250))
+    value.extend(reversed(range(0, 250)))
 
     try:
         logging.info(f"about to start main loop")
@@ -246,75 +253,71 @@ def main():
             # this tracks the FPS and adjusts the delay to keep it consistent.
             fps.maintain()
 
-            if not Settings.power or Settings.mode != 'audio_bars':
-                audio_obj.run = False
+            # if not Settings.power or Settings.mode != 'audio_bars':
+            #     audio_obj.run = False
 
             if Settings.power.lower() in ('1', 'on', 1):
+                Settings.rgb_last = color_utils.fade_pixel(Settings.rgb_last, Settings.rgb)
+                pixels.fill(*Settings.rgb_last)
+                # if Settings.mode == "rainbow":
+                #     pass
 
-                if Settings.mode == "rainbow":
 
-                    pixels = [animation.rainbow(t * scale(30, (1, 100), (.05, 2)), coord, ii, n_pixels,
-                                                random_values) for ii, coord in
-                                                enumerate(coordinates)]
+                # elif Settings.mode == "breathe":
+                #
+                #     pixels = [animation.start_up(t, coord, ii, n_pixels, value) for ii, coord in enumerate(coordinates)]
+                #
+                #     client.put_pixels(pixels, channel=0)
+                #
+                # elif Settings.mode == "chase":
+                #
+                #     for i in range(n_pixels):
+                #         pixels = [(0, 0, 0)] * n_pixels
+                #         pixels[i] = (255, 255, 255)
+                #         client.put_pixels(pixels)
+                #         time.sleep(0.01)
+                #
+                # elif Settings.mode == "spatial":
+                #
+                #     pixels = [animation.spatial(t, coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]
+                #     client.put_pixels(pixels, channel=0)
+                #
+                # elif Settings.mode == "raver":
+                #
+                #     t = (time.time() - fps.start_time) * 5
+                #     pixels = animation.raver(t, n_pixels)
+                #     client.put_pixels(pixels, channel=0)
+                #
+                # elif Settings.mode == "sailor":
+                #
+                #     pixels = [animation.sailor(t, coord, ii, n_pixels, value) for ii, coord in enumerate(coordinates)]
+                #     client.put_pixels(pixels, channel=0)
+                #
+                # elif Settings.mode == "audio_bars":
+                #     audio_obj.run = True
+                #     audio_obj.update()
+                #     pixels = animation.audio_bars(t, random_values, audio_obj, audio_coordinates)
+                #
+                #     # pixels = [animation.audio_bars(t * scale(30, (1, 100), (.05, 2)), coord, ii, n_pixels, random_values) for ii, coord in
+                #     #          enumerate(coordinates)]
+                #     client.put_pixels(pixels, channel=0)
+                #
+                # elif Settings.mode == "solid":
+                #     pixels = [animation.solid(t * scale(30, (1, 100), (.05, 2)), coord, ii, n_pixels, random_values) for ii, coord in
+                #               enumerate(coordinates)]
+                #     pixels = [(200, 200, 200)] * len(coordinates)
+                #     client.put_pixels(pixels, channel=0)
 
-                    client.put_pixels(pixels, channel=0)
-                elif Settings.mode == "breathe":
-
-                    pixels = [animation.start_up(t, coord, ii, n_pixels, value) for ii, coord in enumerate(coordinates)]
-
-                    client.put_pixels(pixels, channel=0)
-
-                elif Settings.mode == "chase":
-
-                    for i in range(n_pixels):
-                        pixels = [(0, 0, 0)] * n_pixels
-                        pixels[i] = (255, 255, 255)
-                        client.put_pixels(pixels)
-                        time.sleep(0.01)
-
-                elif Settings.mode == "spatial":
-
-                    pixels = [animation.spatial(t, coord, ii, n_pixels) for ii, coord in enumerate(coordinates)]
-                    client.put_pixels(pixels, channel=0)
-
-                elif Settings.mode == "raver":
-
-                    t = (time.time() - fps.start_time) * 5
-                    pixels = animation.raver(t, n_pixels)
-                    client.put_pixels(pixels, channel=0)
-
-                elif Settings.mode == "sailor":
-
-                    pixels = [animation.sailor(t, coord, ii, n_pixels, value) for ii, coord in enumerate(coordinates)]
-                    client.put_pixels(pixels, channel=0)
-
-                elif Settings.mode == "audio_bars":
-                    audio_obj.run = True
-                    audio_obj.update()
-                    pixels = animation.audio_bars(t, random_values, audio_obj, audio_coordinates)
-
-                    # pixels = [animation.audio_bars(t * scale(30, (1, 100), (.05, 2)), coord, ii, n_pixels, random_values) for ii, coord in
-                    #          enumerate(coordinates)]
-                    client.put_pixels(pixels, channel=0)
-
-                elif Settings.mode == "solid":
-                    pixels = [animation.solid(t * scale(30, (1, 100), (.05, 2)), coord, ii, n_pixels, random_values) for ii, coord in
-                              enumerate(coordinates)]
-                    pixels = [(200, 200, 200)] * len(coordinates)
-                    client.put_pixels(pixels, channel=0)
-
-                else:  # catch all maybe do loading
-                    pass
+                # else:  # catch all maybe do loading
+                #     pass
 
             if Settings.power.lower() in ['0', 'off', 0]:
                 # add fade out!!
-
-                pixels = [(0, 0, 0) for ii, coord in enumerate(coordinates)]  # set all the pixels to off
-                client.put_pixels(pixels, channel=0)
+                pixels.fill((0, 0, 0))
 
     except KeyboardInterrupt:
         logging.warning(f'Interrupt detected')
-        kill_switch(audio_obj, rotary_obj, client, coordinates, args)  # shut down all the things as gracefully as possible
+        kill_switch(rotary_obj)  # shut down all the things as gracefully as possible
         sys.exit()
 
 

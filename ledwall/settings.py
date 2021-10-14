@@ -14,6 +14,8 @@ class Settings:
         cls.mode = "rainbow"
         cls.power = "1"
         cls.brightness = 1.0  # 0 is off, 1 is full
+        cls.rgb = (0, 0, 0)
+        cls.rgb_last = (0, 0, 0)
 
     @classmethod
     def update_brightness(cls, value):
@@ -34,6 +36,7 @@ class Settings:
 
     @classmethod
     def update_values(cls, **kwargs):
+        """update_values(rgb=(100,200,100))"""
         for key, value in kwargs.items():
 
             if isinstance(value, list):
