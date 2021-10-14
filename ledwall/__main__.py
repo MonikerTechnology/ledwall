@@ -251,6 +251,7 @@ def main():
         logging.info(f"about to start main loop")
         Settings.power = 'On'
         Settings.mode = args.mode
+        print(Settings.__dict__)
         while run_main:
 
             # set looping variables
