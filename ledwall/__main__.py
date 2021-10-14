@@ -8,6 +8,7 @@ import random
 # import requests
 import time
 # import subprocess
+import threading
 import sys
 
 import board
@@ -15,6 +16,8 @@ import neopixel
 
 print("About to import hap.")
 import control.hap
+# run_loop = threading.Thread(target=control.hap.main())
+# run_loop.start()
 print("finished importing hap")
 
 pixels = None
