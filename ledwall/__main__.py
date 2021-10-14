@@ -265,7 +265,7 @@ def main():
             #     audio_obj.run = False
 
             if Settings.power.lower() in ('1', 'on', 1):
-                print(f"Current settings: {Settings.rgb}")
+                print(f"{Settings.rgb_last} - {Settings.rgb}")
                 Settings.rgb_last = color_utils.fade_pixel(Settings.rgb_last, Settings.rgb)
                 pixels.fill(Settings.rgb_last)
                 # if Settings.mode == "rainbow":
