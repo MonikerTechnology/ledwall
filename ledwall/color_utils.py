@@ -49,6 +49,8 @@ def fade_pixel(last_rgb: tuple, target_rgb: tuple) -> tuple:
 
 
 def color_to_target(last, target):
+    if last == target:
+        return target
     if abs(last - target) < 5:
         return target
     if target > last:
