@@ -262,7 +262,7 @@ def main():
 
             if Settings.power.lower() in ('1', 'on', 1):
                 Settings.rgb_last = color_utils.fade_pixel(Settings.rgb_last, Settings.rgb)
-                pixels.fill(*Settings.rgb_last)
+                pixels.fill(Settings.rgb_last)
                 # if Settings.mode == "rainbow":
                 #     pass
 

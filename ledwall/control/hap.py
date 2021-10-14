@@ -11,6 +11,7 @@ from neopixel import *
 from pyhap.accessory import Accessory
 from pyhap.const import CATEGORY_LIGHTBULB
 from ledwall.settings import Settings
+import threading
 Settings.__init__()
 
 
@@ -173,4 +174,5 @@ driver.add_accessory(accessory=get_accessory(driver))
 signal.signal(signal.SIGTERM, driver.signal_handler)
 
 # Start it!
-driver.start()
+run_loop = threading.Thread(target=driver.start())
+run_loop.start()
