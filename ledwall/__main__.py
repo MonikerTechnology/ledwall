@@ -13,6 +13,10 @@ import sys
 import board
 import neopixel
 
+print("About to import hap.")
+import control.hap
+print("finished importing hap")
+
 pixels = None
 
 # My custom
