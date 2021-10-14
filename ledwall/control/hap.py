@@ -146,9 +146,9 @@ import logging
 import signal
 import random
 
-from pyhap.accessory import Accessory, Bridge
+from pyhap.accessory import Accessory
 from pyhap.accessory_driver import AccessoryDriver
-from accessories.NeoPixelLightStrip import NeoPixelLightStrip
+# from accessories.NeoPixelLightStrip import NeoPixelLightStrip
 import pyhap.loader as loader
 from pyhap import camera
 from pyhap.const import CATEGORY_SENSOR
