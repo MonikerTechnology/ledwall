@@ -174,5 +174,5 @@ driver.add_accessory(accessory=get_accessory(driver))
 signal.signal(signal.SIGTERM, driver.signal_handler)
 
 # Start it!
-run_loop = threading.Thread(target=driver.start())
-run_loop.start()
+# run_loop = threading.Thread(target=driver.start())
+# run_loop.start()
