@@ -160,7 +160,7 @@ logging.basicConfig(level=logging.INFO, format="[%(module)s] %(message)s")
 
 def get_accessory(driver):
     """Call this method to get a standalone Accessory."""
-    return NeoPixelLightStrip(board.D18, 135, driver, "led-wall")
+    return NeoPixelLightStrip(board.D12, 135, driver, "led-wall")
     return TemperatureSensor(driver, 'MyTempSensor')
 
 # def main():
