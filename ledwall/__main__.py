@@ -211,7 +211,7 @@ def main():
     args = get_args()
     signal.signal(signal.SIGTERM, kill_switch)
     hap.main()  # Start up this thread
-    pixels = neopixel.NeoPixel(board.D18, 135, auto_write=True)
+    pixels = neopixel.NeoPixel(board.D18, 135, auto_write=False)
 
 
     logging.info(f'setup')
@@ -280,6 +280,7 @@ def main():
                 print(f"{Settings.rgb_last} - {Settings.rgb}")
                 Settings.rgb_last = color_utils.fade_pixel(Settings.rgb_last, Settings.rgb)
                 pixels.fill(Settings.rgb_last)
+                pixels.show()
 
             if Settings.mode == "rainbow":
                 counter = color_utils.inc_counter(counter, greatest=255)
