@@ -261,7 +261,7 @@ def main():
 
     logging.info(f"about to start main loop")
     Settings.power = 'On'
-    Settings.mode = "rgb"
+    Settings.mode = "rainbow"
     counter = 0
     while run_main:
 
