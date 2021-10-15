@@ -7,6 +7,8 @@ import logging
 # curl -X GET 'http://localhost:8080/?id=3&power=1&mode=audio_bars'
 
 class Settings:
+    rgb = 0
+    scenes = {}
 
     @classmethod
     def __init__(cls):
@@ -22,7 +24,9 @@ class Settings:
     def check_for_scene(cls):
         for scene, value in cls.scenes.items():
             if value == cls.rgb:
-                cls.mode = scene
+                return scene
+        return "rgb"  # Basic scene
+
 
     @classmethod
     def update_brightness(cls, value):
@@ -54,7 +58,7 @@ class Settings:
                 logging.debug("%s == %s" % (key, value))
                 setattr(cls, key, value)
 
-            cls.check_for_scene()
+            cls.mode = cls.check_for_scene()
 
         logging.info(f"Current mode is: {cls.mode}")
         logging.info(f"Current power is: {cls.power}")
