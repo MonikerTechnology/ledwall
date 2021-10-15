@@ -91,8 +91,8 @@ def kill_switch(signum, frame):
     pixels.fill((0, 0, 0))
     time.sleep(.25)
 
-    logging.info('Killing rotary loop')
-    rotary_obj.run = False
+    # logging.info('Killing rotary loop')
+    # rotary_obj.run = False
 
     # logging.info(f'Stopping audio loop')
     # audio_obj.stop_capturing()
