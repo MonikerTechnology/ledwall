@@ -18,7 +18,9 @@ class Settings:
         cls.brightness = 1.0  # 0 is off, 1 is full
         cls.rgb = (0, 0, 0)
         cls.rgb_last = (0, 0, 0)
-        cls.scenes = {"rainbow": (2, 2, 1)}
+        cls.scenes = {
+                "rainbow": (2, 2, 1),
+                "theater chase": (10, 6, 6)}
 
     @classmethod
     def check_for_scene(cls):

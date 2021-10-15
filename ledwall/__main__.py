@@ -26,7 +26,7 @@ rotary_obj = None
 from simple_schedule import Schedule
 from ledwall.control import http_server, rotary
 from ledwall.settings import Settings
-from ledwall.animation import rainbow_cycle
+from ledwall.animation import rainbow_cycle, theater_chase
 from ledwall.fps import FPS
 import ledwall.color_utils as color_utils
 
@@ -245,13 +245,11 @@ def main():
 
     # fps counter
     fps = FPS(args.fps)
-    # TODO: Keep track of pixels last position to add in an optional fade
-
     random_values = [random.random() for ii in range(n_pixels)]
 
     Settings.__init__()
 
-    value = [] # list from 0 - 250 - 0
+    value = []  # list from 0 - 250 - 0
     value.extend(range(0, 250))
     value.extend(reversed(range(0, 250)))
 
@@ -263,6 +261,7 @@ def main():
     while run_main:
         if s.run_action('2_s'):
             print(f'Current FPS: {fps.true_fps} - Tarrget FPS: {fps.target_fps} - Sleep time: {fps.sleep_fps}')
+            print(f"{Settings.rgb_last} - {Settings.rgb}")
         # print("test")
         # set looping variables
         t = fps.elapsed  # keep track of how long the program has been running
@@ -277,7 +276,7 @@ def main():
         if Settings.power.lower() in ('1', 'on', 1):
 
             if Settings.mode == "rgb":
-                print(f"{Settings.rgb_last} - {Settings.rgb}")
+                # print(f"{Settings.rgb_last} - {Settings.rgb}")
                 Settings.rgb_last = color_utils.fade_pixel(Settings.rgb_last, Settings.rgb)
                 pixels.fill(Settings.rgb_last)
                 pixels.show()
@@ -285,6 +284,10 @@ def main():
             if Settings.mode == "rainbow":
                 counter = color_utils.inc_counter(counter, greatest=255)
                 rainbow_cycle.rainbow_cycle(pixels, counter, n_pixels)
+
+            if Settings.mode == "theater chase":
+                counter = color_utils.inc_counter(counter, greatest=255)
+                theater_chase.theaterChaseRainbow(pixels, counter)
 
 
             # elif Settings.mode == "breathe":
