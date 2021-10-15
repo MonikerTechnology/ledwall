@@ -40,7 +40,7 @@ class NeoPixelLightStrip(Accessory):
             model='Raspberry Pi',
             firmware_revision='1.0',
             serial_number='1',
-            AccessoryFlags="AccessoryFlags Test"
+            # AccessoryFlags="AccessoryFlags Test"
         )
 
         # Set our neopixel API services up using Lightbulb base
