@@ -1,9 +1,9 @@
-from ledwall.color_utils import wheel
+from ledwall.color_utils import wheel, order_to_array
 
 
 def rainbow_cycle(pixels, index, num_pixels):
     for i in range(num_pixels):
-        pixel_index = (i * 256 // num_pixels) + index
-        pixels[i] = wheel(pixel_index & 255)
+        pixel_index = (order_to_array(i) * 256 // num_pixels) + index
+        pixels[order_to_array(i)] = wheel(pixel_index & 255)
     pixels.show()
 

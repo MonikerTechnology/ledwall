@@ -281,11 +281,11 @@ def main():
                 pixels.fill(Settings.rgb_last)
                 pixels.show()
 
-            if Settings.mode == "rainbow":
+            elif Settings.mode == "rainbow":
                 counter = color_utils.inc_counter(counter, greatest=255)
                 rainbow_cycle.rainbow_cycle(pixels, counter, n_pixels)
 
-            if Settings.mode == "theater chase":
+            elif Settings.mode == "theater chase":
                 counter = color_utils.inc_counter(counter, greatest=255)
                 theater_chase.theaterChaseRainbow(pixels, counter)
 
