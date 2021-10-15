@@ -288,7 +288,6 @@ def main():
 
             elif Settings.mode == "theater chase":
                 counter_b = color_utils.inc_counter(counter_b, greatest=2)
-                print(counter_b)
                 if counter_b == 2:
                     counter_a = color_utils.inc_counter(counter_a, greatest=255)
                 theater_chase.theaterChaseRainbow(pixels, counter_a, counter_b,)
