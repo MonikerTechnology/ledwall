@@ -15,11 +15,7 @@ import sys
 import board
 import neopixel
 
-print("About to import hap.")
 from ledwall.control import hap
-# run_loop = threading.Thread(target=control.hap.main())
-# run_loop.start()
-print("finished importing hap")
 
 pixels = None
 rotary_obj = None
@@ -27,6 +23,7 @@ rotary_obj = None
 # My custom
 # from audioprocessing import *
 # from ledwall import opc
+from simple_schedule import Schedule
 from ledwall.control import http_server, rotary
 from ledwall.settings import Settings
 from ledwall.animation import rainbow_cycle
@@ -258,12 +255,14 @@ def main():
     value.extend(range(0, 250))
     value.extend(reversed(range(0, 250)))
 
-
+    s = Schedule(initial=False)
     logging.info(f"about to start main loop")
     Settings.power = 'On'
     Settings.mode = "rainbow"
     counter = 0
     while run_main:
+        if s.run_action('2_s'):
+            print(f'Sleep time: {fps.sleep_fps}')
 
         # set looping variables
         t = fps.elapsed  # keep track of how long the program has been running
