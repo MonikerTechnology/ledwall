@@ -35,9 +35,17 @@ class NeoPixelLightStrip(Accessory):
 
         super().__init__(*args, **kwargs)
 
+        self.set_info_service(
+            manufacturer='Cody McComber',
+            model='Raspberry Pi',
+            firmware_revision='1.0',
+            serial_number='1',
+            AccessoryFlags="AccessoryFlags Test"
+        )
+
         # Set our neopixel API services up using Lightbulb base
         serv_light = self.add_preload_service(
-            'Lightbulb', chars=['On', 'Hue', 'Saturation', 'Brightness'])
+            'Lightbulb', chars=['On', 'Hue', 'Saturation', 'Brightness', 'ColorTemperature'])
 
         # Configure our callbacks
         self.char_hue = serv_light.configure_char(
