@@ -257,7 +257,8 @@ def main():
     logging.info(f"about to start main loop")
     Settings.power = 'On'
     Settings.mode = "rgb"
-    counter = 0
+    counter_a = 0
+    counter_b = 0
     while run_main:
         if s.run_action('2_s'):
             print(f'Current FPS: {fps.true_fps} - Tarrget FPS: {fps.target_fps} - Sleep time: {fps.sleep_fps}')
@@ -282,12 +283,14 @@ def main():
                 pixels.show()
 
             elif Settings.mode == "rainbow":
-                counter = color_utils.inc_counter(counter, greatest=255)
-                rainbow_cycle.rainbow_cycle(pixels, counter, n_pixels)
+                counter_a = color_utils.inc_counter(counter_a, greatest=255)
+                rainbow_cycle.rainbow_cycle(pixels, counter_a, n_pixels)
 
             elif Settings.mode == "theater chase":
-                counter = color_utils.inc_counter(counter, greatest=255)
-                theater_chase.theaterChaseRainbow(pixels, counter)
+                counter_b = color_utils.inc_counter(counter_b, greatest=2)
+                if counter_b == 2:
+                    counter_a = color_utils.inc_counter(counter_a, greatest=255)
+                theater_chase.theaterChaseRainbow(pixels, counter_a, counter_b,)
 
 
             # elif Settings.mode == "breathe":
