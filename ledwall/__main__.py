@@ -258,7 +258,7 @@ def main():
     s = Schedule(initial=False)
     logging.info(f"about to start main loop")
     Settings.power = 'On'
-    Settings.mode = "rainbow"
+    Settings.mode = "rgb"
     counter = 0
     while run_main:
         if s.run_action('2_s'):

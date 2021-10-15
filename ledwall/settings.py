@@ -16,6 +16,13 @@ class Settings:
         cls.brightness = 1.0  # 0 is off, 1 is full
         cls.rgb = (0, 0, 0)
         cls.rgb_last = (0, 0, 0)
+        cls.scenes = {"rainbow": 0}
+
+    @classmethod
+    def check_for_scene(cls):
+        for scene, value in cls.scenes.items():
+            if value == cls.rgb:
+                cls.mode = scene
 
     @classmethod
     def update_brightness(cls, value):
@@ -46,6 +53,8 @@ class Settings:
             else:
                 logging.debug("%s == %s" % (key, value))
                 setattr(cls, key, value)
+
+            cls.check_for_scene()
 
         logging.info(f"Current mode is: {cls.mode}")
         logging.info(f"Current power is: {cls.power}")
