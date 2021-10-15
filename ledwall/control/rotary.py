@@ -4,18 +4,23 @@ try:
 except ImportError:
     rpi = False
 
-import requests
+import sys
 import threading
 from time import sleep
 from ledwall.settings import Settings
+import signal
 Settings.__init__()
 
 # self.capture_thread = threading.Thread(target=self._capture)
 
+def kill_switch(a, b):
+    print("Ran the kill switch from rotary!!")
+    sys.exit()
 
 class Physical:
 
     def __init__(self):
+        signal.signal(signal.SIGTERM, kill_switch)
         if rpi:
             self.run = True
             self.clk = 17

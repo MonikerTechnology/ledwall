@@ -22,6 +22,7 @@ from ledwall.control import hap
 print("finished importing hap")
 
 pixels = None
+rotary_obj = None
 
 # My custom
 # from audioprocessing import *
@@ -77,10 +78,11 @@ def get_args():
 
 
 # Main kill switch to stop the threads
-def kill_switch(rotary_obj: rotary.Physical):
+def kill_switch(signum, frame):
 
     global run_main
     global pixels
+    global rotary_obj
     print('\n\n')
     logging.info('Killing main loop')
     run_main = False
@@ -205,10 +207,12 @@ def parse_layout():
 
 def main():
     global pixels
+    global rotary_obj
     run_main = True
 
-
     args = get_args()
+    signal.signal(signal.SIGTERM, kill_switch)
+    hap.main()  # Start up this thread
     pixels = neopixel.NeoPixel(board.D18, 135, auto_write=True)
 
 
@@ -224,7 +228,7 @@ def main():
     # Starts listening for rotary controls
     logging.info('Starting rotary loop')
     rotary_obj = rotary.Physical()
-    signal.signal(signal.SIGTERM, kill_switch(rotary_obj))
+
 
     #
     # logging.info(f"Starting http_server")

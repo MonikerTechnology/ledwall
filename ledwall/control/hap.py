@@ -163,18 +163,23 @@ def get_accessory(driver):
     return NeoPixelLightStrip(board.D12, 135, driver, "led-wall")
     return TemperatureSensor(driver, 'MyTempSensor')
 
-# def main():
-# Start the accessory on port 51826
-driver = AccessoryDriver(port=51826, persist_file='/home/pi/github/HAP-python/accessory.state')
 
-# Change `get_accessory` to `get_bridge` if you want to run a Bridge.
-driver.add_accessory(accessory=get_accessory(driver))
+def main():
+    # Start the accessory on port 51826
+    driver = AccessoryDriver(port=51826, persist_file='/home/pi/github/HAP-python/accessory.state')
 
-# We want SIGTERM (terminate) to be handled by the driver itself,
-# so that it can gracefully stop the accessory, server and advertising.
-signal.signal(signal.SIGTERM, driver.signal_handler)
+    # Change `get_accessory` to `get_bridge` if you want to run a Bridge.
+    driver.add_accessory(accessory=get_accessory(driver))
 
-# Start it!
-# driver.start()
-run_loop = threading.Thread(target=driver.start)
-run_loop.start()
+    # We want SIGTERM (terminate) to be handled by the driver itself,
+    # so that it can gracefully stop the accessory, server and advertising.
+    signal.signal(signal.SIGTERM, driver.signal_handler)
+
+    # Start it!
+    # driver.start()
+    run_loop = threading.Thread(target=driver.start)
+    run_loop.start()
+
+
+if __name__ == "__main__":
+    main()
