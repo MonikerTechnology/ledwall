@@ -29,6 +29,7 @@ rotary_obj = None
 # from ledwall import opc
 from ledwall.control import http_server, rotary
 from ledwall.settings import Settings
+from ledwall.animation import rainbow_cycle
 from ledwall.fps import FPS
 import ledwall.color_utils as color_utils
 
@@ -260,7 +261,8 @@ def main():
 
     logging.info(f"about to start main loop")
     Settings.power = 'On'
-    Settings.mode = args.mode
+    Settings.mode = "rgb"
+    counter = 0
     while run_main:
 
         # set looping variables
@@ -274,12 +276,15 @@ def main():
         #     audio_obj.run = False
 
         if Settings.power.lower() in ('1', 'on', 1):
-            print(f"{Settings.rgb_last} - {Settings.rgb}")
-            Settings.rgb_last = color_utils.fade_pixel(Settings.rgb_last, Settings.rgb)
-            pixels.fill(Settings.rgb_last)
-            # pixels.show()
-            # if Settings.mode == "rainbow":
-            #     pass
+
+            if Settings.mode == "rgb":
+                print(f"{Settings.rgb_last} - {Settings.rgb}")
+                Settings.rgb_last = color_utils.fade_pixel(Settings.rgb_last, Settings.rgb)
+                pixels.fill(Settings.rgb_last)
+
+            if Settings.mode == "rainbow":
+                counter = color_utils.inc_counter(counter, greatest=255)
+                rainbow_cycle.rainbow_cycle(pixels, counter, n_pixels)
 
 
             # elif Settings.mode == "breathe":
