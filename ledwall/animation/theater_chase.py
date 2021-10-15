@@ -9,7 +9,7 @@ def theaterChaseRainbow(pixels, counter_a, counter_b, wait_ms=5):
     for i in range(0, pixels.n, 3):
         pixels[order_to_array(i + counter_b)] = wheel((i + counter_a) % 255)
     pixels.show()
-    sleep(wait_ms / 1000.0)
+    # sleep(wait_ms / 1000.0)
     for i in range(0, pixels.n, 3):
         pixels[order_to_array(i + counter_b)] = (0, 0, 0)
         pixels.show()
