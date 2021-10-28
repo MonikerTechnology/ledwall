@@ -32,16 +32,9 @@ def rainbow(t, index, random_values):
     x, z = color_utils.get_cord(index)
     y = 0
 
-    # too_big("x", x)
-    # too_big("z", z)
-
     # Scale the x and z to match the original map file wall.json
     x = color_utils.remap(x, 0, 14, -0.7, 0.7)
     z = color_utils.remap(z, 0, 8, -0.4, 0.4)
-
-    # too_big("color_utils.remap x", x)
-    # too_big("color_utils.remap z", z)
-
 
     y += color_utils.cos(x + 0.2 * z, offset=0, period=1, minn=0, maxx=0.6)
     z += color_utils.cos(x, offset=0, period=1, minn=0, maxx=0.3)
@@ -61,9 +54,9 @@ def rainbow(t, index, random_values):
     g = color_utils.cos(y, offset=t / 4, period=2, minn=0, maxx=1)
     b = color_utils.cos(z, offset=t / 4, period=2, minn=0, maxx=1)
 
-
-
-    # r, g, b = color_utils.contrast((r, g, b), 0.5, 1.5)
+    old = r,g,b
+    r, g, b = color_utils.contrast((r, g, b), 0.5, 1.5)
+    print(f"old: {old} -- New: {(r,g,b)}")
     # # r, g, b = color_utils.clip_black_by_luminance((r, g, b), 0.5)
     # #
     # # shift the color of a few outliers
@@ -75,35 +68,22 @@ def rainbow(t, index, random_values):
     g2 = color_utils.cos(y, offset=t / 10 + 24.536, period=3, minn=0, maxx=1)
     b2 = color_utils.cos(z, offset=t / 10 + 34.675, period=3, minn=0, maxx=1)
 
-
-
     clampdown = (r2 + g2 + b2) / 2
     clampdown = color_utils.remap(clampdown, 0.8, 0.9, 0, 1)
     clampdown = color_utils.clamp(clampdown, 0, 1)
-    #
-    #
-    #
-    #
+
     r *= clampdown
     g *= clampdown
     b *= clampdown
-    #
-    # # too_big("clampdown r", r)
-    # # too_big("clampdown g", g)
-    # # too_big("clampdown b", b)
-    #
-    #
+
     # # color scheme: fade towards blue-and-orange
     # # g = (r+b) / 2
     g = g * 0.6 + ((r + b) / 2) * 0.4
-    #
+
+
     # # apply gamma curve
     # # only do this on live leds, not in the simulator
     r, g, b = color_utils.gamma((r, g, b), 2.2)
-    #
-    # # too_big("gamma r", r)
-    # # too_big("gamma g", g)
-    # # too_big("gamma b", b)
 
     too_big("r", r)
     too_big("g", g)
