@@ -262,7 +262,7 @@ def main():
     while run_main:
         if s.run_action('2_s'):
             print(f'Current FPS: {fps.true_fps} - Tarrget FPS: {fps.target_fps} - Sleep time: {fps.sleep_fps}')
-            print(f"{Settings.rgb_last=} - {Settings.rgb=} - {Settings.mode}")
+            print(f"{Settings.rgb_last} - {Settings.rgb} - {Settings.mode}")
         # print("test")
         # set looping variables
         t = fps.elapsed  # keep track of how long the program has been running
