@@ -1,10 +1,11 @@
 from ledwall import color_utils
 from ledwall.settings import Settings
+from ledwall.color_utils import order_to_array
 
 Settings.__init__()
 
 
-def rainbow(t, coord, ii, n_pixels, random_values):
+def rainbow(t, index, random_values):
     """Compute the color of a given pixel.
 
     t: time in seconds since the program started.
@@ -17,11 +18,9 @@ def rainbow(t, coord, ii, n_pixels, random_values):
 
     """
 
-
-
     # make moving stripes for x, y, and z
-    x, y = coord
-    z = 0
+    x, z = color_utils.get_cord(index)
+    y = 0
 
     # Scale the x and z to match the original map file wall.json
     x = color_utils.remap(x, 0, 14, -0.7, 0.7)
@@ -48,7 +47,7 @@ def rainbow(t, coord, ii, n_pixels, random_values):
     # r, g, b = color_utils.clip_black_by_luminance((r, g, b), 0.5)
     #
     # # shift the color of a few outliers
-    if random_values[ii] < 0.03:
+    if random_values[index] < 0.03:
         r, g, b = b, g, r
 
     # black out regions
