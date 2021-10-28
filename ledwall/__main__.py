@@ -245,29 +245,24 @@ def main():
 
     # fps counter
     fps = FPS(args.fps)
-    random_values = [random.random() for ii in range(n_pixels)]
+    random_values = [random.random() for _ in range(n_pixels)]
 
-    Settings.__init__()
+    # Settings.__init__()
 
-    value = []  # list from 0 - 250 - 0
-    value.extend(range(0, 250))
-    value.extend(reversed(range(0, 250)))
+    # value = []  # list from 0 - 250 - 0
+    # value.extend(range(0, 250))
+    # value.extend(reversed(range(0, 250)))
 
     s = Schedule(initial=False)
     logging.info(f"about to start main loop")
     Settings.power = 'On'
-    Settings.mode = "rgb"
-    counter_a = 0
-    counter_b = 0
+    counter_a, counter_b = 0, 0
+
     while run_main:
         if s.run_action('2_s'):
-            print(f'Current FPS: {fps.true_fps} - Tarrget FPS: {fps.target_fps} - Sleep time: {fps.sleep_fps}')
+            print(f'Current FPS: {fps.true_fps} - Target FPS: {fps.target_fps} - Sleep time: {fps.sleep_fps}')
             print(f"{Settings.rgb_last} - {Settings.rgb} - {Settings.mode}")
-        # print("test")
-        # set looping variables
-        t = fps.elapsed  # keep track of how long the program has been running
 
-        # ----------------------------------------------
         # this tracks the FPS and adjusts the delay to keep it consistent.
         fps.maintain()
 

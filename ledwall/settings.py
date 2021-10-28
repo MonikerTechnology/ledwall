@@ -10,6 +10,8 @@ class Settings:
     rgb = 0
     scenes = {}
     brightness = 1.0
+    power = "On"
+    mode = "rainbow"
 
     @classmethod
     def __init__(cls):
