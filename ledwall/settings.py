@@ -7,23 +7,26 @@ import logging
 # curl -X GET 'http://localhost:8080/?id=3&power=1&mode=audio_bars'
 
 class Settings:
-    rgb = 0
-    scenes = {}
+    rgb = (0, 0, 0)
+    rgb_last = (0, 0, 0)
+    scenes = {
+        "rainbow": (2, 2, 1),
+        "theater chase": (10, 6, 6)}
     brightness = 1.0
     power = "On"
     mode = "rainbow"
 
-    @classmethod
-    def __init__(cls):
-        cls.logger = logging.getLogger(f'Settings')
-        cls.mode = "rainbow"
-        cls.power = "1"
-        cls.brightness = 1.0  # 0 is off, 1 is full
-        cls.rgb = (0, 0, 0)
-        cls.rgb_last = (0, 0, 0)
-        cls.scenes = {
-                "rainbow": (2, 2, 1),
-                "theater chase": (10, 6, 6)}
+    # @classmethod
+    # def __init__(cls):
+    #     cls.logger = logging.getLogger(f'Settings')
+    #     cls.mode = "rainbow"
+    #     cls.power = "1"
+    #     cls.brightness = 1.0  # 0 is off, 1 is full
+    #     cls.rgb = (0, 0, 0)
+    #     cls.rgb_last = (0, 0, 0)
+    #     cls.scenes = {
+    #             "rainbow": (2, 2, 1),
+    #             "theater chase": (10, 6, 6)}
 
     @classmethod
     def check_for_scene(cls):

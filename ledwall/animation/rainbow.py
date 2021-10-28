@@ -2,7 +2,7 @@ from ledwall import color_utils
 from ledwall.settings import Settings
 from ledwall.color_utils import order_to_array
 
-Settings.__init__()
+# Settings.__init__()
 
 
 def too_big(name, x):

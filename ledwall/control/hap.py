@@ -13,7 +13,7 @@ from pyhap.const import CATEGORY_LIGHTBULB
 from ledwall.settings import Settings
 import threading
 import socket
-Settings.__init__()
+# Settings.__init__()
 
 
 class NeoPixelLightStrip(Accessory):
