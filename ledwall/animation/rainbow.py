@@ -61,16 +61,14 @@ def rainbow(t, index, random_values):
     g = color_utils.cos(y, offset=t / 4, period=2, minn=0, maxx=1)
     b = color_utils.cos(z, offset=t / 4, period=2, minn=0, maxx=1)
 
-    too_big("r", r)
-    too_big("g", g)
-    too_big("b", b)
 
-    # r, g, b = color_utils.contrast((r, g, b), 0.5, 1.5)
+
+    r, g, b = color_utils.contrast((r, g, b), 0.5, 1.5)
     # # r, g, b = color_utils.clip_black_by_luminance((r, g, b), 0.5)
     # #
-    # # # shift the color of a few outliers
-    # if random_values[index] < 0.03:
-    #     r, g, b = b, g, r
+    # # shift the color of a few outliers
+    if random_values[index] < 0.03:
+        r, g, b = b, g, r
     #
     # # black out regions
     # r2 = color_utils.cos(x, offset=t / 10 + 12.345, period=3, minn=0, maxx=1)
@@ -106,6 +104,11 @@ def rainbow(t, index, random_values):
     # # too_big("gamma r", r)
     # # too_big("gamma g", g)
     # # too_big("gamma b", b)
+
+    too_big("r", r)
+    too_big("g", g)
+    too_big("b", b)
+
 
     return (r * 255,
             g * 255,
