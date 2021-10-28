@@ -293,7 +293,7 @@ def main():
 
                     pixels[index] = (0, 0, 100)
 
-                    print(rainbow(fps.start_time, index, random_values))
+                    rainbow(fps.start_time, index, random_values)
                 pixels.show()
 
             elif Settings.mode == "theater chase":

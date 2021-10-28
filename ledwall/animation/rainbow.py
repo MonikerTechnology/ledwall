@@ -5,6 +5,16 @@ from ledwall.color_utils import order_to_array
 Settings.__init__()
 
 
+def too_big(name, x):
+    if type(x) == int:
+        if x > 256:
+            print(f"Too big: {name} {x}")
+    if type(x) == tuple:
+        for i in x:
+            if i > 256:
+                print(f"Too big: {name} {i}")
+
+
 def rainbow(t, index, random_values):
     """Compute the color of a given pixel.
 
@@ -21,6 +31,10 @@ def rainbow(t, index, random_values):
     # make moving stripes for x, y, and z
     x, z = color_utils.get_cord(index)
     y = 0
+
+    too_big("x", x)
+    too_big("z", z)
+    too_big("test", 266)
 
     # Scale the x and z to match the original map file wall.json
     x = color_utils.remap(x, 0, 14, -0.7, 0.7)
