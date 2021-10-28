@@ -7,12 +7,12 @@ Settings.__init__()
 
 def too_big(name, x):
     if type(x) in (int, float):
-        if x * 255> 256:
-            print(f"Too big: {name} {x}")
+        if x * 255 > 256:
+            print(f"Too big: {name} {x * 255}")
     if type(x) == tuple:
         for i in x:
             if i * 255 > 256:
-                print(f"Too big: {name} {i}")
+                print(f"Too big: {name} {i * 255}")
 
 
 def rainbow(t, index, random_values):
@@ -71,16 +71,26 @@ def rainbow(t, index, random_values):
     r2 = color_utils.cos(x, offset=t / 10 + 12.345, period=3, minn=0, maxx=1)
     g2 = color_utils.cos(y, offset=t / 10 + 24.536, period=3, minn=0, maxx=1)
     b2 = color_utils.cos(z, offset=t / 10 + 34.675, period=3, minn=0, maxx=1)
-    clampdown = (r2 + g2 + b2) / 2
-    clampdown = color_utils.remap(clampdown, 0.8, 0.9, 0, 1)
-    clampdown = color_utils.clamp(clampdown, 0, 1)
-    r *= clampdown
-    g *= clampdown
-    b *= clampdown
 
     too_big("r", r)
     too_big("g", g)
     too_big("b", b)
+
+    clampdown = (r2 + g2 + b2) / 2
+    clampdown = color_utils.remap(clampdown, 0.8, 0.9, 0, 1)
+    clampdown = color_utils.clamp(clampdown, 0, 1)
+
+
+
+
+    r *= clampdown
+    g *= clampdown
+    b *= clampdown
+
+    too_big("clampdown r", r)
+    too_big("clampdown g", g)
+    too_big("clampdown b", b)
+
 
     # color scheme: fade towards blue-and-orange
     # g = (r+b) / 2
