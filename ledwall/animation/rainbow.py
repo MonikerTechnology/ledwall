@@ -77,16 +77,16 @@ def rainbow(t, index, random_values):
 
 
 
-    # clampdown = (r2 + g2 + b2) / 2
-    # clampdown = color_utils.remap(clampdown, 0.8, 0.9, 0, 1)
-    # clampdown = color_utils.clamp(clampdown, 0, 1)
+    clampdown = (r2 + g2 + b2) / 2
+    clampdown = color_utils.remap(clampdown, 0.8, 0.9, 0, 1)
+    clampdown = color_utils.clamp(clampdown, 0, 1)
     #
     #
     #
     #
-    # r *= clampdown
-    # g *= clampdown
-    # b *= clampdown
+    r *= clampdown
+    g *= clampdown
+    b *= clampdown
     #
     # # too_big("clampdown r", r)
     # # too_big("clampdown g", g)
