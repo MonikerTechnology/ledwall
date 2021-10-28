@@ -291,9 +291,7 @@ def main():
                 for i in range(0, n_pixels):
                     index = color_utils.order_to_array(i)
 
-                    pixels[index] = (0, 0, 100)
-
-                    rainbow(fps.start_time, index, random_values)
+                    pixels[index] = rainbow(fps.start_time, index, random_values)
                 pixels.show()
 
             elif Settings.mode == "theater chase":
