@@ -178,13 +178,13 @@ def get_accessory(driver):
 
 def wait_for_network():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    count = 0
+    delay = 0
     while True:
         try:
             s.connect(("8.8.8.8", 80))
-            sleep(count)
-            if count < 60:
-                count += 1
+            sleep(delay)  # If there just is no network, reduce the attempts for 1 per minute.
+            if delay < 60:
+                delay += 1
             break
         except OSError:
             pass

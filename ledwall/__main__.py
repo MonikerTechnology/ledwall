@@ -24,7 +24,7 @@ rotary_obj = None
 # from audioprocessing import *
 # from ledwall import opc
 from simple_schedule import Schedule
-from ledwall.control import http_server, rotary
+# from ledwall.control import http_server, rotary
 from ledwall.settings import Settings
 from ledwall.animation import rainbow_cycle, theater_chase, rainbow
 from ledwall.fps import FPS
@@ -225,7 +225,7 @@ def main():
 
     # Starts listening for rotary controls
     logging.info('Starting rotary loop')
-    rotary_obj = rotary.Physical()
+    # rotary_obj = rotary.Physical()
 
 
     #
