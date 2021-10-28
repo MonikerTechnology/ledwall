@@ -7,11 +7,11 @@ Settings.__init__()
 
 def too_big(name, x):
     if type(x) == int:
-        if x > 256:
+        if x * 255> 256:
             print(f"Too big: {name} {x}")
     if type(x) == tuple:
         for i in x:
-            if i > 256:
+            if i * 255 > 256:
                 print(f"Too big: {name} {i}")
 
 
