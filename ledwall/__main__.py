@@ -289,7 +289,8 @@ def main():
             elif Settings.mode == "rainbow":
 
                 for i in range(0, len(pixels)):
-                    pixels[i] = rainbow(fps.start_time, color_utils.get_cord(i), color_utils.order_to_array(i), len(pixels), random_values)
+                    pixels[color_utils.order_to_array(i)] = (0,0,0)
+                    rainbow(fps.start_time, color_utils.get_cord(i), color_utils.order_to_array(i), n_pixels, random_values)
                 pixels.show()
 
             elif Settings.mode == "theater chase":
