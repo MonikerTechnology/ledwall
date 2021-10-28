@@ -287,11 +287,11 @@ def main():
                 rainbow_cycle.rainbow_cycle(pixels, counter_a, n_pixels)
 
             elif Settings.mode == "rainbow":
-
+                elapsed = fps.elapsed
                 for i in range(0, n_pixels):
                     index = color_utils.order_to_array(i)
 
-                    pixels[index] = rainbow(fps.start_time, index, random_values)
+                    pixels[index] = rainbow(elapsed, index, random_values)
                 pixels.show()
 
             elif Settings.mode == "theater chase":
