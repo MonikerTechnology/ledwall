@@ -71,22 +71,22 @@ def rainbow(t, index, random_values):
         r, g, b = b, g, r
     #
     # # black out regions
-    # r2 = color_utils.cos(x, offset=t / 10 + 12.345, period=3, minn=0, maxx=1)
-    # g2 = color_utils.cos(y, offset=t / 10 + 24.536, period=3, minn=0, maxx=1)
-    # b2 = color_utils.cos(z, offset=t / 10 + 34.675, period=3, minn=0, maxx=1)
+    r2 = color_utils.cos(x, offset=t / 10 + 12.345, period=3, minn=0, maxx=1)
+    g2 = color_utils.cos(y, offset=t / 10 + 24.536, period=3, minn=0, maxx=1)
+    b2 = color_utils.cos(z, offset=t / 10 + 34.675, period=3, minn=0, maxx=1)
+
+
+
+    clampdown = (r2 + g2 + b2) / 2
+    clampdown = color_utils.remap(clampdown, 0.8, 0.9, 0, 1)
+    clampdown = color_utils.clamp(clampdown, 0, 1)
     #
     #
     #
-    # clampdown = (r2 + g2 + b2) / 2
-    # clampdown = color_utils.remap(clampdown, 0.8, 0.9, 0, 1)
-    # clampdown = color_utils.clamp(clampdown, 0, 1)
     #
-    #
-    #
-    #
-    # r *= clampdown
-    # g *= clampdown
-    # b *= clampdown
+    r *= clampdown
+    g *= clampdown
+    b *= clampdown
     #
     # # too_big("clampdown r", r)
     # # too_big("clampdown g", g)
