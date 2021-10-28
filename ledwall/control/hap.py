@@ -6,13 +6,26 @@
  Changing Temp/Sat   - Saturation - Hue
  Changing State      - State
 """
+"""An example of how to setup and start an Accessory.
 
+This is:
+1. Create the Accessory object you want.
+2. Add it to an AccessoryDriver, which will advertise it on the local network,
+    setup a server to answer client queries, etc.
+"""
+
+import logging
+import signal
+
+from pyhap.accessory_driver import AccessoryDriver
+from time import sleep
 from neopixel import *
 from pyhap.accessory import Accessory
 from pyhap.const import CATEGORY_LIGHTBULB
 from ledwall.settings import Settings
 import threading
 import socket
+
 # Settings.__init__()
 
 
@@ -20,18 +33,10 @@ class NeoPixelLightStrip(Accessory):
 
     category = CATEGORY_LIGHTBULB
 
-    def __init__(self, LED_pin, LED_count, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
 
         """
-        LED_Count - the number of LEDs in the array
-        is_GRB - most neopixels are GRB format - Normal:True
-        LED_pin - must be PWM pin 18 - Normal:18
-        LED_freq_hz - frequency of the neopixel leds - Normal:800000
-        LED_DMA - Normal:10
-        LED_Brightness - overall brightness - Normal:255
-        LED_invert - Normal:False
-        For more information regarding these settings
-            please review rpi_ws281x source code
+
         """
 
         super().__init__(*args, **kwargs)
@@ -65,23 +70,26 @@ class NeoPixelLightStrip(Accessory):
         self.brightness = 100  # Brightness value 0 - 100 Homekit API
 
         # self.is_GRB = is_GRB  # Most neopixels are Green Red Blue
-        self.LED_count = LED_count
+        # self.LED_count = LED_count
 
-        order = GRB
+        # order = GRB
         # self.neo_strip = NeoPixel(LED_pin, LED_count, pixel_order=order)
         # self.neo_strip.begin()
 
     def set_state(self, value):
+        print("Got state callback", value)
         self.accessory_state = value
+        Settings.power = value
         if value == 1:  # On
             self.set_hue(self.hue)
         else:
             self.update_neopixel_with_color(0, 0, 0)  # Off
 
     def set_hue(self, value):
+        print("Got hue callback", value)
         # Lets only write the new RGB values if the power is on
         # otherwise update the hue value only
-        if self.accessory_state == 1:
+        if self.accessory_state == 1 or Settings.power:
             self.hue = value
             rgb_tuple = self.hsv_to_rgb(
                 self.hue, self.saturation, self.brightness)
@@ -92,16 +100,16 @@ class NeoPixelLightStrip(Accessory):
             self.hue = value
 
     def set_brightness(self, value):
+        print("Got brightness callback", value)
         self.brightness = value
         self.set_hue(self.hue)
 
     def set_saturation(self, value):
+        print("Got saturation callback", value)
         self.saturation = value
         self.set_hue(self.hue)
 
     def update_neopixel_with_color(self, red, green, blue):
-        #for i in range(self.LED_count):
-        # self.neo_strip.fill((red, green, blue))
         print("Uppdating settings to:", (red, green, blue))
         Settings.update_values(rgb=(red, green, blue))
         # Settings.rgb = (red, green, blue)
@@ -147,32 +155,14 @@ class NeoPixelLightStrip(Accessory):
 
         return int((RGB_Pri[0] + m) * 255), int((RGB_Pri[1] + m) * 255), int((RGB_Pri[2] + m) * 255)
 
-"""An example of how to setup and start an Accessory.
 
-This is:
-1. Create the Accessory object you want.
-2. Add it to an AccessoryDriver, which will advertise it on the local network,
-    setup a server to answer client queries, etc.
-"""
-import logging
-import signal
-import random
-
-from pyhap.accessory import Accessory
-from pyhap.accessory_driver import AccessoryDriver
-# from accessories.NeoPixelLightStrip import NeoPixelLightStrip
-import pyhap.loader as loader
-# from pyhap import camera
-# from pyhap.const import CATEGORY_SENSOR
-import board
-from time import sleep
 
 logging.basicConfig(level=logging.INFO, format="[%(module)s] %(message)s")
 
 
 def get_accessory(driver):
     """Call this method to get a standalone Accessory."""
-    return NeoPixelLightStrip(board.D12, 135, driver, "led-wall")
+    return NeoPixelLightStrip(driver, "led-wall")
     # return TemperatureSensor(driver, 'MyTempSensor')
 
 
