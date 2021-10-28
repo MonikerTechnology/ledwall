@@ -288,7 +288,7 @@ def main():
 
             elif Settings.mode == "rainbow":
 
-                for i in range(0, len(n_pixels)):
+                for i in range(0, n_pixels):
                     pixels[color_utils.order_to_array(i)] = (0,0,0)
 
                     rainbow(fps.start_time, color_utils.get_cord(i), color_utils.order_to_array(i), n_pixels, random_values)
