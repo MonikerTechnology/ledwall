@@ -56,6 +56,9 @@ def rainbow(t, index, random_values):
 
     old = r,g,b
     r, g, b = color_utils.contrast((r, g, b), 0.5, 1.5)
+    r = color_utils.clamp(r, 0, 1)
+    g = color_utils.clamp(g, 0, 1)
+    b = color_utils.clamp(b, 0, 1)
     print(f"old: {old} -- New: {(r,g,b)}")
     # # r, g, b = color_utils.clip_black_by_luminance((r, g, b), 0.5)
     # #
