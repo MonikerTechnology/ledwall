@@ -26,7 +26,7 @@ rotary_obj = None
 from simple_schedule import Schedule
 from ledwall.control import http_server, rotary
 from ledwall.settings import Settings
-from ledwall.animation import rainbow_cycle, theater_chase
+from ledwall.animation import rainbow_cycle, theater_chase, rainbow
 from ledwall.fps import FPS
 import ledwall.color_utils as color_utils
 
@@ -151,38 +151,38 @@ def pixel_color(t, coord, ii, n_pixels):
     return r, g, b
 
 
-def start_fc_server(args):
-
-    # TODO: first check if running
-    # This will fail if it is already running, but it can still connect
-    logging.info(f'Trying to start FC server...')
-
-    # TODO stop using absalute path
-    fc_mac = f'/usr/local/supporting_files/fcserver-osx'
-    fc_rpi = f'/usr/local/supporting_files/fcserver-rpi'
-    config_mac = f'/usr/local/supporting_files/fcserver_config.json'
-    config = f'/usr/local/supporting_files/fcserver_config.json'
-
-    if platform.system() == "Darwin":
-        logging.info(f'Backgrounding FC server for Mac and continuing with python')
-        os.system(f"{fc_mac} {config_mac} &")
-    if platform.system() == "Linux":
-        logging.info(f'Backgrounding FC server for Linux and continuing with python')
-        os.system(f"sudo {fc_rpi} {config} &")
-
-    time.sleep(.5)
-
-    # -------------------------------------------------------------------------------
-    # connect OPC to server
-
-    client = opc.Client(args.server)
-    if client.can_connect():
-        logging.info(f'OPC connected to {args.server}')
-    else:
-        # can't connect, but keep running in case the server appears later
-        logging.warning(f'could not connect to {args.server}')
-
-    return client
+# def start_fc_server(args):
+#
+#     # TODO: first check if running
+#     # This will fail if it is already running, but it can still connect
+#     logging.info(f'Trying to start FC server...')
+#
+#     # TODO stop using absalute path
+#     fc_mac = f'/usr/local/supporting_files/fcserver-osx'
+#     fc_rpi = f'/usr/local/supporting_files/fcserver-rpi'
+#     config_mac = f'/usr/local/supporting_files/fcserver_config.json'
+#     config = f'/usr/local/supporting_files/fcserver_config.json'
+#
+#     if platform.system() == "Darwin":
+#         logging.info(f'Backgrounding FC server for Mac and continuing with python')
+#         os.system(f"{fc_mac} {config_mac} &")
+#     if platform.system() == "Linux":
+#         logging.info(f'Backgrounding FC server for Linux and continuing with python')
+#         os.system(f"sudo {fc_rpi} {config} &")
+#
+#     time.sleep(.5)
+#
+#     # -------------------------------------------------------------------------------
+#     # connect OPC to server
+#
+#     client = opc.Client(args.server)
+#     if client.can_connect():
+#         logging.info(f'OPC connected to {args.server}')
+#     else:
+#         # can't connect, but keep running in case the server appears later
+#         logging.warning(f'could not connect to {args.server}')
+#
+#     return client
 
 
 def parse_layout():
@@ -282,9 +282,15 @@ def main():
                 pixels.fill(Settings.rgb_last)
                 pixels.show()
 
-            elif Settings.mode == "rainbow":
+            elif Settings.mode == "rainbow_cycle":
                 counter_a = color_utils.inc_counter(counter_a, greatest=255)
                 rainbow_cycle.rainbow_cycle(pixels, counter_a, n_pixels)
+
+            elif Settings.mode == "rainbow":
+                for i in range(0, len(pixels)):
+                    rainbow(fps.start_time, color_utils.get_cord(i), color_utils.order_to_array(i), len(pixels),
+                            random_values)
+                pixels.show()
 
             elif Settings.mode == "theater chase":
                 counter_b = color_utils.inc_counter(counter_b, greatest=2)

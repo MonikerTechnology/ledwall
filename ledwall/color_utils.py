@@ -4,9 +4,13 @@
 
 from __future__ import division
 import math
+from typing import Tuple
 
 
-def get_cord(pixel, width=15):
+def get_cord(pixel: int, width=15) -> Tuple[int, int]:
+    """
+    pixel: Actual index of pixel
+    """
     column = pixel % width
     row = int(pixel / width)
     if row in [1, 4, 7]:
@@ -28,7 +32,12 @@ def get_pos(x, y, width=15):
 #     return (row * width) + column
 
 
-def order_to_array(pos, width=15):
+def order_to_array(pos: int, width=15) -> int:
+    """
+    pos: Index of where the pixel would be if the strip was in order
+
+    return: Actual index
+    """
     row = int(pos / width)
     column = pos % width
     if row in [3, 4, 5]:

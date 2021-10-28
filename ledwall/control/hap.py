@@ -67,7 +67,7 @@ class NeoPixelLightStrip(Accessory):
         self.LED_count = LED_count
 
         order = GRB
-        self.neo_strip = NeoPixel(LED_pin, LED_count, pixel_order=order)
+        # self.neo_strip = NeoPixel(LED_pin, LED_count, pixel_order=order)
         # self.neo_strip.begin()
 
     def set_state(self, value):
@@ -170,7 +170,7 @@ logging.basicConfig(level=logging.INFO, format="[%(module)s] %(message)s")
 def get_accessory(driver):
     """Call this method to get a standalone Accessory."""
     return NeoPixelLightStrip(board.D12, 135, driver, "led-wall")
-    return TemperatureSensor(driver, 'MyTempSensor')
+    # return TemperatureSensor(driver, 'MyTempSensor')
 
 
 def main():

@@ -9,6 +9,7 @@ import logging
 class Settings:
     rgb = 0
     scenes = {}
+    brightness = 1.0
 
     @classmethod
     def __init__(cls):
