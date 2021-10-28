@@ -12,6 +12,7 @@ from pyhap.accessory import Accessory
 from pyhap.const import CATEGORY_LIGHTBULB
 from ledwall.settings import Settings
 import threading
+import socket
 Settings.__init__()
 
 
@@ -161,11 +162,13 @@ from pyhap.accessory import Accessory
 from pyhap.accessory_driver import AccessoryDriver
 # from accessories.NeoPixelLightStrip import NeoPixelLightStrip
 import pyhap.loader as loader
-from pyhap import camera
-from pyhap.const import CATEGORY_SENSOR
+# from pyhap import camera
+# from pyhap.const import CATEGORY_SENSOR
 import board
+from time import sleep
 
 logging.basicConfig(level=logging.INFO, format="[%(module)s] %(message)s")
+
 
 def get_accessory(driver):
     """Call this method to get a standalone Accessory."""
@@ -173,7 +176,24 @@ def get_accessory(driver):
     # return TemperatureSensor(driver, 'MyTempSensor')
 
 
+def wait_for_network():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    count = 0
+    while True:
+        try:
+            s.connect(("8.8.8.8", 80))
+            sleep(count)
+            if count < 60:
+                count += 1
+            break
+        except OSError:
+            pass
+    print(f"Found local IP address: {s.getsockname()[0]}")
+    s.close()
+
+
 def main():
+    wait_for_network()
     # Start the accessory on port 51826
     driver = AccessoryDriver(port=51826, persist_file='/home/pi/github/HAP-python/accessory.state')
 

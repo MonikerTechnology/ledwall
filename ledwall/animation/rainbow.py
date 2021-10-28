@@ -59,7 +59,7 @@ def rainbow(t, index, random_values):
     r = color_utils.clamp(r, 0, 1)
     g = color_utils.clamp(g, 0, 1)
     b = color_utils.clamp(b, 0, 1)
-    print(f"old: {old} -- New: {(r,g,b)}")
+    # print(f"old: {old} -- New: {(r,g,b)}")
     # # r, g, b = color_utils.clip_black_by_luminance((r, g, b), 0.5)
     # #
     # # shift the color of a few outliers
@@ -83,19 +83,11 @@ def rainbow(t, index, random_values):
     # # g = (r+b) / 2
     g = g * 0.6 + ((r + b) / 2) * 0.4
 
-
     # # apply gamma curve
     # # only do this on live leds, not in the simulator
     r, g, b = color_utils.gamma((r, g, b), 2.2)
 
-    too_big("r", r)
-    too_big("g", g)
-    too_big("b", b)
-
-
-    return (r * 255,
-            g * 255,
-            b * 255)
+    return r * 255, g * 255, b * 255
 
 
 
