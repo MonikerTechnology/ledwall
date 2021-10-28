@@ -32,13 +32,16 @@ def rainbow(t, index, random_values):
     x, z = color_utils.get_cord(index)
     y = 0
 
-    too_big("x", x)
-    too_big("z", z)
-    too_big("test", 266)
+    # too_big("x", x)
+    # too_big("z", z)
 
     # Scale the x and z to match the original map file wall.json
     x = color_utils.remap(x, 0, 14, -0.7, 0.7)
     z = color_utils.remap(z, 0, 8, -0.4, 0.4)
+
+    # too_big("color_utils.remap x", x)
+    # too_big("color_utils.remap z", z)
+
 
     y += color_utils.cos(x + 0.2 * z, offset=0, period=1, minn=0, maxx=0.6)
     z += color_utils.cos(x, offset=0, period=1, minn=0, maxx=0.3)
@@ -74,6 +77,10 @@ def rainbow(t, index, random_values):
     r *= clampdown
     g *= clampdown
     b *= clampdown
+
+    too_big("r", r)
+    too_big("g", g)
+    too_big("b", b)
 
     # color scheme: fade towards blue-and-orange
     # g = (r+b) / 2
