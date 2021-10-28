@@ -287,7 +287,7 @@ def main():
                 rainbow_cycle.rainbow_cycle(pixels, counter_a, n_pixels)
 
             elif Settings.mode == "rainbow":
-
+                print("rainbow mode enabled")
                 for i in range(0, len(pixels)):
                     rainbow(fps.start_time, color_utils.get_cord(i), color_utils.order_to_array(i), len(pixels),
                             random_values)
