@@ -95,7 +95,7 @@ def rainbow(t, index, random_values):
     #
     # # color scheme: fade towards blue-and-orange
     # # g = (r+b) / 2
-    # g = g * 0.6 + ((r + b) / 2) * 0.4
+    g = g * 0.6 + ((r + b) / 2) * 0.4
     #
     # # apply gamma curve
     # # only do this on live leds, not in the simulator
