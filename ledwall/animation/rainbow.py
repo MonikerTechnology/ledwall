@@ -90,6 +90,10 @@ def rainbow(t, index, random_values):
     # only do this on live leds, not in the simulator
     r, g, b = color_utils.gamma((r, g, b), 2.2)
 
+    too_big("gamma r", r)
+    too_big("gamma g", g)
+    too_big("gamma b", b)
+
     return (r * 255,
             g * 255,
             b * 255)
