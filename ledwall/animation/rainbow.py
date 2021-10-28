@@ -142,6 +142,6 @@ def rainbow_original(t, coord, ii, n_pixels, random_values):
     # only do this on live leds, not in the simulator
     r, g, b = color_utils.gamma((r, g, b), 2.2)
 
-    return (r * 255 * Settings.brightness,
-            g * 255 * Settings.brightness,
-            b * 255 * Settings.brightness)
+    return (r * 255,
+            g * 255,
+            b * 255)

@@ -262,7 +262,7 @@ def main():
     while run_main:
         if s.run_action('2_s'):
             print(f'Current FPS: {fps.true_fps} - Tarrget FPS: {fps.target_fps} - Sleep time: {fps.sleep_fps}')
-            print(f"{Settings.rgb_last} - {Settings.rgb}")
+            print(f"{Settings.rgb_last=} - {Settings.rgb=} - {Settings.mode}")
         # print("test")
         # set looping variables
         t = fps.elapsed  # keep track of how long the program has been running
@@ -287,6 +287,7 @@ def main():
                 rainbow_cycle.rainbow_cycle(pixels, counter_a, n_pixels)
 
             elif Settings.mode == "rainbow":
+
                 for i in range(0, len(pixels)):
                     rainbow(fps.start_time, color_utils.get_cord(i), color_utils.order_to_array(i), len(pixels),
                             random_values)
