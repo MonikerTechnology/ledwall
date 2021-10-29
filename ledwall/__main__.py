@@ -344,7 +344,7 @@ def main():
             # else:  # catch all maybe do loading
             #     pass
 
-        if settings.power.lower() in ['0', 'off', 0]:
+        if not settings.power:
             # add fade out!!
             pixels.fill((0, 0, 0))
 
