@@ -1,7 +1,7 @@
 from ledwall import color_utils
-from ledwall.settings import Settings
+from ledwall.settings import settings
 
-Settings.__init__()
+settings.__init__()
 
 def spatial(t, coord, ii, n_pixels):
     """Compute the color of a given pixel.
@@ -31,6 +31,6 @@ def spatial(t, coord, ii, n_pixels):
     # only do this on live leds, not in the simulator
     #r, g, b = color_utils.gamma((r, g, b), 2.2)
 
-    return (r * 256 * Settings.brightness,
-            g * 256 * Settings.brightness,
-            b * 256 * Settings.brightness)
+    return (r * 256 * settings.brightness,
+            g * 256 * settings.brightness,
+            b * 256 * settings.brightness)

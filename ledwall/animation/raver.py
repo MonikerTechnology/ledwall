@@ -1,8 +1,8 @@
 from ledwall import color_utils
-from ledwall.settings import Settings
+from ledwall.settings import settings
 import math
 
-Settings.__init__()
+settings.__init__()
 
 
 def raver(t, n_pixels):
@@ -31,7 +31,7 @@ def raver(t, n_pixels):
         r = blackstripes * color_utils.remap(math.cos((t/speed_r + pct*freq_r)*math.pi*2), -1, 1, 0, 256)
         g = blackstripes * color_utils.remap(math.cos((t/speed_g + pct*freq_g)*math.pi*2), -1, 1, 0, 256)
         b = blackstripes * color_utils.remap(math.cos((t/speed_b + pct*freq_b)*math.pi*2), -1, 1, 0, 256)
-        pixels.append((r * 255 * Settings.brightness,
-                       g * 255 * Settings.brightness,
-                       b * 255 * Settings.brightness))
+        pixels.append((r * 255 * settings.brightness,
+                       g * 255 * settings.brightness,
+                       b * 255 * settings.brightness))
     return pixels

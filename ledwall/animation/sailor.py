@@ -1,9 +1,9 @@
 from ledwall import color_utils
-from ledwall.settings import Settings
+from ledwall.settings import settings
 import time
 
 
-Settings.__init__()
+settings.__init__()
 
 
 def sailor(t, coord, ii, n_pixels, random_values):
@@ -45,6 +45,6 @@ def sailor(t, coord, ii, n_pixels, random_values):
     # only do this on live leds, not in the simulator
     r, g, b = color_utils.gamma((r, g, b), 2.2)
 
-    return (r * 255 * Settings.brightness,
-            g * 255 * Settings.brightness,
-            b * 255 * Settings.brightness)
+    return (r * 255 * settings.brightness,
+            g * 255 * settings.brightness,
+            b * 255 * settings.brightness)

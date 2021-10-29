@@ -1,5 +1,5 @@
 from ledwall import color_utils
-from ledwall.settings import Settings
+from ledwall.settings import settings
 from ledwall.color_utils import order_to_array
 
 # Settings.__init__()

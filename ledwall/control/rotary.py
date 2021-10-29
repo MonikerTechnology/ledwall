@@ -7,9 +7,9 @@ except ImportError:
 import sys
 import threading
 from time import sleep
-from ledwall.settings import Settings
+from ledwall.settings import settings
 import signal
-Settings.__init__()
+settings.__init__()
 
 # self.capture_thread = threading.Thread(target=self._capture)
 
@@ -43,11 +43,11 @@ class Physical:
                         dt_state = GPIO.input(self.dt)
                         if clk_state != self.clkLastState:
                                 if dt_state != clk_state:
-                                        Settings.modify_brightness(.05)
+                                        settings.modify_brightness(.05)
 
                                 else:
-                                        Settings.modify_brightness(-.05)
-                                print(Settings.brightness)
+                                        settings.modify_brightness(-.05)
+                                print(settings.brightness)
                         self.clkLastState = clk_state
                         sleep(0.01)
         finally:

@@ -6,7 +6,7 @@ import logging
 # curl -X GET 'http://localhost:8080/?id=3&hsv=1,2,3&mode=pizza'
 # curl -X GET 'http://localhost:8080/?id=3&power=1&mode=audio_bars'
 
-class Settings:
+class settings:
     # rgb = (0, 0, 0)
     # rgb_last = (0, 0, 0)
     # scenes = {
@@ -67,4 +67,4 @@ class Settings:
         logging.info(f"Current brightness is: {self.brightness}")
 
 
-settings = Settings()
+settings = settings()

@@ -65,7 +65,7 @@ class NeoPixelLightStrip(Accessory):
 
         # Set our instance variables
         self.accessory_state = 0
-        if Settings.power:
+        if settings.power:
             self.accessory_state = 1  # State of the neo light On/Off
         self.hue = 0  # Hue Value 0 - 360 Homekit API
         self.saturation = 100  # Saturation Values 0 - 100 Homekit API
@@ -81,7 +81,7 @@ class NeoPixelLightStrip(Accessory):
     def set_state(self, value):
         print("Got state callback", value)
         self.accessory_state = value
-        Settings.power = value
+        settings.power = value
         if value == 1:  # On
             self.set_hue(self.hue)
         else:
@@ -91,7 +91,7 @@ class NeoPixelLightStrip(Accessory):
         print("Got hue callback", value)
         # Lets only write the new RGB values if the power is on
         # otherwise update the hue value only
-        if self.accessory_state == 1 or Settings.power:
+        if self.accessory_state == 1 or settings.power:
             self.hue = value
             rgb_tuple = self.hsv_to_rgb(
                 self.hue, self.saturation, self.brightness)

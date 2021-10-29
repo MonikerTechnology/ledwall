@@ -255,13 +255,13 @@ def main():
 
     s = Schedule(initial=False)
     logging.info(f"about to start main loop")
-    Settings.power = 'On'
+    settings.power = 'On'
     counter_a, counter_b = 0, 0
 
     while run_main:
         if s.run_action('2_s'):
             print(f'Current FPS: {fps.true_fps} - Target FPS: {fps.target_fps} - Sleep time: {fps.sleep_fps}')
-            print(f"{Settings.rgb_last} - {Settings.rgb} - {Settings.mode}")
+            print(f"{settings.rgb_last} - {settings.rgb} - {settings.mode}")
 
         # this tracks the FPS and adjusts the delay to keep it consistent.
         fps.maintain()
@@ -269,19 +269,19 @@ def main():
         # if not Settings.power or Settings.mode != 'audio_bars':
         #     audio_obj.run = False
 
-        if Settings.power.lower() in ('1', 'on', 1):
+        if settings.power.lower() in ('1', 'on', 1):
 
-            if Settings.mode == "rgb":
+            if settings.mode == "rgb":
                 # print(f"{Settings.rgb_last} - {Settings.rgb}")
-                Settings.rgb_last = color_utils.fade_pixel(Settings.rgb_last, Settings.rgb)
-                pixels.fill(Settings.rgb_last)
+                settings.rgb_last = color_utils.fade_pixel(settings.rgb_last, settings.rgb)
+                pixels.fill(settings.rgb_last)
                 pixels.show()
 
-            elif Settings.mode == "rainbow_cycle":
+            elif settings.mode == "rainbow_cycle":
                 counter_a = color_utils.inc_counter(counter_a, greatest=255)
                 rainbow_cycle.rainbow_cycle(pixels, counter_a, n_pixels)
 
-            elif Settings.mode == "rainbow":
+            elif settings.mode == "rainbow":
                 elapsed = fps.elapsed
                 for i in range(0, n_pixels):
                     index = color_utils.order_to_array(i)
@@ -289,7 +289,7 @@ def main():
                     pixels[index] = rainbow(elapsed, index, random_values)
                 pixels.show()
 
-            elif Settings.mode == "theater chase":
+            elif settings.mode == "theater chase":
                 counter_b = color_utils.inc_counter(counter_b, greatest=2)
                 if counter_b == 2:
                     counter_a = color_utils.inc_counter(counter_a, greatest=255)
@@ -344,7 +344,7 @@ def main():
             # else:  # catch all maybe do loading
             #     pass
 
-        if Settings.power.lower() in ['0', 'off', 0]:
+        if settings.power.lower() in ['0', 'off', 0]:
             # add fade out!!
             pixels.fill((0, 0, 0))
 

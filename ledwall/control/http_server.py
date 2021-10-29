@@ -13,7 +13,7 @@ import logging
 import threading
 import time
 import urllib.parse as urlparse
-from ledwall.settings import Settings
+from ledwall.settings import settings
 
 httpd = None
 server_thread = None
@@ -38,7 +38,7 @@ class S(BaseHTTPRequestHandler):
         parsed = urlparse.urlparse(self.path)
         params = urlparse.parse_qs(parsed.query)
 
-        Settings.update_values(**params)
+        settings.update_values(**params)
 
     def do_POST(self):
         # TODO: confugure post to update http_data
@@ -79,7 +79,7 @@ def _run(server_class=HTTPServer, handler_class=S, port=8080):
 if __name__ == '__main__':
     from sys import argv
 
-    Settings.__init__()
+    settings.__init__()
 
     if len(argv) == 2:
         # run(port=int(argv[1]))
