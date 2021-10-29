@@ -7,14 +7,6 @@ import logging
 # curl -X GET 'http://localhost:8080/?id=3&power=1&mode=audio_bars'
 
 class settings:
-    # rgb = (0, 0, 0)
-    # rgb_last = (0, 0, 0)
-    # scenes = {
-    #     "rainbow": (2, 2, 1),
-    #     "theater chase": (10, 6, 6)}
-    # brightness = 1.0
-    # power = "On"
-    # mode = "rainbow"
 
     def __init__(self):
         self.logger = logging.getLogger(f'Settings')
@@ -41,8 +33,8 @@ class settings:
             self._power = 0
 
     def check_for_scene(self):
-        for scene, value in self.scenes.items():
-            if value == self.rgb:
+        for scene, color_code in self.scenes.items():
+            if color_code == self.rgb:
                 return scene
         return None
 

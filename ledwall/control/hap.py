@@ -104,11 +104,13 @@ class NeoPixelLightStrip(Accessory):
     def set_brightness(self, value):
         print("Got brightness callback", value)
         self.brightness = value
+        settings.update_values(brightness=value)
         self.set_hue(self.hue)
 
     def set_saturation(self, value):
         print("Got saturation callback", value)
         self.saturation = value
+        # settings.update_values(saturation=value)
         self.set_hue(self.hue)
 
     def update_neopixel_with_color(self, red, green, blue):
