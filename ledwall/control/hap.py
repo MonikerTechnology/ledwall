@@ -64,7 +64,9 @@ class NeoPixelLightStrip(Accessory):
             'Brightness', setter_callback=self.set_brightness)
 
         # Set our instance variables
-        self.accessory_state = 0  # State of the neo light On/Off
+        self.accessory_state = 0
+        if Settings.power:
+            self.accessory_state = 1  # State of the neo light On/Off
         self.hue = 0  # Hue Value 0 - 360 Homekit API
         self.saturation = 100  # Saturation Values 0 - 100 Homekit API
         self.brightness = 100  # Brightness value 0 - 100 Homekit API
