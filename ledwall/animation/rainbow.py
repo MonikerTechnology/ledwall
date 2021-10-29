@@ -2,18 +2,6 @@ from ledwall import color_utils
 from ledwall.settings import settings
 from ledwall.color_utils import order_to_array
 
-# Settings.__init__()
-
-
-def too_big(name, x):
-    if type(x) in (int, float):
-        if x * 255 > 256:
-            print(f"Too big: {name} {x * 255}")
-    if type(x) == tuple:
-        for i in x:
-            if i * 255 > 256:
-                print(f"Too big: {name} {i * 255}")
-
 
 def rainbow(t, index, random_values):
     """Compute the color of a given pixel.
@@ -87,7 +75,7 @@ def rainbow(t, index, random_values):
     # # only do this on live leds, not in the simulator
     r, g, b = color_utils.gamma((r, g, b), 2.2)
 
-    return r * 255, g * 255, b * 255
+    return r * 255 * settings.brightness, g * 255 * settings.brightness, b * 255 * settings.brightness
 
 
 

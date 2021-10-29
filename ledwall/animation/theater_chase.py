@@ -1,13 +1,13 @@
 from ledwall.color_utils import order_to_array, wheel
 from time import sleep, perf_counter
-
+from ledwall.settings import settings
 
 def theaterChaseRainbow(pixels, counter_a, counter_b, wait_ms=50):
     """Rainbow movie theater light style chaser animation."""
     # start = perf_counter()
     # for counter_b in range(3):
     for i in range(0, pixels.n, 3):
-        pixels[order_to_array(i + counter_b)] = wheel((i + counter_a) % 255)
+        pixels[order_to_array(i + counter_b)] = wheel((i + counter_a) % 255) * settings.brightness
     # end = perf_counter()
     # print(f"Picking values took: {end-start}s")
     # start = perf_counter()

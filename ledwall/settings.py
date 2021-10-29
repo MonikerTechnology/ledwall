@@ -25,7 +25,9 @@ class settings:
         self.rgb_last = (0, 0, 0)
         self.scenes = {
                 "rainbow": (2, 2, 1),
-                "theater chase": (10, 6, 6)}
+                "rainbow_cycle": (17, 43, 16),
+                "theater chase": (10, 6, 6),
+                "rgb": (25, 6, 7)}
 
     @property
     def power(self):
@@ -38,12 +40,11 @@ class settings:
         else:
             self._power = 0
 
-
     def check_for_scene(self):
         for scene, value in self.scenes.items():
             if value == self.rgb:
                 return scene
-        return "rgb"  # Basic scene
+        return None
 
     def update_brightness(self, value):
         """Give new brightness value 0-1"""
@@ -72,7 +73,9 @@ class settings:
                 logging.debug("%s == %s" % (key, value))
                 setattr(self, key, value)
 
-            self.mode = self.check_for_scene()
+            new_mode = self.check_for_scene()
+            if new_mode:
+                self.mode = new_mode
 
         logging.info(f"Current mode is: {self.mode}")
         logging.info(f"Current power is: {self.power}")
