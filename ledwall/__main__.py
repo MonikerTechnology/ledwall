@@ -259,9 +259,9 @@ def main():
     counter_a, counter_b = 0, 0
 
     while run_main:
-        if s.run_action('2_s'):
-            print(f'Current FPS: {fps.true_fps} - Target FPS: {fps.target_fps} - Sleep time: {fps.sleep_fps}')
-            print(f"{settings.rgb_last} - {settings.rgb} - {settings.mode}")
+        # if s.run_action('2_s'):
+        #     print(f'Current FPS: {fps.true_fps} - Target FPS: {fps.target_fps} - Sleep time: {fps.sleep_fps}')
+        #     print(f"{settings.rgb_last} - {settings.rgb} - {settings.mode}")
 
         # this tracks the FPS and adjusts the delay to keep it consistent.
         fps.maintain()
