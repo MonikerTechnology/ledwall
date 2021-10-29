@@ -269,7 +269,7 @@ def main():
         # if not Settings.power or Settings.mode != 'audio_bars':
         #     audio_obj.run = False
 
-        if settings.power.lower() in ('1', 'on', 1):
+        if settings.power:
 
             if settings.mode == "rgb":
                 # print(f"{Settings.rgb_last} - {Settings.rgb}")

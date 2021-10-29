@@ -19,13 +19,25 @@ class settings:
     def __init__(self):
         self.logger = logging.getLogger(f'Settings')
         self.mode = "rainbow"
-        self.power = "1"
+        self._power = 1
         self.brightness = 1.0  # 0 is off, 1 is full
         self.rgb = (0, 0, 0)
         self.rgb_last = (0, 0, 0)
         self.scenes = {
                 "rainbow": (2, 2, 1),
                 "theater chase": (10, 6, 6)}
+
+    @property
+    def power(self):
+        return self._power
+
+    @power.setter
+    def power(self, value):
+        if value in [1, True, "on", "On", "ON"]:
+            self._power = 1
+        else:
+            self._power = 0
+
 
     def check_for_scene(self):
         for scene, value in self.scenes.items():
