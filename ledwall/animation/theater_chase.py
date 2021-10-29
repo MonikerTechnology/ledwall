@@ -7,7 +7,11 @@ def theaterChaseRainbow(pixels, counter_a, counter_b, wait_ms=50):
     # start = perf_counter()
     # for counter_b in range(3):
     for i in range(0, pixels.n, 3):
-        pixels[order_to_array(i + counter_b)] = wheel((i + counter_a) % 255) * settings.brightness
+        r, g, b, = wheel((i + counter_a) % 255)
+        r *= settings.brightness
+        g *= settings.brightness
+        b *= settings.brightness
+        pixels[order_to_array(i + counter_b)] = (r, g, b)
     # end = perf_counter()
     # print(f"Picking values took: {end-start}s")
     # start = perf_counter()
