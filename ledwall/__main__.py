@@ -345,10 +345,9 @@ def main():
             #     pass
 
         if not settings.power:
-            # add fade out!!
-            pixels.fill((0, 0, 0))
-
-
+            settings.rgb_last = color_utils.fade_pixel(settings.rgb_last, (0, 0, 0))
+            pixels.fill(settings.rgb_last)
+            pixels.show()
 
 if __name__ == '__main__':
     main()
