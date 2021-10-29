@@ -25,6 +25,7 @@ from pyhap.const import CATEGORY_LIGHTBULB
 from ledwall.settings import settings
 import threading
 import socket
+from ledwall.color_utils import remap
 
 # Settings.__init__()
 
@@ -104,7 +105,7 @@ class NeoPixelLightStrip(Accessory):
     def set_brightness(self, value):
         print("Got brightness callback", value)
         self.brightness = value
-        settings.update_values(brightness=value)
+        settings.update_values(brightness=remap(value, 0, 100, 0, 1))
         self.set_hue(self.hue)
 
     def set_saturation(self, value):

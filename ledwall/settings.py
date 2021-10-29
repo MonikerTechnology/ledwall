@@ -12,7 +12,7 @@ class settings:
         self.logger = logging.getLogger(f'Settings')
         self.mode = "rainbow"
         self._power = 1
-        self.brightness = 1.0  # 0 is off, 1 is full
+        self._brightness = 1.0  # 0 is off, 1 is full
         self.rgb = (0, 0, 0)
         self.rgb_last = (0, 0, 0)
         self.scenes = {
@@ -31,6 +31,14 @@ class settings:
             self._power = 1
         else:
             self._power = 0
+
+    @property
+    def brightness(self):
+        return self._brightness
+
+    @brightness.setter
+    def brightness(self, value):
+        self._brightness = value
 
     def check_for_scene(self):
         for scene, color_code in self.scenes.items():
@@ -52,6 +60,8 @@ class settings:
             self.brightness = 1
         if self.brightness < 0:
             self.brightness = 0
+
+
 
     def update_values(self, **kwargs):
         """update_values(rgb=(100,200,100))"""
