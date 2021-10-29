@@ -113,7 +113,7 @@ class NeoPixelLightStrip(Accessory):
 
     def update_neopixel_with_color(self, red, green, blue):
         print("Uppdating settings to:", (red, green, blue))
-        Settings.update_values(rgb=(red, green, blue))
+        settings.update_values(rgb=(red, green, blue))
         # Settings.rgb = (red, green, blue)
             # Red,Green,Blue
         #self.neo_strip.show()
