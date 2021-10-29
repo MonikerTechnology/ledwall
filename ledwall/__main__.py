@@ -25,7 +25,7 @@ rotary_obj = None
 # from ledwall import opc
 from simple_schedule import Schedule
 # from ledwall.control import http_server, rotary
-from ledwall.settings import Settings
+from ledwall.settings import settings
 from ledwall.animation import rainbow_cycle, theater_chase, rainbow
 from ledwall.fps import FPS
 import ledwall.color_utils as color_utils

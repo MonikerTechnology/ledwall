@@ -22,7 +22,7 @@ from time import sleep
 from neopixel import *
 from pyhap.accessory import Accessory
 from pyhap.const import CATEGORY_LIGHTBULB
-from ledwall.settings import Settings
+from ledwall.settings import settings
 import threading
 import socket
 
