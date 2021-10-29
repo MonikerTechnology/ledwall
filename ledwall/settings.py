@@ -43,6 +43,7 @@ class settings:
     def check_for_scene(self):
         for scene, color_code in self.scenes.items():
             if color_code == self.rgb:
+                self.brightness = 1
                 return scene
         return None
 
@@ -60,8 +61,6 @@ class settings:
             self.brightness = 1
         if self.brightness < 0:
             self.brightness = 0
-
-
 
     def update_values(self, **kwargs):
         """update_values(rgb=(100,200,100))"""
